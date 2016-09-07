@@ -1,0 +1,37 @@
+PODS:
+  - GRMustache (6.8.4):
+    - JRSwizzle (~> 1.0)
+  - JRSwizzle (1.0)
+  - Q (0.0.1)
+  - SCFFLD (0.0.1):
+    - SCFFLD/noarc (= 0.0.1)
+  - SCFFLD/noarc (0.0.1)
+
+DEPENDENCIES:
+  - GRMustache (~> 6.8.4)
+  - Q (from `git@github.com:innerfunction/Q-ios.git`)
+  - SCFFLD (from `git@github.com:innerfunction/SCFFLD-ios.git`)
+
+EXTERNAL SOURCES:
+  Q:
+    :git: git@github.com:innerfunction/Q-ios.git
+  SCFFLD:
+    :git: git@github.com:innerfunction/SCFFLD-ios.git
+
+CHECKOUT OPTIONS:
+  Q:
+    :commit: 3d815bd913196342d804a4546454b821c5955c49
+    :git: git@github.com:innerfunction/Q-ios.git
+  SCFFLD:
+    :commit: ec8fb361c42bf3f5937cde7a2c32709e56aa07d4
+    :git: git@github.com:innerfunction/SCFFLD-ios.git
+
+SPEC CHECKSUMS:
+  GRMustache: 7b2520d67b6373484c8b2c08b9788af90a461d61
+  JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
+  Q: 9594f4873ef929875f573aeb01926b9239f2a0cc
+  SCFFLD: d904c3a9c324b23f83ac964ee9ff285754d47966
+
+PODFILE CHECKSUM: e3ffa5adeac7fe91b1228a372319c59074196a81
+
+COCOAPODS: 1.0.1

@@ -1,0 +1,8 @@
+source 'https://github.com/CocoaPods/Specs.git'
+workspace 'Pushover/project.xcworkspace'
+target 'Pushover' do
+    pod 'GRMustache', '~> 6.8.4'
+    pod 'SCFFLD', :git => "git@github.com:innerfunction/SCFFLD-ios.git"
+    pod 'Q', :git => "git@github.com:innerfunction/Q-ios.git"
+end
+
