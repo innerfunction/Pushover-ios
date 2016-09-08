@@ -268,7 +268,7 @@ static IFLogger *Logger;
     NSArray *keys = [NSArray arrayWithDictionaryKeys:values];
     if ([keys count] > 0) {
         NSArray *params = [NSArray arrayWithItem:@"?" repeated:[keys count]];
-        NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", table, [keys joinWithSeparator:@","], [params joinWithSeparator:@","]];
+        NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", table, [keys componentsJoinedByString:@","], [params componentsJoinedByString:@","]];
         id<PLPreparedStatement> statement = [db prepareStatement:sql];
         [statement bindParameters:[NSArray arrayWithDictionaryValues:values forKeys:keys]];
         result = [statement executeUpdate];
@@ -357,7 +357,7 @@ static IFLogger *Logger;
     }
     id identifier = [values valueForKey:idColumn];
     [params addObject:identifier];
-    NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@=?", table, [fields joinWithSeparator:@","], idColumn ];
+    NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@=?", table, [fields componentsJoinedByString:@","], idColumn ];
     id<PLPreparedStatement> statement = [db prepareStatement:sql];
     [statement bindParameters:params];
     BOOL result = [statement executeUpdate];
@@ -408,7 +408,7 @@ static IFLogger *Logger;
         id<PLDatabase> db = [_dbHelper getDatabase];
         [self willChangeValueForKey:table];
         NSArray *params = [NSArray arrayWithItem:@"?" repeated:[identifiers count]];
-        NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ IN (%@)", table, idColumn, [params joinWithSeparator:@","]];
+        NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ IN (%@)", table, idColumn, [params componentsJoinedByString:@","]];
         id<PLPreparedStatement> statement = [db prepareStatement:sql];
         [statement bindParameters:identifiers];
         result = [statement executeUpdate];

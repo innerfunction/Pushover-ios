@@ -18,30 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import "IFContentContainer.h"
-
-/**
- * A class providing functionality for writing responses to content URL and URI requests.
- */
-@protocol IFContentContainerResponse <NSObject>
-
-/**
- * Respond with content data.
- * Writes the full response and then closes the response.
- */
-- (void)respondWithMimeType:(NSString *)mimeType cacheStoragePolicy:(NSURLCacheStoragePolicy)policy data:(NSData *)data;
-/// Start a content response. Note that the [done] method must be called on completion.
-- (void)respondWithMimeType:(NSString *)mimeType cacheStoragePolicy:(NSURLCacheStoragePolicy)policy;
-/**
- * Write content data to the response.
- * The response must be started with a call to the [respondWithMimeType: cacheStoragePolicy:] method before
- * this method is called. This method may then be called as many times as necessary to write the content data
- * in full. The [done] method must be called once all data is written.
- */
-- (void)sendData:(NSData *)data;
-/// End a content response.
-- (void)done;
-
-@end
+#import "IFContainer.h"
 
 /**
  * An abstract content container.
@@ -50,21 +27,12 @@
  * [writeResponse: forAuthority: path: parameters:] method, and subclasses should override this method
  * with an implementation which resolves content data as appropriate for the request.
  */
-@interface IFAbstractContentContainer : NSObject <IFContentContainer> {
+@interface IFAbstractContentContainer : IFContainer <IFContentContainer> {
     /// A set of live NSURL responses.
     NSMutableSet *_liveResponses;
-    /// TODO
-    NSMutableDictionary *_resources;
 }
 
-/**
- * Resolve content data for the specified authority, path and parameters, and write the data to the provided
- * response object.
- * Subclasses should override this method with an appropriate implementation.
- */
-- (void)writeResponse:(id<IFContentContainerResponse>)response
-         forAuthority:(NSString *)authority
-                 path:(NSString *)path
-           parameters:(NSDictionary *)parameters;
+/// A map of addressable path roots. For example, given the path files/all, the path root is 'files'.
+@property (nonatomic, strong) NSMutableDictionary *pathRoots;
 
 @end

@@ -18,6 +18,7 @@
 
 #import "IFAbstractContentContainer.h"
 #import "IFResource.h"
+#import "NSArray+IF.h"
 
 @interface IFNSURLProtocolResponse : NSObject <IFContentContainerResponse> {
     __weak NSMutableSet *_liveResponses;
@@ -40,7 +41,7 @@
     self = [super init];
     if (self) {
         _liveResponses = [NSMutableSet new];
-        _resources = [NSMutableDictionary new];
+        _pathRoots = [NSMutableDictionary new];
     }
     return self;
 }
@@ -54,7 +55,7 @@
     NSURL *url = protocol.request.URL;
     [self writeResponse:response
            forAuthority:url.host
-                   path:url.path
+                   path:[url.path componentsSeparatedByString:@"/"]
              parameters:nil];
 }
 
@@ -66,16 +67,32 @@
     IFSchemeHandlerResponse *response = [IFSchemeHandlerResponse new];
     [self writeResponse:response
            forAuthority:authority
-                   path:path
+                   path:[path componentsSeparatedByString:@"/"]
              parameters:parameters];
     return response;
 }
 
 - (void)writeResponse:(id<IFContentContainerResponse>)response
          forAuthority:(NSString *)authority
-                 path:(NSString *)path
+                 path:(NSArray *)path
            parameters:(NSDictionary *)parameters {
-    [response done];
+    // Look-up a path root for the first path component, and if one is found then delegate the request to it.
+    NSString *root = [path firstObject];
+    id<IFContentContainerPathRoot> pathRoot = _pathRoots[root];
+    if (pathRoot) {
+        // The path root only sees the rest of the path.
+        path = [path arrayWithoutHeadItem];
+        // Delegate the request.
+        [pathRoot writeResponse:response
+                   forAuthority:authority
+                           path:path
+                     parameters:parameters];
+    }
+    else {
+        // Path not found, respond with error.
+        NSError *error = makePathNotFoundResponseError(root);
+        [response respondWithError:error];
+    }
 }
 
 @end
@@ -131,15 +148,24 @@
     }
 }
 
+- (void)respondWithError:(NSError *)error {
+    if ([_liveResponses containsObject:_protocol]) {
+        [_protocol.client URLProtocol:_protocol didFailWithError:error];
+        [_liveResponses removeObject:_protocol];
+    }
+}
+
 @end
 
 @implementation IFSchemeHandlerResponse
 
 - (void)respondWithMimeType:(NSString *)mimeType cacheStoragePolicy:(NSURLCacheStoragePolicy)policy data:(NSData *)data {
+    // TODO: Allow IFResource to report MIME types?
     self.data = data;
 }
 
 - (void)respondWithMimeType:(NSString *)mimeType cacheStoragePolicy:(NSURLCacheStoragePolicy)policy {
+    // TODO: Allow IFResource to report MIME types?
     _buffer = [NSMutableData new];
 }
 
@@ -152,5 +178,9 @@
     _buffer = nil;
 }
 
+- (void)respondWithError:(NSError *)error {
+    // TODO: Should errors be reported through the IFResource interface?
+    _buffer = nil;
+}
 
 @end

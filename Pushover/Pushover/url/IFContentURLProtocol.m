@@ -42,7 +42,6 @@
     id<IFContentContainer> contentContainer = [self findContentContainerForAuthority:self.request.URL.host];
     if (contentContainer) {
         [contentContainer processURLProtocolRequest:self];
-        //[self.client URLProtocolDidFinishLoading:self];
     }
     else {
         NSString *description = [NSString stringWithFormat:@"Content authority %@ not found", self.request.URL.host];
