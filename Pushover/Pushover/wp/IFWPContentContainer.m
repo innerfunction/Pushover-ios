@@ -8,7 +8,6 @@
 
 #import "IFWPContentContainer.h"
 #import "IFAppContainer.h"
-#import "IFPushover.h"
 #import "IFNamedScheme.h"
 #import "IFWPClientTemplateContext.h"
 #import "IFWPDataTableFormatter.h"
@@ -19,6 +18,7 @@
 #import "IFDBFilter.h"
 #import "IFDataFormatter.h"
 #import "IFRegExp.h"
+#import "IFLogging.h"
 #import "NSDictionary+IF.h"
 #import "NSDictionary+IFValues.h"
 #import "GRMustache.h"

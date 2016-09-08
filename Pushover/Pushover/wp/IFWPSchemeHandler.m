@@ -46,10 +46,6 @@
                     if ([@"children" isEqualToString:[pathComponents objectAtIndex:2]]) {
                         return [_contentContainer getPostChildren:postID withParams:params];
                     }
-                    // TODO: Deprecate this - mispelling.
-                    if ([@"descendents" isEqualToString:[pathComponents objectAtIndex:2]]) {
-                        return [_contentContainer getPostDescendants:postID withParams:params];
-                    }
                     if ([@"descendants" isEqualToString:[pathComponents objectAtIndex:2]]) {
                         return [_contentContainer getPostDescendants:postID withParams:params];
                     }

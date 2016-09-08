@@ -12,17 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Julian Goacher on 16/02/2016.
+//  Created by Julian Goacher on 07/09/2016.
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "IFViewController.h"
-#import "IFFormView.h"
+#import "IFCompoundURI.h"
 
-@interface IFFormViewController : IFViewController
+/**
+ * A protocol to be implemented by containers which are capable of providing data to content URIs and URLs.
+ */
+@protocol IFContentContainer <NSObject>
 
-@property (nonatomic, strong, readonly) IFFormView *form;
-@property (nonatomic, strong) UIColor *backgroundColor;
+/// Handle an NSURLProtocol originating request.
+- (void)handleURLProtocolRequest:(NSURLProtocol *)protocol;
+/// Cancel an NSURLProtocol request currently being processed by the container.
+- (void)cancelURLProtocolRequest:(NSURLProtocol *)protocol;
+/// Return content for an internal content URI.
+- (id)contentForAuthority:(NSString *)authority path:(NSString *)path parameters:(NSDictionary *)parameters;
 
 @end
