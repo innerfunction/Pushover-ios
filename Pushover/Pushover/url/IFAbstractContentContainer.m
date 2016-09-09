@@ -53,9 +53,10 @@
     IFNSURLProtocolResponse *response = [[IFNSURLProtocolResponse alloc] initWithNSURLProtocol:protocol
                                                                                  liveResponses:_liveResponses];
     NSURL *url = protocol.request.URL;
+    IFContentPath *contentPath = [[IFContentPath alloc] initWithURL:url];
     [self writeResponse:response
            forAuthority:url.host
-                   path:[url.path componentsSeparatedByString:@"/"]
+                   path:contentPath
              parameters:nil];
 }
 
@@ -65,23 +66,24 @@
 
 - (id)contentForAuthority:(NSString *)authority path:(NSString *)path parameters:(NSDictionary *)parameters {
     IFSchemeHandlerResponse *response = [IFSchemeHandlerResponse new];
+    IFContentPath *contentPath = [[IFContentPath alloc] initWithPath:path];
     [self writeResponse:response
            forAuthority:authority
-                   path:[path componentsSeparatedByString:@"/"]
+                   path:contentPath
              parameters:parameters];
     return response;
 }
 
 - (void)writeResponse:(id<IFContentContainerResponse>)response
          forAuthority:(NSString *)authority
-                 path:(NSArray *)path
+                 path:(IFContentPath *)path
            parameters:(NSDictionary *)parameters {
     // Look-up a path root for the first path component, and if one is found then delegate the request to it.
-    NSString *root = [path firstObject];
+    NSString *root = [path root];
     id<IFContentContainerPathRoot> pathRoot = _pathRoots[root];
     if (pathRoot) {
         // The path root only sees the rest of the path.
-        path = [path arrayWithoutHeadItem];
+        path = [path rest];
         // Delegate the request.
         [pathRoot writeResponse:response
                    forAuthority:authority
@@ -90,7 +92,7 @@
     }
     else {
         // Path not found, respond with error.
-        NSError *error = makePathNotFoundResponseError(root);
+        NSError *error = makePathNotFoundResponseError([path fullPath]);
         [response respondWithError:error];
     }
 }

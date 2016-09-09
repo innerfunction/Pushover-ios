@@ -18,8 +18,8 @@
 
 #import "IFContentContainer.h"
 
-NSError *makePathNotFoundResponseError(NSString *name) {
-    NSString *description = [NSString stringWithFormat:@"Path root %@ not found", name];
+NSError *makePathNotFoundResponseError(NSString *path) {
+    NSString *description = [NSString stringWithFormat:@"Path not found: %@", path];
     // See http://nshipster.com/nserror/
     NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                          code:NSURLErrorFileDoesNotExist // Alternatively: NSURLErrorResourceUnavailable
@@ -27,10 +27,11 @@ NSError *makePathNotFoundResponseError(NSString *name) {
     return error;
 }
 
-NSError *makeInvalidPathResponseError() {
+NSError *makeInvalidPathResponseError(NSString *path) {
+    NSString *description = [NSString stringWithFormat:@"Invalid path: %@", path];
     // See http://nshipster.com/nserror/
     NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                          code:NSURLErrorFileDoesNotExist // Alternatively: NSURLErrorResourceUnavailable
-                                     userInfo:@{ NSLocalizedDescriptionKey: @"Invalid path" }];
+                                     userInfo:@{ NSLocalizedDescriptionKey: description }];
     return error;
 }

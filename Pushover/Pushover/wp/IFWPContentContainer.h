@@ -14,6 +14,7 @@
 #import "IFIOCContainerAware.h"
 #import "IFIOCTypeInspectable.h"
 #import "IFWPContentContainerFormFactory.h"
+#import "IFWPPostDBAdapter.h"
 #import "IFWPAuthManager.h"
 #import "IFMessageReceiver.h"
 #import "IFHTTPClient.h"
@@ -27,8 +28,6 @@
     IFCommandScheduler *_commandScheduler;
     // Location for staging downloaded content prior to deployment.
     NSString *_stagingPath;
-    // File manager.
-    NSFileManager *_fileManager;
 }
 
 /** The name of the posts DB. */
@@ -54,12 +53,14 @@
 @property (nonatomic, strong) NSString *showLoginAction;
 /** The posts DB instance. */
 @property (nonatomic, strong) IFDB *postDB;
+/** An adapter for the posts DB providing specific data access methods. */
+@property (nonatomic, strong) IFWPPostDBAdapter *postDBAdapter;
 /** Whether to reset the post DB on start. (Useful for debug). */
 @property (nonatomic, assign) BOOL resetPostDB;
 /** Interval in minutes between checks for content updates. */
 @property (nonatomic, assign) NSInteger updateCheckInterval;
-/** The content protocol instance; manages feed downloads. */
-@property (nonatomic, strong) IFWPContentCommandProtocol *contentProtocol;
+/** The content command protocol instance; manages feed downloads. */
+@property (nonatomic, strong) IFWPContentCommandProtocol *contentCommandProtocol;
 /** The wp: URI scheme. */
 @property (nonatomic, strong) IFWPSchemeHandler *uriScheme;
 /** Post list data formats. */
@@ -92,30 +93,16 @@
 
 /** Unpack packaged content. */
 - (void)unpackPackagedContent;
+
 /** Refresh content. */
 - (void)refreshContent;
+
 /** Download content from the specified URL and store in the content location using the specified filename. */
 - (void)getContentFromURL:(NSString *)url writeToFilename:(NSString *)filename;
+
 /** Generate a URI to reference the post with the specified ID. */
 - (NSString *)uriForPostWithID:(NSString *)postID;
-/** Return the child posts of a specified post. Doesn't render the post content. */
-- (id)getPostChildren:(NSString *)postID withParams:(NSDictionary *)params;
-/** Return the child posts of a specified post. Optionally renders the post content. */
-- (id)getPostChildren:(NSString *)postID withParams:(NSDictionary *)params renderContent:(BOOL)renderContent;
-/** Get all descendants of a post. Returns the posts children, grandchildren etc. */
-- (id)getPostDescendants:(NSString *)postID withParams:(NSDictionary *)params;
-/** Return data for a specified post. */
-- (id)getPost:(NSString *)postID withParams:(NSDictionary *)params;
-/** Query the post database using a predefined filter. */
-- (id)queryPostsUsingFilter:(NSString *)filterName params:(NSDictionary *)params;
-/**
- * Search the post database for the specified text in the specified post types with an optional parent post.
- * When the parent post ID is specified, the search will be confined to that post and any of its descendants
- * (i.e. children, grand-children etc.).
- */
-- (id)searchPostsForText:(NSString *)text searchMode:(NSString *)searchMode postTypes:(NSArray *)postTypes parentPost:(NSString *)parentID;
-/** Render a post's content by evaluating template reference's within the content field. */
-- (NSDictionary *)renderPostContent:(NSDictionary *)postData;
+
 /** Show the login form. */
 - (void)showLoginForm;
 

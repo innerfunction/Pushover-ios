@@ -18,6 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import "IFCompoundURI.h"
+#import "IFContentPath.h"
 
 /**
  * A class providing functionality for writing responses to content URL and URI requests.
@@ -57,7 +58,7 @@
  */
 - (void)writeResponse:(id<IFContentContainerResponse>)response
          forAuthority:(NSString *)authority
-                 path:(NSArray *)path
+                 path:(IFContentPath *)path
            parameters:(NSDictionary *)parameters;
 
 @end
@@ -76,7 +77,7 @@
 
 @end
 
-NSError *makePathNotFoundResponseError(NSString *name);
+NSError *makePathNotFoundResponseError(NSString *path);
 
-NSError *makeInvalidPathResponseError();
+NSError *makeInvalidPathResponseError(NSString *path);
 
