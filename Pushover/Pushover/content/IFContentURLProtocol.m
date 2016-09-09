@@ -30,7 +30,7 @@
 }
 
 + (id<IFContentContainer>)findContentContainerForAuthority:(NSString *)authority {
-    NSString *contentContainerName = [NSString stringWithFormat:IFContentContainerNameFormats, authority];
+    NSString *contentContainerName = [NSString stringWithFormat:IFContentContainerNameFormat, authority];
     id named = [[IFAppContainer getAppContainer] getNamed:contentContainerName];
     if ([named conformsToProtocol:@protocol(IFContentContainer)]) {
         return (id<IFContentContainer>)named;
@@ -39,16 +39,16 @@
 }
 
 - (void)startLoading {
-    id<IFContentContainer> contentContainer = [self findContentContainerForAuthority:self.request.URL.host];
+    id<IFContentContainer> contentContainer = [IFContentURLProtocol findContentContainerForAuthority:self.request.URL.host];
     if (contentContainer) {
-        [contentContainer processURLProtocolRequest:self];
+        [contentContainer handleURLProtocolRequest:self];
     }
     else {
         NSString *description = [NSString stringWithFormat:@"Content authority %@ not found", self.request.URL.host];
         // See http://nshipster.com/nserror/
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                              code:NSURLErrorCannotFindHost
-                                         userInfo:@{ NSLocalizedDescriptionKey: description }]
+                                         userInfo:@{ NSLocalizedDescriptionKey: description }];
         [self.client URLProtocol:self didFailWithError:error];
     }
     //NSString *appID = [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleIdentifier"];
@@ -56,7 +56,7 @@
 }
 
 - (void)stopLoading {
-    [[self findContentContainerForAuthority:self.request.URL.host] cancelURLProtocolRequest:self];
+    [[IFContentURLProtocol findContentContainerForAuthority:self.request.URL.host] cancelURLProtocolRequest:self];
 }
 
 @end
