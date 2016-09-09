@@ -18,12 +18,14 @@
 
 #import <Foundation/Foundation.h>
 #import "IFContentContainer.h"
-#import "IFWPPostDBAdapter.h"
+#import "IFWPContentContainer.h"
 
 @interface IFWPPostsPathRoot : NSObject <IFContentContainerPathRoot> {
-    __weak IFWPPostDBAdapter *_postAdapter;
+    __weak IFWPContentContainer *_container;
+    __weak IFWPPostDBAdapter *_postDBAdapter;
+    NSFileManager *_fileManager;
 }
 
-- (id)initWithPostAdapter:(IFWPPostDBAdapter *)postAdapter;
+- (id)initWithContainer:(IFWPContentContainer *)container;
 
 @end

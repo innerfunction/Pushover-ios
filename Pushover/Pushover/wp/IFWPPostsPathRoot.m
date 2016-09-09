@@ -18,7 +18,6 @@
 
 #import "IFWPPostsPathRoot.h"
 #import "IFAbstractContentContainer.h"
-#import "NSDictionary+IFValues.h"
 
 @interface IFWPPostsPathRoot()
 
@@ -29,10 +28,12 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
 
 @implementation IFWPPostsPathRoot
 
-- (id)initWithPostAdapter:(IFWPPostDBAdapter *)postAdapter {
+- (id)initWithContainer:(IFWPContentContainer *)container {
     self = [super init];
     if (self) {
-        _postAdapter = postAdapter;
+        _container = container;
+        _postDBAdapter = container.postDBAdapter;
+        _fileManager = [NSFileManager defaultManager];
     }
     return self;
 }
@@ -66,7 +67,7 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
     if ([@"all" isEqualToString:rscID]) {
         if ([components count] == 1) {
             // e.g. content://{authority}/posts/all
-            id content = [_postAdapter queryPostsUsingFilter:nil params:params];
+            id content = [_postDBAdapter queryPostsUsingFilter:nil params:params];
             writeJSONResponse(response, content);
         }
         else {
@@ -74,6 +75,7 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
         }
     }
     else if ([@"search" isEqualToString:rscID]) {
+        // TODO: This should be in a separate class - IFWPSearchPathRoot
         if ([components count] == 1) {
             // e.g. content://{authority}/search
             NSString *text = params[@"text"];
@@ -84,10 +86,10 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
                 postTypes = [types componentsSeparatedByString:@","];
             }
             NSString *parent = params[@"parent"];
-            id content = [_postAdapter searchPostsForText:text
-                                               searchMode:mode
-                                                postTypes:postTypes
-                                               parentPost:parent];
+            id content = [_postDBAdapter searchPostsForText:text
+                                                 searchMode:mode
+                                                  postTypes:postTypes
+                                                 parentPost:parent];
             writeJSONResponse(response, content);
         }
         else {
@@ -127,9 +129,9 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
              *          if should be cached locally then write content to cache location
              *          copy file content to response
              */
-            NSDictionary *postData = [_postAdapter getPostData:postID];
-            NSString *postType = [postData getValueAsString:@"type"];
-            NSString *filename = [postData getValueAsString:@"filename"];
+            NSDictionary *postData = [_postDBAdapter getPostData:postID];
+            NSString *postType = postData[@"type"];
+            NSString *filename = postData[@"filename"];
             // Check which representation of the post to return by examining the type.
             if (!type) {
                 // No type specified, decide what is the default type.
@@ -152,19 +154,48 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
             
             // Resolve the content data and write the response.
             if ([@"json" isEqualToString:type]) {
-                id json = [_postAdapter renderPostData:postData];
+                id json = [_postDBAdapter renderPostData:postData];
                 writeJSONResponse(response, json);
             }
             else if ([@"html" isEqualToString:type]) {
-                NSDictionary *json = [_postAdapter renderPostData:postData];
+                NSDictionary *json = [_postDBAdapter renderPostData:postData];
                 NSString *html = json[@"content"];
                 writeStringResponse(response, html, @"text/html");
             }
             else if (type) {
+                NSString *location = postData[@"location"];
+                if ([@"packaged" isEqualToString:location]) {
+                    NSString *filepath = [_container.packagedContentPath stringByAppendingPathComponent:filename];
+                    if ([_fileManager fileExistsAtPath:filepath]) {
+                        // TODO Write file to response
+                    }
+                    else {
+                        [response respondWithError:makePathNotFoundResponseError([path fullPath])];
+                    }
+                }
+                else if ([@"downloaded" isEqualToString:location]) {
+                    NSString *filepath = [_container.contentPath stringByAppendingPathComponent:filename];
+                    if ([_fileManager fileExistsAtPath:filepath]) {
+                        // TODO Write file to response
+                    }
+                    else {
+                        // TODO download file, write to filepath, write to response.
+                    }
+                }
+                else if ([@"server" isEqualToString:location]) {
+                    // TODO download file, write to response.
+                }
+                else {
+                    // TODO log invalid location
+                    [response respondWithError:makePathNotFoundResponseError([path fullPath])];
+                }
                 // Check if attachment file is downloaded:
                 //  => copy file content to response
                 // Else:
                 //  => download file; file local copy if cacheable; write to response;
+                // NOTE location = downloaded means attachment should be cached locally
+                //      location = server means attachment is always loaded from server
+                //      (but in this case, allow the NSURL protocol to cache locally)
             }
             else {
                 [response respondWithError:makePathNotFoundResponseError([path fullPath])];
@@ -174,12 +205,12 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
             NSString *filter = components[2];
             if ([@"children" isEqualToString:filter]) {
                 // e.g. content://{authority}/posts/{id}/children
-                id content = [_postAdapter getPostChildren:postID withParams:params];
+                id content = [_postDBAdapter getPostChildren:postID withParams:params];
                 writeJSONResponse(response, content);
             }
             else if ([@"descendants" isEqualToString:filter]) {
                 // e.g. content://{authority}/posts/{id}/descendants
-                id content = [_postAdapter getPostDescendants:postID withParams:params];
+                id content = [_postDBAdapter getPostDescendants:postID withParams:params];
                 writeJSONResponse(response, content);
             }
             else {

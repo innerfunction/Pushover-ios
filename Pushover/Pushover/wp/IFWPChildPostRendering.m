@@ -24,13 +24,16 @@
 
 - (void)afterIOCConfiguration:(IFConfiguration *)configuration {}
 
-- (NSString *)renderForMustacheTag:(GRMustacheTag *)tag context:(GRMustacheContext *)context HTMLSafe:(BOOL *)HTMLSafe error:(NSError *__autoreleasing *)error {
+- (NSString *)renderForMustacheTag:(GRMustacheTag *)tag
+                           context:(GRMustacheContext *)context
+                          HTMLSafe:(BOOL *)HTMLSafe
+                             error:(NSError *__autoreleasing *)error {
     NSString *result = @"";
     // Get the in-scope post ID.
     NSString *postID = [context valueForMustacheKey:@"id"];
     if (postID) {
         // Read the list of child posts.
-        NSArray *childPosts = [_contentContainer getPostChildren:postID withParams:@{} renderContent:YES];
+        NSArray *childPosts = [_contentContainer.postDBAdapter getPostChildren:postID withParams:@{} renderContent:YES];
         // Iterate and render each child post.
         for (id childPost in childPosts) {
             GRMustacheContext *childContext = [context contextByAddingObject:childPost];
