@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "IFDataFormatter.h"
 
-@interface IFWPDataTableFormatter : NSObject <IFDataFormatter>
+@interface IFDataTableFormatter : NSObject <IFDataFormatter>
 
 @end

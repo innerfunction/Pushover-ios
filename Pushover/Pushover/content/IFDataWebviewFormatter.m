@@ -6,9 +6,9 @@
 //  Copyright © 2015 InnerFunction. All rights reserved.
 //
 
-#import "IFWPDataWebviewFormatter.h"
+#import "IFDataWebviewFormatter.h"
 
-@implementation IFWPDataWebviewFormatter
+@implementation IFDataWebviewFormatter
 
 - (id)formatData:(id)data {
     // TODO: Should return a dictionary in format suitable for configuring a web view

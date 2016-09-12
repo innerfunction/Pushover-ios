@@ -6,9 +6,9 @@
 //  Copyright © 2015 InnerFunction. All rights reserved.
 //
 
-#import "IFWPDataTableFormatter.h"
+#import "IFDataTableFormatter.h"
 
-@implementation IFWPDataTableFormatter
+@implementation IFDataTableFormatter
 
 - (id)formatData:(id)data {
     return data;

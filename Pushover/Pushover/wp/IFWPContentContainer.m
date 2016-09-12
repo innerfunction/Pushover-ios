@@ -1,6 +1,16 @@
+// Copyright 2016 InnerFunction Ltd.
 //
-//  IFWPContentContainer.m
-//  Pushover
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Julian Goacher on 11/12/2015.
 //  Copyright © 2015 InnerFunction. All rights reserved.
@@ -9,8 +19,8 @@
 #import "IFWPContentContainer.h"
 #import "IFAppContainer.h"
 #import "IFNamedScheme.h"
-#import "IFWPDataTableFormatter.h"
-#import "IFWPDataWebviewFormatter.h"
+#import "IFDataTableFormatter.h"
+#import "IFDataWebviewFormatter.h"
 #import "IFGetURLCommand.h"
 #import "IFDownloadZipCommand.h"
 #import "IFStringTemplate.h"
@@ -36,10 +46,10 @@ static IFLogger *Logger;
         _uriSchemeName = @"wp";
         _wpRealm = @"semo";
         _listFormats = @{
-            @"table": [[IFWPDataTableFormatter alloc] init]
+            @"table": [[IFDataTableFormatter alloc] init]
         };
         _postFormats = @{
-            @"webview": [[IFWPDataWebviewFormatter alloc] init]
+            @"webview": [[IFDataWebviewFormatter alloc] init]
         };
         _postURITemplate = @"{uriSchemeName}:/post/{postID}";
         
@@ -93,19 +103,12 @@ static IFLogger *Logger;
             },
             @"clientTemplateContext": @{
                 @"*ios-class":              @"IFWPClientTemplateContext",
-                @"ext": @{
-                    @"childPosts": @{
-                        @"*ios-class":      @"IFWPChildPostRendering"
-                    }
-                }
             },
             @"packagedContentPath":         @"$packagedContentPath",
             @"contentPath":                 @"$contentPath"
         };
         _configTemplate = [[IFConfiguration alloc] initWithData:template];
-        
-        _uriScheme = [[IFWPSchemeHandler alloc] initWithContentContainer:self];
-        
+
         // TODO: Is there a way for the command scheduler to use the same DB as the post DB? This would
         //       require the ability for the scheduler to merge its table schema over the schema above;
         //       May also complicate schema versioning.

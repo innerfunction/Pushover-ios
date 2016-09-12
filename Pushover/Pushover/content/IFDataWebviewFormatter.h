@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "IFDataFormatter.h"
 
-@interface IFWPDataWebviewFormatter : NSObject
+@interface IFDataWebviewFormatter : NSObject
 
 @end

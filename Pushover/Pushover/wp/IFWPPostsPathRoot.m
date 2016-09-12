@@ -91,6 +91,7 @@ NSError *errorFromResponseError(id error);
             NSDictionary *postData = [_postDBAdapter getPostData:postID];
             NSString *postType = postData[@"type"];
             NSString *filename = postData[@"filename"];
+            NSString *url = postData[@"url"];
             // Check which representation of the post to return by examining the type.
             if (!type) {
                 // No type specified, decide what is the default type.
@@ -121,10 +122,15 @@ NSError *errorFromResponseError(id error);
                 NSString *html = json[@"content"];
                 [response respondWithStringData:html mimeType:@"text/html" cachePolicy:NSURLCacheStorageNotAllowed];
             }
+            else if ([@"url" isEqualToString:type]) {
+                // TODO What are the precise use cases for this type? Should the file: URL of a locally cached
+                // copy be returned, when available? Should the referenced resource be downloaded and then it's
+                // local file: URL be returned, when not cached and caching is allowed?
+                [response respondWithStringData:url mimeType:@"text/url" cachePolicy:NSURLCacheStorageNotAllowed];
+            }
             else if (type) {
                 NSString *mimeType = mimeTypeForType(type);
                 NSString *location = postData[@"location"];
-                NSString *url = postData[@"url"];
                 if ([@"packaged" isEqualToString:location]) {
                     // This is used for content which is packaged with the app, and which is unpacked to a
                     // filesystem location when the app is installed.
