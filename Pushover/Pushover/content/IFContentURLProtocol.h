@@ -19,6 +19,15 @@
 #import <Foundation/Foundation.h>
 #import "IFContentContainer.h"
 
+// TODO:
+// 1. Need a container for content containers; the primary purpose of this is to instantiate the command scheduler,
+//    which can then be made available (by name? or auto-injection?) to child content containers.
+// 2. The name the content-container container is bound to then affects the name format currently defined below;
+//    this name can be discovered if the outer container implements the IFIOCObjectAware protocol.
+// 3. Possibly then, the name the outer container is bound to should be made discoverable via a class method, so
+//    that the overall discovery mechanism continues to work; this means that the outer container is effectively
+//    a singleton.
+
 /// The format used for content container names in the app container namespace.
 #define IFContentContainerNameFormat (@"*content*.%@")
 

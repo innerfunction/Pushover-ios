@@ -18,6 +18,7 @@
 
 #import "Pushover.h"
 #import "IFDB.h"
+#import "IFLogger.h"
 #import "NSDictionary+IFValues.h"
 #import "NSDictionary+IF.h"
 #import "NSArray+IF.h"

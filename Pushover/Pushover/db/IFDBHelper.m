@@ -18,6 +18,7 @@
 
 #import "Pushover.h"
 #import "IFDBHelper.h"
+#import "IFLogger.h"
 
 static IFLogger *Logger;
 

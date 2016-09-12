@@ -24,7 +24,7 @@
 #import "IFGetURLCommand.h"
 #import "IFDownloadZipCommand.h"
 #import "IFStringTemplate.h"
-#import "IFLogging.h"
+#import "IFLogger.h"
 #import "NSDictionary+IF.h"
 
 static IFLogger *Logger;
