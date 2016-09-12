@@ -110,7 +110,7 @@
     return self;
 }
 
-- (void)respondWithMimeType:(NSString *)mimeType cacheStoragePolicy:(NSURLCacheStoragePolicy)policy data:(NSData *)data {
+- (void)respondWithData:(NSData *)data mimeType:(NSString *)mimeType cachePolicy:(NSURLCacheStoragePolicy)policy {
     if ([_liveResponses containsObject:_protocol]) {
         id<NSURLProtocolClient> client = _protocol.client;
         NSURLResponse *response = [[NSURLResponse alloc] initWithURL:_protocol.request.URL
@@ -157,11 +157,28 @@
     }
 }
 
+- (void)respondWithStringData:(NSString *)stringData mimeType:(NSString *)mimeType cachePolicy:(NSURLCacheStoragePolicy)cachePolicy {
+    NSData *data = [stringData dataUsingEncoding:NSUTF8StringEncoding];
+    [self respondWithData:data mimeType:mimeType cachePolicy:cachePolicy];
+}
+
+- (void)respondWithJSONData:(id)jsonData cachePolicy:(NSURLCacheStoragePolicy)cachePolicy {
+    NSData *data = [NSJSONSerialization dataWithJSONObject:jsonData
+                                                   options:0
+                                                     error:nil];
+    [self respondWithData:data mimeType:@"application/json" cachePolicy:cachePolicy];
+}
+
+- (void)respondWithFileData:(NSString *)filepath mimeType:(NSString *)mimeType cachePolicy:(NSURLCacheStoragePolicy)cachePolicy {
+    NSData *data = [NSData dataWithContentsOfFile:filepath];
+    [self respondWithData:data mimeType:mimeType cachePolicy:cachePolicy];
+}
+
 @end
 
 @implementation IFSchemeHandlerResponse
 
-- (void)respondWithMimeType:(NSString *)mimeType cacheStoragePolicy:(NSURLCacheStoragePolicy)policy data:(NSData *)data {
+- (void)respondWithData:(NSData *)data mimeType:(NSString *)mimeType cachePolicy:(NSURLCacheStoragePolicy)policy {
     // TODO: Allow IFResource to report MIME types?
     self.data = data;
 }
@@ -183,6 +200,23 @@
 - (void)respondWithError:(NSError *)error {
     // TODO: Should errors be reported through the IFResource interface?
     _buffer = nil;
+}
+
+- (void)respondWithStringData:(NSString *)stringData mimeType:(NSString *)mimeType cachePolicy:(NSURLCacheStoragePolicy)cachePolicy {
+    NSData *data = [stringData dataUsingEncoding:NSUTF8StringEncoding];
+    [self respondWithData:data mimeType:mimeType cachePolicy:cachePolicy];
+}
+
+- (void)respondWithJSONData:(id)jsonData cachePolicy:(NSURLCacheStoragePolicy)cachePolicy {
+    NSData *data = [NSJSONSerialization dataWithJSONObject:jsonData
+                                                   options:0
+                                                     error:nil];
+    [self respondWithData:data mimeType:@"application/json" cachePolicy:cachePolicy];
+}
+
+- (void)respondWithFileData:(NSString *)filepath mimeType:(NSString *)mimeType cachePolicy:(NSURLCacheStoragePolicy)cachePolicy {
+    NSData *data = [NSData dataWithContentsOfFile:filepath];
+    [self respondWithData:data mimeType:mimeType cachePolicy:cachePolicy];
 }
 
 @end

@@ -118,14 +118,15 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
         NSURLRequest *request = [NSURLRequest requestWithURL:urlParts.URL];
         NSURLSession *session = [NSURLSession sharedSession];
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request
-            completionHandler:^(NSData * _Nullable responseData, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                if (error) {
-                    [promise reject:error];
-                }
-                else {
-                    [promise resolve:[[IFHTTPClientResponse alloc] initWithHTTPResponse:response data:responseData]];
-                }
-            }];
+                                                completionHandler:
+        ^(NSData * _Nullable responseData, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (error) {
+                [promise reject:error];
+            }
+            else {
+                [promise resolve:[[IFHTTPClientResponse alloc] initWithHTTPResponse:response data:responseData]];
+            }
+        }];
         [task resume];
         return promise;
     }];

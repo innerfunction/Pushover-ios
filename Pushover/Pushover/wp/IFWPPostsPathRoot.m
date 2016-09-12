@@ -21,8 +21,10 @@
 
 @interface IFWPPostsPathRoot()
 
-void writeStringResponse(id<IFContentContainerResponse> response, NSString *strData, NSString *mimeType);
-void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
+/// Return the MIME type for a specified request type.
+NSString *mimeTypeForType(NSString *type);
+/// Return an NSError object generated from the function argument.
+NSError *errorFromResponseError(id error);
 
 @end
 
@@ -60,7 +62,6 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
      posts/xxx.json             dict, JSON
      posts/xxx/children         list, JSON
      posts/xxx/descendants      list, JSON
-     search                     list, JSON
      */
     NSArray *components = [path components];
     NSString *rscID = components[0];
@@ -68,37 +69,16 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
         if ([components count] == 1) {
             // e.g. content://{authority}/posts/all
             id content = [_postDBAdapter queryPostsUsingFilter:nil params:params];
-            writeJSONResponse(response, content);
-        }
-        else {
-            [response respondWithError:makeInvalidPathResponseError([path fullPath])];
-        }
-    }
-    else if ([@"search" isEqualToString:rscID]) {
-        // TODO: This should be in a separate class - IFWPSearchPathRoot
-        if ([components count] == 1) {
-            // e.g. content://{authority}/search
-            NSString *text = params[@"text"];
-            NSString *mode = params[@"mode"];
-            NSArray *postTypes = nil;
-            NSString *types = params[@"types"];
-            if (types) {
-                postTypes = [types componentsSeparatedByString:@","];
-            }
-            NSString *parent = params[@"parent"];
-            id content = [_postDBAdapter searchPostsForText:text
-                                                 searchMode:mode
-                                                  postTypes:postTypes
-                                                 parentPost:parent];
-            writeJSONResponse(response, content);
+            [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
         }
         else {
             [response respondWithError:makeInvalidPathResponseError([path fullPath])];
         }
     }
     else {
-        // The resource ID might be in the form xxx.ext, (where xxx is a post ID, and
-        // .ext is a file extension indicating the required type).
+        // The resource ID may be in the form xxx.ext, where xxx is a post ID, and .ext
+        // is a file extension indicating the required type. If no file extension is
+        // specified then a default type will be inferred from the post type.
         NSArray *rscIDParts = [rscID componentsSeparatedByString:@"."];
         NSString *postID = rscIDParts[0];
         NSString *type = nil;
@@ -107,28 +87,7 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
         }
         if ([components count] == 2) {
             // e.g. content://{authority}/posts/{id}.{type}
-            // TODO this section this to handle cases where the content is located remotely, e.g.
-            // attachment posts where the associated file hasn't yet been downloaded.
-            /*
-             * Get post data
-             * Decide on post type:
-             *      type == nil:
-             *          postType == attachment => attachment file type
-             *          :else => json
-             *      type != html or json:
-             *          => confirm postType == attachment and file type is available
-             * If type == json:
-             *      as getPost:
-             * If type == html:
-             *      as json, return html portion
-             * :else
-             *      if file downloaded:
-             *          copy file content to response
-             *      :else
-             *          download file
-             *          if should be cached locally then write content to cache location
-             *          copy file content to response
-             */
+            // Read the post data.
             NSDictionary *postData = [_postDBAdapter getPostData:postID];
             NSString *postType = postData[@"type"];
             NSString *filename = postData[@"filename"];
@@ -155,47 +114,75 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
             // Resolve the content data and write the response.
             if ([@"json" isEqualToString:type]) {
                 id json = [_postDBAdapter renderPostData:postData];
-                writeJSONResponse(response, json);
+                [response respondWithJSONData:json cachePolicy:NSURLCacheStorageNotAllowed];
             }
             else if ([@"html" isEqualToString:type]) {
                 NSDictionary *json = [_postDBAdapter renderPostData:postData];
                 NSString *html = json[@"content"];
-                writeStringResponse(response, html, @"text/html");
+                [response respondWithStringData:html mimeType:@"text/html" cachePolicy:NSURLCacheStorageNotAllowed];
             }
             else if (type) {
+                NSString *mimeType = mimeTypeForType(type);
                 NSString *location = postData[@"location"];
+                NSString *url = postData[@"url"];
                 if ([@"packaged" isEqualToString:location]) {
+                    // This is used for content which is packaged with the app, and which is unpacked to a
+                    // filesystem location when the app is installed.
                     NSString *filepath = [_container.packagedContentPath stringByAppendingPathComponent:filename];
                     if ([_fileManager fileExistsAtPath:filepath]) {
-                        // TODO Write file to response
+                        [response respondWithFileData:filepath mimeType:mimeType cachePolicy:NSURLCacheStorageNotAllowed];
                     }
                     else {
                         [response respondWithError:makePathNotFoundResponseError([path fullPath])];
                     }
                 }
                 else if ([@"downloaded" isEqualToString:location]) {
+                    // This is used for attachment data which may be downloaded from the server and cached
+                    // locally. Check if a cached copy of the file exists locally, otherwise download from
+                    // the server and add to cache.
                     NSString *filepath = [_container.contentPath stringByAppendingPathComponent:filename];
                     if ([_fileManager fileExistsAtPath:filepath]) {
-                        // TODO Write file to response
+                        [response respondWithFileData:filepath mimeType:mimeType cachePolicy:NSURLCacheStorageNotAllowed];
                     }
                     else {
-                        // TODO download file, write to filepath, write to response.
+                        [_container.httpClient getFile:url]
+                        .then((id)^(IFHTTPClientResponse *httpResponse) {
+                            NSError *error = nil;
+                            [_fileManager moveItemAtPath:httpResponse.downloadLocation.path
+                                                  toPath:filepath
+                                                   error:&error];
+                            if (!error) {
+                                [response respondWithFileData:filepath mimeType:mimeType cachePolicy:NSURLCacheStorageNotAllowed];
+                            }
+                            else {
+                                [response respondWithError:error];
+                            }
+                            return nil;
+                        })
+                        .fail(^(id responseError) {
+                            NSError *error = errorFromResponseError(responseError);
+                            [response respondWithError:error];
+                        });
                     }
                 }
                 else if ([@"server" isEqualToString:location]) {
-                    // TODO download file, write to response.
+                    // This is used for attachment data which must be kept on the server.
+                    [_container.httpClient getFile:url]
+                    .then((id)^(IFHTTPClientResponse *httpResponse) {
+                        [response respondWithFileData:httpResponse.downloadLocation.path
+                                             mimeType:mimeType
+                                          cachePolicy:NSURLCacheStorageNotAllowed];
+                        return nil;
+                    })
+                    .fail(^(id responseError) {
+                        NSError *error = errorFromResponseError(responseError);
+                        [response respondWithError:error];
+                    });
                 }
                 else {
                     // TODO log invalid location
                     [response respondWithError:makePathNotFoundResponseError([path fullPath])];
                 }
-                // Check if attachment file is downloaded:
-                //  => copy file content to response
-                // Else:
-                //  => download file; file local copy if cacheable; write to response;
-                // NOTE location = downloaded means attachment should be cached locally
-                //      location = server means attachment is always loaded from server
-                //      (but in this case, allow the NSURL protocol to cache locally)
             }
             else {
                 [response respondWithError:makePathNotFoundResponseError([path fullPath])];
@@ -206,12 +193,12 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
             if ([@"children" isEqualToString:filter]) {
                 // e.g. content://{authority}/posts/{id}/children
                 id content = [_postDBAdapter getPostChildren:postID withParams:params];
-                writeJSONResponse(response, content);
+                [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
             }
             else if ([@"descendants" isEqualToString:filter]) {
                 // e.g. content://{authority}/posts/{id}/descendants
                 id content = [_postDBAdapter getPostDescendants:postID withParams:params];
-                writeJSONResponse(response, content);
+                [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
             }
             else {
                 [response respondWithError:makeInvalidPathResponseError([path fullPath])];
@@ -223,20 +210,33 @@ void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData);
     }
 }
 
-void writeStringResponse(id<IFContentContainerResponse> response, NSString *strData, NSString *mimeType) {
-    NSData *data = [strData dataUsingEncoding:NSUTF8StringEncoding];
-    [response respondWithMimeType:mimeType
-               cacheStoragePolicy:NSURLCacheStorageNotAllowed
-                             data:data];
+NSString *mimeTypeForType(NSString *type) {
+    if ([@"html" isEqualToString:type]) {
+        return @"text/html";
+    }
+    if ([@"json" isEqualToString:type]) {
+        return @"application/json";
+    }
+    if ([@"png" isEqualToString:type]) {
+        return @"image/png";
+    }
+    if ([@"jpg" isEqualToString:type] || [@"jpeg" isEqualToString:type]) {
+        return @"image/jpeg";
+    }
+    if ([@"gif" isEqualToString:type]) {
+        return @"image/gif";
+    }
+    return @"application/octet-stream";
 }
 
-void writeJSONResponse(id<IFContentContainerResponse> response, id jsonData) {
-    NSData *data = [NSJSONSerialization dataWithJSONObject:jsonData
-                                                   options:0
-                                                     error:nil];
-    [response respondWithMimeType:@"application/json"
-               cacheStoragePolicy:NSURLCacheStorageNotAllowed
-                             data:data];
+NSError *errorFromResponseError(id responseError) {
+    if ([responseError isKindOfClass:[NSError class]]) {
+        return (NSError *)responseError;
+    }
+    NSString *description = [responseError description];
+    return [NSError errorWithDomain:NSURLErrorDomain
+                               code:NSURLErrorUnknown
+                           userInfo:@{ NSLocalizedDescriptionKey: description }];
 }
 
 @end

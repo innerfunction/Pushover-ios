@@ -29,7 +29,7 @@
  * Respond with content data.
  * Writes the response data in full and then ends the response.
  */
-- (void)respondWithMimeType:(NSString *)mimeType cacheStoragePolicy:(NSURLCacheStoragePolicy)policy data:(NSData *)data;
+- (void)respondWithData:(NSData *)data mimeType:(NSString *)mimeType cachePolicy:(NSURLCacheStoragePolicy)policy;
 /// Start a content response. Note that the [done] method must be called on completion.
 - (void)respondWithMimeType:(NSString *)mimeType cacheStoragePolicy:(NSURLCacheStoragePolicy)policy;
 /**
@@ -41,6 +41,12 @@
 - (void)sendData:(NSData *)data;
 /// End a content response.
 - (void)done;
+/// Respond with string data of the specified MIME type.
+- (void)respondWithStringData:(NSString *)data mimeType:(NSString *)mimeType cachePolicy:(NSURLCacheStoragePolicy)cachePolicy;
+/// Respond with JSON data.
+- (void)respondWithJSONData:(id)data cachePolicy:(NSURLCacheStoragePolicy)cachePolicy;
+/// Respond with file data of the specified MIME type.
+- (void)respondWithFileData:(NSString *)filepath mimeType:(NSString *)mimeType cachePolicy:(NSURLCacheStoragePolicy)cachePolicy;
 /**
  * Respond with an error indicating why the request couldn't be resolved.
  * This method should be called instead of one of the respondWithMimeType* methods defined on this protocol, whenever
