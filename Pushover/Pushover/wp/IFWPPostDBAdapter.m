@@ -21,9 +21,12 @@
 #import "IFWPClientTemplateContext.h"
 #import "IFDataFormatter.h"
 #import "IFRegExp.h"
+#import "IFLogger.h"
 #import "NSDictionary+IFValues.h"
 #import "NSDictionary+IF.h"
 #import "GRMustache.h"
+
+static IFLogger *Logger;
 
 @interface IFWPPostDBAdapter()
 

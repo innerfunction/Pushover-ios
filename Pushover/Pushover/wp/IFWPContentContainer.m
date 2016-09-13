@@ -23,9 +23,13 @@
 #import "IFDataWebviewFormatter.h"
 #import "IFGetURLCommand.h"
 #import "IFDownloadZipCommand.h"
+#import "IFWPPostsPathRoot.h"
+#import "IFWPSearchPathRoot.h"
 #import "IFStringTemplate.h"
 #import "IFLogger.h"
 #import "NSDictionary+IF.h"
+
+#define MainBundlePath  ([[NSBundle mainBundle] resourcePath])
 
 static IFLogger *Logger;
 
@@ -104,26 +108,13 @@ static IFLogger *Logger;
             @"clientTemplateContext": @{
                 @"*ios-class":              @"IFWPClientTemplateContext",
             },
+            @"commandScheduler": @{
+                @"*ios-class":              @"IFCommandScheduler"
+            },
             @"packagedContentPath":         @"$packagedContentPath",
             @"contentPath":                 @"$contentPath"
         };
         _configTemplate = [[IFConfiguration alloc] initWithData:template];
-
-        // TODO: Is there a way for the command scheduler to use the same DB as the post DB? This would
-        //       require the ability for the scheduler to merge its table schema over the schema above;
-        //       May also complicate schema versioning.
-        //       Note that currently there is a potential problem if more than one content container is
-        //       used (or if more than one command scheduler is used) as every command scheduler instance
-        //       currently uses the same named database. (Perhaps this isn't a problem? just needs proper
-        //       management).
-        _commandScheduler = [[IFCommandScheduler alloc] init];
-        //_commandScheduler.deleteExecutedQueueRecords = NO; // DEBUG setting.
-        // Command scheduler is manually instantiated, so has to be manually added to the services list.
-        // TODO: This is another aspect that needs to be considered when formalizing the configuration
-        //       template pattern used by this container.
-        //       (Could just add @"commandScheduler": @{ @"*ios-class": @"IFCommandScheduler" } to the
-        //       above).
-        [self->_services addObject:_commandScheduler];
         
         // NOTES on staging and content paths:
         // * Freshly downloaded content is stored under the staging path until the download is complete, after which
@@ -155,6 +146,7 @@ static IFLogger *Logger;
         _httpClient.authenticationDelegate = _authManager;
         
         _searchResultLimit = 100;
+        
     }
     return self;
 }
@@ -250,6 +242,9 @@ static IFLogger *Logger;
         @"dlzip": dlzipCmd
     };
 
+    // Configure path roots
+    self.pathRoots[@"posts"] = [[IFWPPostsPathRoot alloc] initWithContainer:self];
+    self.pathRoots[@"search"] = [[IFWPSearchPathRoot alloc] initWithContainer:self];
 }
 
 #pragma mark - IFMessageReceiver
@@ -298,6 +293,5 @@ static IFLogger *Logger;
 - (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
     return nil;
 }
-
 
 @end

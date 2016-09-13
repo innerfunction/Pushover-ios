@@ -23,6 +23,7 @@
 #import "IFRmFileCommand.h"
 #import "IFMvFileCommand.h"
 #import "IFUnzipCommand.h"
+#import "IFLogger.h"
 #import "NSDictionary+IF.h"
 #import "NSString+IF.h"
 

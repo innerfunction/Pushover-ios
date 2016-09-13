@@ -22,6 +22,7 @@
 #import "IFCommandScheduler.h"
 #import "IFIOCContainerAware.h"
 #import "IFIOCTypeInspectable.h"
+#import "IFAbstractContentContainer.h"
 #import "IFWPContentContainerFormFactory.h"
 #import "IFWPPostDBAdapter.h"
 #import "IFWPAuthManager.h"
@@ -30,7 +31,7 @@
 
 @class IFWPClientTemplateContext;
 
-@interface IFWPContentContainer : IFContainer <IFIOCContainerAware, IFMessageReceiver, IFIOCTypeInspectable> {
+@interface IFWPContentContainer : IFAbstractContentContainer <IFIOCContainerAware, IFMessageReceiver, IFIOCTypeInspectable> {
     // Container configuration template.
     IFConfiguration *_configTemplate;
     // Command scheduler for unpack and refresh operations.
