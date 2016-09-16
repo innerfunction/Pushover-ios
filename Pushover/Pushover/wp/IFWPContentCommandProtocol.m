@@ -124,7 +124,7 @@
         };
         // Construct process command to continue downloading the feed.
         id processCommand = @{
-            @"name": [self qualifiedCommandName:@"continue-download"],
+            @"name": [self qualifyName:@"continue-download"],
             @"args": @[ refreshURL, pageFile ]
         };
         commands = @[ getCommand, processCommand ];
@@ -189,7 +189,7 @@
             };
             // Construct process command to continue downloading the feed.
             id continueCommand = @{
-                @"name": [self qualifiedCommandName:@"continue-download"],
+                @"name": [self qualifyName:@"continue-download"],
                 @"args": @[ refreshURL, pageFile ]
             };
             commands = @[ rmPageFileCommand, getCommand, continueCommand ];
@@ -197,7 +197,7 @@
         else {
             // All pages download, process the feed items next.
             id deployCommand = @{
-                @"name": [self qualifiedCommandName:@"deploy-download"],
+                @"name": [self qualifyName:@"deploy-download"],
                 @"args": @[]
             };
             commands = @[ rmPageFileCommand, deployCommand ];

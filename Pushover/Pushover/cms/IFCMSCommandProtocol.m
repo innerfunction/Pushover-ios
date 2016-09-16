@@ -25,8 +25,8 @@
 
 /// Start a content refresh.
 - (QPromise *)refresh:(NSArray *)args;
-/// Update the file db schema.
-- (QPromise *)updateFileDBSchema:(NSArray *)args;
+/// Update the file db and fileset schema.
+- (QPromise *)updateSchema:(NSArray *)args;
 /// Download a fileset.
 - (QPromise *)downloadFileset:(NSArray *)args;
 /// Unpack content packaged with the app.
@@ -44,8 +44,8 @@
         [self addCommand:@"refresh" withBlock:^QPromise *(NSArray *args) {
             return [this refresh:args];
         }];
-        [self addCommand:@"update-file-db-schema" withBlock:^QPromise *(NSArray *args) {
-            return [this updateFileDBSchema:args];
+        [self addCommand:@"update-schema" withBlock:^QPromise *(NSArray *args) {
+            return [this updateSchema:args];
         }];
         [self addCommand:@"download-fileset" withBlock:^QPromise *(NSArray *args) {
             return [this downloadFileset:args];
@@ -53,16 +53,13 @@
         [self addCommand:@"unpack" withBlock:^QPromise *(NSArray *args) {
             return [this unpack:args];
         }];
-        // TODO Replace this with just a single, live promise instance - only one command will be executed at any time?
-        _promises = [NSMutableSet new];
     }
     return self;
 }
 
 - (QPromise *)refresh:(NSArray *)args {
     
-    QPromise *promise = [[QPromise alloc] init];
-    [_promises addObject:promise];
+    _promise = [[QPromise alloc] init];
     
     NSString *refreshURL = [_feedURL stringByAppendingString:@"/updates"];
     
@@ -90,11 +87,11 @@
         if (![version isEqualToString:_fileDBSchemaVersion]) {
             // Update the file DB schema and then schedule a new refresh.
             id updateSchema = @{
-                @"name": [self qualifiedCommandName:@"update-file-db-schema"],
+                @"name": [self qualifyName:@"update-schema"],
                 @"args": @[ version ]
             };
             id refresh = @{
-                @"name": [self qualifiedCommandName:@"refresh"],
+                @"name": [self qualifyName:@"refresh"],
                 @"args": @[]
             };
             [commands addObject:updateSchema];
@@ -113,10 +110,38 @@
                     [updatedCategories addObject:[values valueForKey:@"category"]];
                 }
             }
+            // Check for trashed files.
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            NSArray *trashed = [_fileDB performQuery:@"SELECT id, path FROM files WHERE status='trashed'" withParams:@[]];
+            NSMutableArray *trashedIDs = [NSMutableArray new];
+            for (NSDictionary *record in trashed) {
+                [trashedIDs addObject:record[@"id"]];
+                // Delete cached file, if exists.
+                NSString *path = [_contentPath stringByAppendingPathComponent:record[@"path"]];
+                if ([fileManager fileExistsAtPath:path]) {
+                    [fileManager removeItemAtPath:path error:nil];
+                }
+            }
+            // Delete trashed records.
+            if ([trashedIDs count]) {
+                [_fileDB deleteIDs:trashedIDs fromTable:@"files"];
+                // TODO Delete joined records
+            }
             [_fileDB commitTransaction];
+            
+            // QUESTIONS ABOUT THE CODE ABOVE
+            // 1. How does the code perform if the procedure above is interrupted before completion?
+            // 2. How is app performance affected if the procedure above is continually interrupted?
+            //    (e.g. due to repeated short-duration app starts).
+            // 3. How does the code perform if the procedure above completes, but the following code is interrupted?
+            // 4. Are there ways (on iOS and Android) to run tasks like this with completion guarantees?
+            //    e.g. the scheduler could register as a background task when app is put into the background;
+            //    the task compeletes when the currently executing command completes.
+            //    See https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/BackgroundExecution/BackgroundExecution.html
+            
             // Queue downloads of updated category filesets.
+            NSString *name = [self qualifyName:@"download-fileset"];
             for (id category in updatedCategories) {
-                NSString *name = [self qualifiedCommandName:@"download-fileset"];
                 NSMutableArray *args = [NSMutableArray new];
                 [args addObject:category];
                 if (commit) {
@@ -125,24 +150,21 @@
                 [commands addObject:@{ @"name": name, @"args": args }];
             }
         }
-        [promise resolve:commands];
-        [_promises removeObject:promise];
+        [_promise resolve:commands];
         return nil;
     })
     .fail(^(id error) {
-        NSString *msg = [NSString stringWithFormat:@"Download from %@ failed: %@", refreshURL, error];
-        [promise reject:msg];
-        [_promises removeObject:promise];
+        NSString *msg = [NSString stringWithFormat:@"Updates download from %@ failed: %@", refreshURL, error];
+        [_promise reject:msg];
     });
     
     // Return deferred promise.
-    return promise;
+    return _promise;
 }
 
-- (QPromise *)updateFileDBSchema:(NSArray *)args {
+- (QPromise *)updateSchema:(NSArray *)args {
     
-    QPromise *promise = [[QPromise alloc] init];
-    [_promises addObject:promise];
+    _promise = [[QPromise alloc] init];
     
     // Request the schema.
     id params = @{};
@@ -153,27 +175,27 @@
     [_httpClient get:schemaURL data:params]
     .then((id)^(IFHTTPClientResponse *response) {
         id schema = [response parseData];
+        
         // TODO Migrate database to new schema version.
+        // TODO Store new fileset schema
+        
         // Queue content refresh.
-        id name = [self qualifiedCommandName:@"refresh"];
-        [promise resolve:@[ @{ @"name": name, @"args": @[] }]];
-        [_promises removeObject:promise];
+        id name = [self qualifyName:@"refresh"];
+        [_promise resolve:@[ @{ @"name": name, @"args": @[] }]];
         return nil;
     })
     .fail(^(id error) {
-        NSString *msg = [NSString stringWithFormat:@"Download from %@ failed: %@", schemaURL, error];
-        [promise reject:msg];
-        [_promises removeObject:promise];
+        NSString *msg = [NSString stringWithFormat:@"Schema download from %@ failed: %@", schemaURL, error];
+        [_promise reject:msg];
     });
     
     // Return deferred promise.
-    return promise;
+    return _promise;
 }
 
 - (QPromise *)downloadFileset:(NSArray *)args {
     
-    QPromise *promise = [[QPromise alloc] init];
-    [_promises addObject:promise];
+    _promise = [[QPromise alloc] init];
     
     // Build the fileset URL.
     id category = args[0];
@@ -190,28 +212,28 @@
     // Download the fileset.
     [_httpClient getFile:filesetURL]
     .then((id)^(IFHTTPClientResponse *response) {
-        
         // Unzip downloaded file to content location.
         NSString *downloadPath = [response.downloadLocation path];
         [IFFileIO unzipFileAtPath:downloadPath toPath:_contentPath overwrite:YES];
         // Resolve empty list - no follow-on commands.
-        [promise resolve:@[]];
-        [_promises removeObject:promise];
+        [_promise resolve:@[]];
         return nil;
     })
     .fail(^(id error) {
-        NSString *msg = [NSString stringWithFormat:@"Download from %@ failed: %@", filesetURL, error];
-        [promise reject:msg];
-        [_promises removeObject:promise];
+        NSString *msg = [NSString stringWithFormat:@"Fileset download from %@ failed: %@", filesetURL, error];
+        [_promise reject:msg];
     });
 
     // Return deferred promise.
-    return promise;
+    return _promise;
 }
 
 - (QPromise *)unpack:(NSArray *)args {
     // TODO Copy packaged file db from app to installed location.
-    return nil;
+    // Should content unpacking be something that happens when the container starts? i.e. to ensure content
+    // is available before app fully starts, and to avoid contention problems with the file db when executed
+    // as a scheduled task.
+    return _promise;
 }
 
 @end

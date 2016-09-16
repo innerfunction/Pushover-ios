@@ -419,6 +419,19 @@ static IFLogger *Logger;
     return result;
 }
 
+- (BOOL)deleteID:(NSString *)recordID fromTable:(NSString *)table {
+    BOOL result = NO;
+    NSString *idColumn = [self getColumnWithTag:@"id" fromTable:table];
+    if (idColumn) {
+        id<PLDatabase> db = [_dbHelper getDatabase];
+        NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@=?", table, idColumn];
+        id<PLPreparedStatement> statement = [db prepareStatement:sql];
+        [statement bindParameters:@[ recordID ]];
+        result = [statement executeUpdate];
+    }
+    return result;
+}
+
 - (BOOL)deleteFromTable:(NSString *)table where:(NSString *)where {
     id<PLDatabase> db = [_dbHelper getDatabase];
     NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", table, where];

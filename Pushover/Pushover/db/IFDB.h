@@ -76,6 +76,8 @@
 - (BOOL)mergeValueList:(NSArray *)valueList intoTable:(NSString *)table;
 /** Delete the identified records from the named table. */
 - (BOOL)deleteIDs:(NSArray *)identifiers fromTable:(NSString *)table;
+/** Delete the record with the specified ID from the named table. */
+- (BOOL)deleteID:(NSString *)recordID fromTable:(NSString *)table;
 /**
  * Delete all records matching the specified where clause from the specified table.
  * Note: This is intended for use by the DB manifest processor as part of its garbage collection functionality,

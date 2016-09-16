@@ -20,9 +20,10 @@
 #import "IFCommandProtocol.h"
 #import "IFDB.h"
 #import "IFHTTPClient.h"
+#import "Q.h"
 
 @interface IFCMSCommandProtocol : IFCommandProtocol {
-    NSMutableSet *_promises;
+    QPromise *_promise;
 }
 
 /** The CMS feed URL. Note that query parameters will be appened to the URL. */
