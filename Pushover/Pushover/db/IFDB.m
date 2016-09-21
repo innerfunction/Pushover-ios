@@ -152,8 +152,8 @@ static IFLogger *Logger;
 }
 
 - (NSString *)getColumnWithTag:(NSString *)tag fromTable:(NSString *)table {
-    NSDictionary *columns = [_taggedTableColumns valueForKey:table];
-    return [columns valueForKey:tag];
+    NSDictionary *columns = _taggedTableColumns[table];
+    return columns[tag];
 }
 
 - (NSDictionary *)readRecordWithID:(NSString *)identifier fromTable:(NSString *)table {

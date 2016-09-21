@@ -18,6 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import "IFDBHelper.h"
+#import "IFDBORM.h"
 #import "IFService.h"
 
 /**
@@ -39,6 +40,8 @@
 @property (nonatomic, assign) BOOL resetDatabase;
 /** Database table schemas + initial data. */
 @property (nonatomic, strong) NSDictionary *tables;
+/** Object/relational mappings defined for the database. */
+@property (nonatomic, strong) IFDBORM *orm;
 
 /** Begin a DB transaction. */
 - (BOOL)beginTransaction;

@@ -17,65 +17,95 @@
 //
 
 #import "IFDBORM.h"
+#import "IFDB.h"
 
 @interface IFDBORM()
 
 - (NSString *)columnNamesForTable:(NSString *)table withPrefix:(NSString *)prefix;
+- (NSString *)idColumnForTable:(NSString *)table;
+- (NSString *)columnWithName:(NSString *)name orWithTag:(NSString *)tag onTable:(NSString *)table;
 
 @end
 
 @implementation IFDBORM
 
 - (NSDictionary *)selectKey:(NSString *)key {
-    NSString *where = [NSString stringWithFormat:@"%@.%@=?", _source.name, _source.key];
+    NSString *idColumn = [self idColumnForTable:_source];
+    NSString *where = [NSString stringWithFormat:@"%@.%@=?", _source, idColumn];
     NSArray *result = [self selectWhere:where values:@[ key ]];
     return [result count] ? result[0] : nil;
 }
 
 - (NSArray *)selectWhere:(NSString *)where values:(NSArray *)values {
+    // The name of the ID column on the source table.
+    NSString *sidColumn = [self idColumnForTable:_source];
     // Generate SQL to describe each join for each relation.
     NSMutableArray *columns = [NSMutableArray new];     // Array of column name lists for source table and all joins.
     NSMutableArray *joins = [NSMutableArray new];       // Array of join SQL.
-    NSMutableArray *outerJoins = [NSMutableArray new];  // Array of outer join relation names.
-    [columns addObject:[self columnNamesForTable:_source.name withPrefix:_source.name]];
-    for (NSString *rname in [_relations keyEnumerator]) {
-        IFDBORMRelation *relation = _relations[rname];
-        if ([@"one-one" isEqualToString:relation.relation] || [@"many-one" isEqualToString:relation.relation]) {
-            [columns addObject:[self columnNamesForTable:relation.table withPrefix:rname]];
-            NSString *join = [NSString stringWithFormat:@"LEFT JOIN %@ %@ ON %@.%@=%@.%@",
-                              relation.table,
-                              rname,
-                              _source.name,
-                              rname,
-                              rname,
-                              relation.foreignKey];
+    NSMutableArray *orderBys = [NSMutableArray new];    // Array of order by column names.
+    NSMutableArray *collectionJoins = [NSMutableArray new];  // Array of collection relation names.
+    [columns addObject:[self columnNamesForTable:_source withPrefix:_source]];
+    for (NSString *mname in [_mappings keyEnumerator]) {
+        
+        IFDBORMMapping *mapping = _mappings[mname];
+        NSString *mtable = mapping.table;
+
+        if ([@"object" isEqualToString:mapping.relation] ||
+            [@"property" isEqualToString:mapping.relation] ||
+            [@"shared-object" isEqualToString:mapping.relation] ||
+            [@"shared-property" isEqualToString:mapping.relation]) {
+
+            [columns addObject:[self columnNamesForTable:mapping.table withPrefix:mname]];
+            NSString *midColumn = [self columnWithName:mapping.idColumn orWithTag:@"id" onTable:mtable];
+            NSString *join = [NSString stringWithFormat:@"LEFT OUTER JOIN %@ %@ ON %@.%@=%@.%@",
+                              mtable,
+                              mname,
+                              _source,
+                              mname,
+                              mname,
+                              midColumn];
             [joins addObject:join];
         }
-        else if ([@"one-many" isEqualToString:relation.relation]) {
-            [columns addObject:[self columnNamesForTable:relation.table withPrefix:rname]];
+        else if ([@"map" isEqualToString:mapping.relation] ||
+                 [@"dictionary" isEqualToString:mapping.relation] ||
+                 [@"array" isEqualToString:mapping.relation] ||
+                 [@"list" isEqualToString:mapping.relation]) {
+
+            [columns addObject:[self columnNamesForTable:mapping.table withPrefix:mname]];
+            NSString *oidColumn = [self columnWithName:mapping.owneridColumn orWithTag:@"ownerid" onTable:mtable];
             NSString *join = [NSString stringWithFormat:@"LEFT OUTER JOIN %@ %@ ON %@.%@=%@.%@",
-                              relation.table,
-                              rname,
-                              _source.name,
-                              _source.key,
-                              rname,
-                              relation.key];
+                              mtable,
+                              mname,
+                              _source,
+                              sidColumn,
+                              mname,
+                              oidColumn];
             [joins addObject:join];
-            [outerJoins addObject:rname];
+            [collectionJoins addObject:mname];
+            // Order the result by the index column; note that this will be empty for map/dictionary sets (i.e.
+            // unordered collections), but will have values for array/list items.
+            NSString *idxColumn = [self columnWithName:mapping.indexColumn orWithTag:@"index" onTable:mtable];
+            [orderBys addObject:[NSString stringWithFormat:@"%@.%@", mname, idxColumn]];
         }
     }
     // Generate select SQL.
     NSString *sql = [NSString stringWithFormat:@"SELECT %@ FROM %@ %@ %@ WHERE %@",
                      [columns componentsJoinedByString:@","],
-                     _source.name,
-                     _source.name,
+                     _source,
+                     _source,
                      [joins componentsJoinedByString:@""],
                      where];
+    
+    if ([orderBys count]) {
+        sql = [sql stringByAppendingString:@"ORDER BY "];
+        sql = [sql stringByAppendingString:[orderBys componentsJoinedByString:@","]];
+    }
+    
     // Execute the query and generate the result.
     NSArray *rs = [_db performQuery:sql withParams:values];
     NSMutableArray *result = [NSMutableArray new];
     // The fully qualified name of the source object key column in the result set.
-    NSString *keyColumn = [NSString stringWithFormat:@"%@.%@", _source.name, _source.key];
+    NSString *keyColumn = [NSString stringWithFormat:@"%@.%@", _source, sidColumn];
     // The object currently being processed.
     NSMutableDictionary *obj = nil;
     for (NSDictionary *row in rs) {
@@ -101,15 +131,15 @@
             }
         }
         // Check if dealing with a new object.
-        if (obj == nil || ![obj[_source.key] isEqualToString:key]) {
+        if (obj == nil || ![obj[sidColumn] isEqualToString:key]) {
             // Convert groups into object + properties.
-            obj = groups[_source.name];
+            obj = groups[_source];
             for (NSString *rname in [groups keyEnumerator]) {
                 id value = groups[rname];
-                if (![rname isEqualToString:_source.name]) {
+                if (![rname isEqualToString:_source]) {
                     // If relation name is for an outer join - i.e. a one to many - then init
                     // the object property as an array of values.
-                    if ([outerJoins containsObject:rname]) {
+                    if ([collectionJoins containsObject:rname]) {
                         obj[rname] = [[NSMutableArray alloc] initWithObjects:value, nil];
                     }
                     else {
@@ -120,7 +150,7 @@
             }
             [result addObject:obj];
         }
-        else for (NSString *rname in outerJoins) {
+        else for (NSString *rname in collectionJoins) {
             // Processing subsequent rows for the same object - indicates outer join results.
             NSMutableArray *values = obj[rname];
             if (!values) {
@@ -142,15 +172,22 @@
     BOOL ok = YES;
     [_db beginTransaction];
     NSString *sql;
-    for (NSString *rname in [_relations keyEnumerator]) {
-        IFDBORMRelation *relation = _relations[rname];
-        if ([@"one-one" isEqualToString:relation.relation] || [@"one-many" isEqualToString:relation.relation]) {
-            sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@=?", relation.table, relation.foreignKey];
+    for (NSString *mname in [_mappings keyEnumerator]) {
+        IFDBORMMapping *mapping = _mappings[mname];
+        if ([@"map" isEqualToString:mapping.relation] ||
+            [@"dictionary" isEqualToString:mapping.relation] ||
+            [@"array" isEqualToString:mapping.relation] ||
+            [@"list" isEqualToString:mapping.relation]) {
+            
+            NSString *oidColumn = [self columnWithName:mapping.owneridColumn orWithTag:@"ownerid" onTable:mapping.table];
+            sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@=?", mapping.table, oidColumn];
             ok &= [_db performUpdate:sql withParams:@[ key ]];
         }
     }
+    // The name of the ID column on the source table.
+    NSString *sidColumn = [self idColumnForTable:_source];
     // TODO Support deletion of many-one relations by deleting records from relation table where no foreign key value in source table.
-    sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@=?", _source.name, _source.key];
+    sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@=?", _source, sidColumn];
     ok &= [_db performUpdate:sql withParams:@[ key ]];
     if (ok) {
         [_db commitTransaction];
@@ -177,13 +214,42 @@
     return columnNames;
 }
 
+- (NSString *)idColumnForTable:(NSString *)table {
+    return [_db getColumnWithTag:@"id" fromTable:table];
+}
+
+- (NSString *)columnWithName:(NSString *)name orWithTag:(NSString *)tag onTable:(NSString *)table {
+    if (!name) {
+        name = [_db getColumnWithTag:tag fromTable:table];
+        if (!name) {
+            name = tag;
+        }
+    }
+    return name;
+}
+
 #pragma mark - IFIOCTypeInspectable
 
 - (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
-    if ([@"relations" isEqualToString:propertyName]) {
-        return [IFDBORMRelation class];
+    if ([@"mappings" isEqualToString:propertyName]) {
+        return [IFDBORMMapping class];
     }
     return nil;
+}
+
+#pragma mark - IFIOCObjectAware
+
+
+/**
+ * Notify a value that it is about to be injected into an object using the specified property.
+ * @param object        The object which the current object is about to be attached to.
+ * @param propertyName  The name of the property on _object_ that the current object is being
+ * attached to.
+ */
+- (void)notifyIOCObject:(id)object propertyName:(NSString *)propertyName {
+    if ([object isKindOfClass:[IFDB class]]) {
+        self.db = object;
+    }
 }
 
 @end

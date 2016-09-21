@@ -17,22 +17,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFDB.h"
 #import "IFIOCTypeInspectable.h"
+#import "IFIOCObjectAware.h"
 
-@class IFDBORMSource;
-
-/// A class describing multiple relations between DB tables.
-@interface IFDBORM : NSObject <IFIOCTypeInspectable>
-
-/// The relation source table.
-@property (nonatomic, strong) IFDBORMSource *source;
-/// A dictionary of relations from the source table, keyed by name.
-@property (nonatomic, strong) NSDictionary *relations;
-/// The database.
-@property (nonatomic, strong) IFDB *db;
-
-@end
+@class IFDB;
 
 /**
  * A class providing simple object-relational mapping capability.
@@ -40,13 +28,17 @@
  * a local SQLite database. Compound properties of each object can be defined as joins
  * between the source table and other related tables, with 1:1, 1:Many and Many:1 relations
  * supported.
+ *
+ * TODO Options to control which relations are included, according to fileset category.
  */
-@interface IFDBORMSource : NSObject
+@interface IFDBORM : NSObject <IFIOCTypeInspectable, IFIOCObjectAware>
 
-/// The name of the source table.
-@property (nonatomic, strong) NSString *name;
-/// The name of the key column.
-@property (nonatomic, strong) NSString *key;
+/// The name of the relation source table.
+@property (nonatomic, strong) NSString *source;
+/// A dictionary of relation mappings from the source table, keyed by name.
+@property (nonatomic, strong) NSDictionary *mappings;
+/// The database.
+@property (nonatomic, weak) IFDB *db;
 
 /**
  * Select the object with the specified key value.
@@ -68,18 +60,23 @@
 
 @end
 
-/// A class describing a relation between a source and join table.
-@interface IFDBORMRelation : NSObject
+/// A class describing a relation mapping between a source and property value table.
+@interface IFDBORMMapping : NSObject
 
-/// The relation type; values are 'one-one', 'one-many', 'many-one'.
+/**
+ * The relation type; values are 'object'/'property', 'shared-object'/'shared-property',
+ * 'map'/'dictionary', 'array'/'list'.
+ */
 @property (nonatomic, strong) NSString *relation;
-/// The name of the table being joined to.
+/// The name of the table holding the related values.
 @property (nonatomic, strong) NSString *table;
-/// The name of the key column on the joined table.
-@property (nonatomic, strong) NSString *key;
-/// The value to use for the key column, expressed as a value template.
-@property (nonatomic, strong) NSString *keyValue;
-/// The name of the foreign key on the source table.
-@property (nonatomic, strong) NSString *foreignKey;
+/// The name of the ID column on the joined table.
+@property (nonatomic, strong) NSString *idColumn;
+/// The name of the key column for map/dictionary items.
+@property (nonatomic, strong) NSString *keyColumn;
+/// The name of the index column for list/array items.
+@property (nonatomic, strong) NSString *indexColumn;
+/// The name of the owner ID column for map/dictionary/array/list items.
+@property (nonatomic, strong) NSString *owneridColumn;
 
 @end
