@@ -18,7 +18,10 @@
 
 #import <Foundation/Foundation.h>
 #import "IFAbstractContentContainer.h"
+#import "IFCMSFilesetPathRoot.h"
 
 @interface IFCMSContentContainer : IFAbstractContentContainer
+
+@property (nonatomic, strong) IFCMSFilesetPathRoot *filesetPathRoot;
 
 @end
