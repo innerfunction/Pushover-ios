@@ -18,14 +18,16 @@
 
 #import <Foundation/Foundation.h>
 #import "IFContentContainer.h"
-#import "IFWPContentContainer.h"
+#import "IFWPPostDBAdapter.h"
+#import "IFHTTPClient.h"
 
 @interface IFWPPostsPathRoot : NSObject <IFContentContainerPathRoot> {
-    __weak IFWPContentContainer *_container;
-    __weak IFWPPostDBAdapter *_postDBAdapter;
     NSFileManager *_fileManager;
 }
 
-- (id)initWithContainer:(IFWPContentContainer *)container;
+@property (nonatomic, weak) IFWPPostDBAdapter *postDBAdapter;
+@property (nonatomic, weak) NSString *packagedContentPath;
+@property (nonatomic, weak) NSString *contentPath;
+@property (nonatomic, weak) IFHTTPClient *httpClient;
 
 @end

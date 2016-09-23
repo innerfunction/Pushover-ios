@@ -84,6 +84,7 @@ static IFLogger *Logger;
 - (void)startService {
     _dbHelper = [[IFDBHelper alloc] initWithName:_name version:[_version intValue]];
     _dbHelper.delegate = self;
+    _dbHelper.initialCopyPath = _initialCopyPath;
     if (_resetDatabase) {
         [Logger warn:@"Resetting database %@", _name];
         [_dbHelper deleteDatabase];

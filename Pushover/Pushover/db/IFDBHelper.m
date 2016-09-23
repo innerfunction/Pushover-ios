@@ -22,14 +22,6 @@
 
 static IFLogger *Logger;
 
-NSString *getDatabasePath(NSString *databaseName) {
-    // See http://stackoverflow.com/questions/11252173/ios-open-sqlite-database
-    // Need to review whether this is the best/correct location for the db.
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite", databaseName]];
-}
-
 @implementation IFDBHelper
 
 + (void)initialize {
@@ -39,45 +31,65 @@ NSString *getDatabasePath(NSString *databaseName) {
 - (id)initWithName:(NSString *)name version:(int)version {
     self = [super init];
     if (self) {
-        databaseName = name;
-        databaseVersion = version;
-        NSString *path = getDatabasePath( databaseName );
-        [Logger debug:@"Connection to database %@...", path];
-        connectionProvider = [[PLSqliteConnectionProvider alloc] initWithPath:path];
+        _databaseName = name;
+        _databaseVersion = version;
+        // See http://stackoverflow.com/questions/11252173/ios-open-sqlite-database
+        // Need to review whether this is the best/correct location for the db.
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        _databasePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite", _databaseName]];
     }
     return self;
 }
 
 - (BOOL)deleteDatabase {
     BOOL ok = YES;
-    NSString *path = getDatabasePath( databaseName );
     NSError *error = nil;
-    [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
-    if (error) {
-        [Logger warn:@"Error deleting database at %@: %@", path, error];
-        ok = NO;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:_databasePath]) {
+        [fileManager removeItemAtPath:_databasePath error:&error];
+        if (error) {
+            [Logger warn:@"Error deleting database at %@: %@", _databasePath, error];
+            ok = NO;
+        }
     }
     return ok;
 }
 
 - (id<PLDatabase>)getDatabase {
+    // First check whether to deploy the initial database copy.
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:_databasePath] && _initialCopyPath) {
+        [Logger debug:@"Copying initial database from %@", _initialCopyPath];
+        NSError *error = nil;
+        [fileManager copyItemAtPath:_initialCopyPath toPath:_databasePath error:&error];
+        if (error) {
+            [Logger warn:@"Error copying initial database: %@", error];
+        }
+    }
+    // Check that a connection provider is initialized.
+    if (!_connectionProvider) {
+        [Logger debug:@"Connecting to database %@...", _databasePath];
+        _connectionProvider = [[PLSqliteConnectionProvider alloc] initWithPath:_databasePath];
+    }
+    // Connect to database.
     id<PLDatabase> result;
-    if (database && [database goodConnection]) {
-        result = database;
+    if (_database && [_database goodConnection]) {
+        result = _database;
     }
     else {
         // TODO: Is this the correct way to instantiate this class?
         PLSqliteMigrationVersionManager *migrationVersionManager = [[PLSqliteMigrationVersionManager alloc] init];
         // TODO: Is this the correct way to instantiate & invoke this class? Will it work correctly if no migration is necessary?
         PLDatabaseMigrationManager *migrationManager
-        = [[PLDatabaseMigrationManager alloc] initWithConnectionProvider:connectionProvider
+        = [[PLDatabaseMigrationManager alloc] initWithConnectionProvider:_connectionProvider
                                                       transactionManager:migrationVersionManager
                                                           versionManager:migrationVersionManager
                                                                 delegate:self];
         NSError *error = nil;
         if ([migrationManager migrateAndReturnError:&error]) {
             // TODO: Will previous method close its db connection on exit?
-            result = [connectionProvider getConnectionAndReturnError:&error];
+            result = [_connectionProvider getConnectionAndReturnError:&error];
             if (error) {
                 [Logger error:@"getDatabase failed to open connection %@", [error localizedDescription]];
             }
@@ -89,23 +101,23 @@ NSString *getDatabasePath(NSString *databaseName) {
             }
         }
     }
-    database = result;
+    _database = result;
     return result;
 }
 
 - (void)close {
-    [database close];
-    database = nil;
+    [_database close];
+    _database = nil;
 }
 
 - (BOOL)migrateDatabase:(id<PLDatabase>)db currentVersion:(int)currentVersion newVersion:(int *)newVersion error:(NSError *__autoreleasing *)outError {
     if (currentVersion == 0) {
         [self.delegate onCreate:db];
     }
-    else if (currentVersion < databaseVersion) {
-        [self.delegate onUpgrade:db from:currentVersion to:databaseVersion];
+    else if (currentVersion < _databaseVersion) {
+        [self.delegate onUpgrade:db from:currentVersion to:_databaseVersion];
     }
-    *newVersion = databaseVersion;
+    *newVersion = _databaseVersion;
     return YES;
 }
 

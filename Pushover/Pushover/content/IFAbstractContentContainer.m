@@ -19,6 +19,7 @@
 #import "IFAbstractContentContainer.h"
 #import "IFResource.h"
 #import "NSArray+IF.h"
+#import "IFCompoundURI.h"
 
 @interface IFNSURLProtocolResponse : NSObject <IFContentContainerResponse> {
     __weak NSMutableSet *_liveResponses;
@@ -41,7 +42,6 @@
     self = [super init];
     if (self) {
         _liveResponses = [NSMutableSet new];
-        _pathRoots = [NSMutableDictionary new];
     }
     return self;
 }
@@ -53,11 +53,18 @@
     IFNSURLProtocolResponse *response = [[IFNSURLProtocolResponse alloc] initWithNSURLProtocol:protocol
                                                                                  liveResponses:_liveResponses];
     NSURL *url = protocol.request.URL;
+    NSString *authority = url.host;
     IFContentPath *contentPath = [[IFContentPath alloc] initWithURL:url];
+    
+    // Parse the URL's scheme and path parts as a compound URI; this is to allow encoding of
+    // request parameters in the compound URI format - i.e. +p1@v1+p2@v2 etc.
+    IFCompoundURI *uri = [[IFCompoundURI alloc] initWithScheme:url.scheme name:url.path];
+    NSDictionary *parameters = [self.uriHandler dereferenceParameters:uri];
+    
     [self writeResponse:response
-           forAuthority:url.host
+           forAuthority:authority
                    path:contentPath
-             parameters:nil];
+             parameters:parameters];
 }
 
 - (void)cancelURLProtocolRequest:(NSURLProtocol *)protocol {
@@ -78,23 +85,12 @@
          forAuthority:(NSString *)authority
                  path:(IFContentPath *)path
            parameters:(NSDictionary *)parameters {
-    // Look-up a path root for the first path component, and if one is found then delegate the request to it.
-    NSString *root = [path root];
-    id<IFContentContainerPathRoot> pathRoot = _pathRoots[root];
-    if (pathRoot) {
-        // The path root only sees the rest of the path.
-        path = [path rest];
-        // Delegate the request.
-        [pathRoot writeResponse:response
-                   forAuthority:authority
-                           path:path
-                     parameters:parameters];
-    }
-    else {
-        // Path not found, respond with error.
-        NSError *error = makePathNotFoundResponseError([path fullPath]);
-        [response respondWithError:error];
-    }
+    
+    // Subclasses should provide an implementation of this method.
+    
+    // Path not found, respond with error.
+    NSError *error = makePathNotFoundResponseError([path fullPath]);
+    [response respondWithError:error];
 }
 
 @end

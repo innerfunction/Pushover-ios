@@ -42,6 +42,11 @@
 @property (nonatomic, strong) NSDictionary *tables;
 /** Object/relational mappings defined for the database. */
 @property (nonatomic, strong) IFDBORM *orm;
+/**
+ * The path to an initial copy of the database. If specified, then this will be copied before the
+ * database is first used.
+ */
+@property (nonatomic, strong) NSString *initialCopyPath;
 
 /** Begin a DB transaction. */
 - (BOOL)beginTransaction;

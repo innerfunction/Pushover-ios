@@ -23,6 +23,7 @@
 #import "IFDataWebviewFormatter.h"
 #import "IFGetURLCommand.h"
 #import "IFDownloadZipCommand.h"
+#import "IFWPPostDBAdapter.h"
 #import "IFWPPostsPathRoot.h"
 #import "IFWPSearchPathRoot.h"
 #import "IFStringTemplate.h"
@@ -111,6 +112,24 @@ static IFLogger *Logger;
             @"commandScheduler": @{
                 @"*ios-class":              @"IFCommandScheduler"
             },
+            @"httpClient": @{
+                @"authenticationDelegate": @{
+                    @"*ios-class":          @"IFWPAuthManager",
+                    @"container":           @"@named:*container"
+                }
+            },
+            @"formFactory": @{
+                @"container":               @"@named:*container"
+            },
+            @"postsPathRoot": @{
+                @"postDBAdapter":           @"@named:postDBAdapter",
+                @"httpClient":              @"@named:httpClient",
+                @"packagedContentPath":     @"$packagedContentPath",
+                @"contentPath":             @"$contentPath"
+            },
+            @"searchPathRoot": @{
+                @"postDBAdapter":           @"@named:postDBAdapter",
+            },
             @"packagedContentPath":         @"$packagedContentPath",
             @"contentPath":                 @"$contentPath"
         };
@@ -136,15 +155,7 @@ static IFLogger *Logger;
         paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         cachePath = [paths objectAtIndex:0];
         _contentPath = [cachePath stringByAppendingPathComponent:@"com.innerfunction.semo.content"];
-        
-        // Factory for producing login + account management forms.
-        _formFactory = [[IFWPContentContainerFormFactory alloc] initWithContainer:self];
 
-        _httpClient = [[IFHTTPClient alloc] init];
-        
-        _authManager = [[IFWPAuthManager alloc] initWithContainer:self];
-        _httpClient.authenticationDelegate = _authManager;
-        
         _searchResultLimit = 100;
         
     }
@@ -216,13 +227,12 @@ static IFLogger *Logger;
     
     // Resolve a URI handler for the container's components, and add a modified named: scheme handler
     // pointed at this container.
-    id<IFURIHandler> uriHandler = configuration.uriHandler;
     IFNamedSchemeHandler *namedScheme = [[IFNamedSchemeHandler alloc] initWithContainer:self];
-    uriHandler = [uriHandler replaceURIScheme:@"named" withHandler:namedScheme];
+    self.uriHandler = [self.uriHandler replaceURIScheme:@"named" withHandler:namedScheme];
     
     // Create the container's component configuration and setup to use the new URI handler
     IFConfiguration *componentConfig = [_configTemplate extendWithParameters:parameters];
-    componentConfig.uriHandler = uriHandler; // This necessary for relative URIs within the config to work.
+    componentConfig.uriHandler = self.uriHandler; // This necessary for relative URIs within the config to work.
     componentConfig.root = self;
     
     // Configure the container's components.
@@ -242,9 +252,35 @@ static IFLogger *Logger;
         @"dlzip": dlzipCmd
     };
 
-    // Configure path roots
-    self.pathRoots[@"posts"] = [[IFWPPostsPathRoot alloc] initWithContainer:self];
-    self.pathRoots[@"search"] = [[IFWPSearchPathRoot alloc] initWithContainer:self];
+}
+
+#pragma mark - IFContentContainer
+
+- (void)writeResponse:(id<IFContentContainerResponse>)response
+         forAuthority:(NSString *)authority
+                 path:(IFContentPath *)path
+           parameters:(NSDictionary *)parameters {
+    // Look-up a path root for the first path component, and if one is found then delegate the request to it.
+    NSString *root = [path root];
+    if ([@"posts" isEqualToString:root]) {
+        [_postsPathRoot writeResponse:response
+                         forAuthority:authority
+                                 path:[path rest]
+                           parameters:parameters];
+    }
+    else if ([@"search" isEqualToString:root]) {
+        [_searchPathRoot writeResponse:response
+                          forAuthority:authority
+                                  path:[path rest]
+                            parameters:parameters];
+    }
+    else {
+        // Path not recognized, let super class return standard error response.
+        [super writeResponse:response
+                forAuthority:authority
+                        path:path
+                  parameters:parameters];
+    }
 }
 
 #pragma mark - IFMessageReceiver

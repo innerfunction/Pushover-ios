@@ -46,7 +46,7 @@
 
 @implementation IFWPContentContainerFormFactory
 
-- (id)initWithContainer:(IFWPContentContainer *)container {
+- (id)init {
     NSDictionary *baseConfiguration = @{
         @"*ios-class":      @"IFFormViewController",
         @"form": @{
@@ -58,7 +58,6 @@
     };
     self = [super initWithBaseConfiguration:baseConfiguration];
     if (self) {
-        _container = container;
         _stdParams = @{
             @"ImageField": @{
                 @"*ios-class":              @"IFFormImageField"

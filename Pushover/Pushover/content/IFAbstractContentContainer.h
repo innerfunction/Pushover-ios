@@ -32,7 +32,4 @@
     NSMutableSet *_liveResponses;
 }
 
-/// A map of addressable path roots. For example, given the path files/all, the path root is 'files'.
-@property (nonatomic, strong) NSMutableDictionary *pathRoots;
-
 @end

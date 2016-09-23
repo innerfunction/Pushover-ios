@@ -36,10 +36,9 @@
 //       challenge. Need a solution for this - just periodically reload the user profile as a heartbeat?
 @implementation IFWPAuthManager
 
-- (id)initWithContainer:(IFWPContentContainer *)container {
+- (id)init {
     self = [super init];
     if (self) {
-        _container = container;
         _userDefaults = [NSUserDefaults standardUserDefaults];
         _profileFieldNames = @[@"ID", @"first_name", @"last_name", @"user_email"];
     }

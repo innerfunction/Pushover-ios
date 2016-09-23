@@ -20,15 +20,6 @@
 
 @implementation IFWPSearchPathRoot
 
-- (id)initWithContainer:(IFWPContentContainer *)container {
-    self = [super init];
-    if (self) {
-        _container = container;
-        _postDBAdapter = container.postDBAdapter;
-    }
-    return self;
-}
-
 #pragma mark - IFContentContainerPathRoot
 
 - (void)writeResponse:(id<IFContentContainerResponse>)response

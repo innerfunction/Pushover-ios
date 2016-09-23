@@ -19,33 +19,50 @@
 #import <Foundation/Foundation.h>
 #import "PlausibleDatabase.h"
 
+/// A protocol used to delegate certain database lifecyle events.
 @protocol IFDBHelperDelegate <NSObject>
 
+/// Handle database creation; used to setup the initial database schema.
 - (void)onCreate:(id<PLDatabase>)database;
-
+/// Handle a database schema upgrade.
 - (void)onUpgrade:(id<PLDatabase>)database from:(int)oldVersion to:(int)newVersion;
 
 @optional
 
+/// Handle a database open.
 - (void)onOpen:(id<PLDatabase>)database;
 
 @end
 
 @interface IFDBHelper : NSObject <PLDatabaseMigrationDelegate> {
-    NSString *databaseName;
-    int databaseVersion;
-    id<PLDatabaseConnectionProvider> connectionProvider;
-    id<PLDatabase> database;
+    /// The database name.
+    NSString *_databaseName;
+    /// The database schema version.
+    int _databaseVersion;
+    /// The path to the database file.
+    NSString *_databasePath;
+    /// A connection provider.
+    id<PLDatabaseConnectionProvider> _connectionProvider;
+    /// The database.
+    id<PLDatabase> _database;
 }
 
+/// Delegate for handling database creation / upgrade.
 @property (nonatomic, strong) id<IFDBHelperDelegate> delegate;
+/**
+ * The path to an initial copy of the database. Used to provide an initial version of the database
+ * schema and content; if specified, then the file at this location is copied to the database path
+ * before a database connection is opened.
+ */
+@property (nonatomic, strong) NSString *initialCopyPath;
 
+/// Initialize the helper with a database name and version.
 - (id)initWithName:(NSString *)name version:(int)version;
-
+/// Delete the database.
 - (BOOL)deleteDatabase;
-
+/// Get a connection to the database.
 - (id<PLDatabase>)getDatabase;
-
+/// Close the database.
 - (void)close;
 
 @end

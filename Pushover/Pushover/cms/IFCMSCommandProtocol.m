@@ -84,7 +84,7 @@
         id updateData = [response parseData];
         // Check file DB schema version.
         id version = [updateData valueForKeyPath:@"db.version"];
-        if (![version isEqualToString:_fileDBSchemaVersion]) {
+        if (![version isEqual:_fileDB.version]) {
             // Update the file DB schema and then schedule a new refresh.
             id updateSchema = @{
                 @"name": [self qualifyName:@"update-schema"],

@@ -30,11 +30,9 @@ NSError *errorFromResponseError(id error);
 
 @implementation IFWPPostsPathRoot
 
-- (id)initWithContainer:(IFWPContentContainer *)container {
+- (id)init {
     self = [super init];
     if (self) {
-        _container = container;
-        _postDBAdapter = container.postDBAdapter;
         _fileManager = [NSFileManager defaultManager];
     }
     return self;
@@ -47,14 +45,9 @@ NSError *errorFromResponseError(id error);
                  path:(IFContentPath *)path
            parameters:(NSDictionary *)params {
     
-    // Check for an invalid request path.
-    if ([path isEmpty]) {
-        [response respondWithError:makeInvalidPathResponseError([path fullPath])];
-        return;
-    }
-    
     // Parse the request path and resolve the data.
     /*
+     posts                      Same as posts/all
      posts/all                  list, JSON
      posts/xxx                  posts: dict, JSON; attachments: data, source MIME type
      posts/xxx.html             string, HTML
@@ -63,8 +56,12 @@ NSError *errorFromResponseError(id error);
      posts/xxx/children         list, JSON
      posts/xxx/descendants      list, JSON
      */
+    NSString *rscID = @"all";
     NSArray *components = [path components];
-    NSString *rscID = components[0];
+    if ([components count]) {
+        rscID = components[0];
+    }
+
     if ([@"all" isEqualToString:rscID]) {
         if ([components count] == 1) {
             // e.g. content://{authority}/posts/all
@@ -72,6 +69,7 @@ NSError *errorFromResponseError(id error);
             [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
         }
         else {
+            // Trailing path after /all
             [response respondWithError:makeInvalidPathResponseError([path fullPath])];
         }
     }
@@ -134,7 +132,7 @@ NSError *errorFromResponseError(id error);
                 if ([@"packaged" isEqualToString:location]) {
                     // This is used for content which is packaged with the app, and which is unpacked to a
                     // filesystem location when the app is installed.
-                    NSString *filepath = [_container.packagedContentPath stringByAppendingPathComponent:filename];
+                    NSString *filepath = [_packagedContentPath stringByAppendingPathComponent:filename];
                     if ([_fileManager fileExistsAtPath:filepath]) {
                         [response respondWithFileData:filepath mimeType:mimeType cachePolicy:NSURLCacheStorageNotAllowed];
                     }
@@ -146,12 +144,12 @@ NSError *errorFromResponseError(id error);
                     // This is used for attachment data which may be downloaded from the server and cached
                     // locally. Check if a cached copy of the file exists locally, otherwise download from
                     // the server and add to cache.
-                    NSString *filepath = [_container.contentPath stringByAppendingPathComponent:filename];
+                    NSString *filepath = [_contentPath stringByAppendingPathComponent:filename];
                     if ([_fileManager fileExistsAtPath:filepath]) {
                         [response respondWithFileData:filepath mimeType:mimeType cachePolicy:NSURLCacheStorageNotAllowed];
                     }
                     else {
-                        [_container.httpClient getFile:url]
+                        [_httpClient getFile:url]
                         .then((id)^(IFHTTPClientResponse *httpResponse) {
                             NSError *error = nil;
                             [_fileManager moveItemAtPath:httpResponse.downloadLocation.path
@@ -173,7 +171,7 @@ NSError *errorFromResponseError(id error);
                 }
                 else if ([@"server" isEqualToString:location]) {
                     // This is used for attachment data which must be kept on the server.
-                    [_container.httpClient getFile:url]
+                    [_httpClient getFile:url]
                     .then((id)^(IFHTTPClientResponse *httpResponse) {
                         [response respondWithFileData:httpResponse.downloadLocation.path
                                              mimeType:mimeType

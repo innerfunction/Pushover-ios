@@ -24,12 +24,14 @@
 #import "IFIOCTypeInspectable.h"
 #import "IFAbstractContentContainer.h"
 #import "IFWPContentContainerFormFactory.h"
-#import "IFWPPostDBAdapter.h"
 #import "IFWPAuthManager.h"
 #import "IFMessageReceiver.h"
 #import "IFHTTPClient.h"
 
 @class IFWPClientTemplateContext;
+@class IFWPPostDBAdapter;
+@class IFWPPostsPathRoot;
+@class IFWPSearchPathRoot;
 
 @interface IFWPContentContainer : IFAbstractContentContainer <IFIOCContainerAware, IFMessageReceiver, IFIOCTypeInspectable> {
     // Container configuration template.
@@ -71,6 +73,10 @@
 @property (nonatomic, assign) NSInteger updateCheckInterval;
 /** The content command protocol instance; manages feed downloads. */
 @property (nonatomic, strong) IFWPContentCommandProtocol *contentCommandProtocol;
+/** The path root for /posts content URLs. */
+@property (nonatomic, strong) IFWPPostsPathRoot *postsPathRoot;
+/** The path root for /search content URLs. */
+@property (nonatomic, strong) IFWPSearchPathRoot *searchPathRoot;
 /** Post list data formats. */
 @property (nonatomic, strong) NSDictionary *listFormats;
 /** Post data formats. */

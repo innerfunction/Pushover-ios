@@ -24,12 +24,11 @@
 @class IFWPContentContainer;
 
 @interface IFWPContentContainerFormFactory : IFIOCObjectFactoryBase {
-    __weak IFWPContentContainer *_container;
     NSDictionary *_stdParams;
     NSUserDefaults *_userDefaults;
 }
 
-- (id)initWithContainer:(IFWPContentContainer *)container;
+@property (nonatomic, weak) IFWPContentContainer *container;
 
 @end
 
