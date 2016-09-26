@@ -91,6 +91,10 @@
 		077AEF611D8013B900C5A2D9 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 077AEF481D8013B900C5A2D9 /* SSKeychain.m */; };
 		077AEF621D8013B900C5A2D9 /* SSKeychainQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 077AEF491D8013B900C5A2D9 /* SSKeychainQuery.h */; };
 		077AEF631D8013B900C5A2D9 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 077AEF4A1D8013B900C5A2D9 /* SSKeychainQuery.m */; };
+		07B53B431D9967DA00732472 /* IFCMSFileDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 07B53B411D9967DA00732472 /* IFCMSFileDB.h */; };
+		07B53B441D9967DA00732472 /* IFCMSFileDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B53B421D9967DA00732472 /* IFCMSFileDB.m */; };
+		07B53B471D99688400732472 /* IFCMSFileset.h in Headers */ = {isa = PBXBuildFile; fileRef = 07B53B451D99688400732472 /* IFCMSFileset.h */; };
+		07B53B481D99688400732472 /* IFCMSFileset.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B53B461D99688400732472 /* IFCMSFileset.m */; };
 		07BC15211D81FFFA0025FA12 /* IFWPPostsPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BC151F1D81FFFA0025FA12 /* IFWPPostsPathRoot.h */; };
 		07BC15221D81FFFA0025FA12 /* IFWPPostsPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC15201D81FFFA0025FA12 /* IFWPPostsPathRoot.m */; };
 		07BC152F1D82FF680025FA12 /* IFWPPostDBAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BC152D1D82FF680025FA12 /* IFWPPostDBAdapter.h */; };
@@ -212,6 +216,10 @@
 		077AEF481D8013B900C5A2D9 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
 		077AEF491D8013B900C5A2D9 /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
 		077AEF4A1D8013B900C5A2D9 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
+		07B53B411D9967DA00732472 /* IFCMSFileDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSFileDB.h; sourceTree = "<group>"; };
+		07B53B421D9967DA00732472 /* IFCMSFileDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSFileDB.m; sourceTree = "<group>"; };
+		07B53B451D99688400732472 /* IFCMSFileset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSFileset.h; sourceTree = "<group>"; };
+		07B53B461D99688400732472 /* IFCMSFileset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSFileset.m; sourceTree = "<group>"; };
 		07BC151F1D81FFFA0025FA12 /* IFWPPostsPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPPostsPathRoot.h; sourceTree = "<group>"; };
 		07BC15201D81FFFA0025FA12 /* IFWPPostsPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPPostsPathRoot.m; sourceTree = "<group>"; };
 		07BC152D1D82FF680025FA12 /* IFWPPostDBAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPPostDBAdapter.h; sourceTree = "<group>"; };
@@ -304,10 +312,14 @@
 				07BC15571D8851A90025FA12 /* IFCMSCommandProtocol.m */,
 				07BC155A1D8852380025FA12 /* IFCMSContentContainer.h */,
 				07BC155B1D8852380025FA12 /* IFCMSContentContainer.m */,
-				07BC155E1D8855C90025FA12 /* IFCMSFilesPathRoot.h */,
-				07BC155F1D8855C90025FA12 /* IFCMSFilesPathRoot.m */,
+				07B53B411D9967DA00732472 /* IFCMSFileDB.h */,
+				07B53B421D9967DA00732472 /* IFCMSFileDB.m */,
+				07B53B451D99688400732472 /* IFCMSFileset.h */,
+				07B53B461D99688400732472 /* IFCMSFileset.m */,
 				07D7611C1D958A770043F371 /* IFCMSFilesetPathRoot.h */,
 				07D7611D1D958A770043F371 /* IFCMSFilesetPathRoot.m */,
+				07BC155E1D8855C90025FA12 /* IFCMSFilesPathRoot.h */,
+				07BC155F1D8855C90025FA12 /* IFCMSFilesPathRoot.m */,
 			);
 			path = cms;
 			sourceTree = "<group>";
@@ -533,6 +545,7 @@
 				077AEEF81D80125B00C5A2D9 /* IFRmFileCommand.h in Headers */,
 				07BC15211D81FFFA0025FA12 /* IFWPPostsPathRoot.h in Headers */,
 				077AEF1A1D80125B00C5A2D9 /* IFHTMLString.h in Headers */,
+				07B53B431D9967DA00732472 /* IFCMSFileDB.h in Headers */,
 				077AEF5C1D8013B900C5A2D9 /* PLSqlitePreparedStatement.h in Headers */,
 				077AEF521D8013B900C5A2D9 /* PLDatabaseMigrationTransactionManager.h in Headers */,
 				077AEF561D8013B900C5A2D9 /* PLSqliteConnectionProvider.h in Headers */,
@@ -544,6 +557,7 @@
 				077AEEEE1D80125B00C5A2D9 /* IFCommandProtocol.h in Headers */,
 				077AEF4B1D8013B900C5A2D9 /* PlausibleDatabase.h in Headers */,
 				077AEF121D80125B00C5A2D9 /* IFSubmitField.h in Headers */,
+				07B53B471D99688400732472 /* IFCMSFileset.h in Headers */,
 				07BC15501D86EB290025FA12 /* IFDataWebviewFormatter.h in Headers */,
 				077AEEFE1D80125B00C5A2D9 /* IFDBFilter.h in Headers */,
 				07BC15701D8C42F20025FA12 /* IFDBORM.h in Headers */,
@@ -686,6 +700,7 @@
 				077AEF511D8013B900C5A2D9 /* PLDatabaseMigrationManager.m in Sources */,
 				077AEF011D80125B00C5A2D9 /* IFDBHelper.m in Sources */,
 				077AEEF51D80125B00C5A2D9 /* IFGetURLCommand.m in Sources */,
+				07B53B441D9967DA00732472 /* IFCMSFileDB.m in Sources */,
 				077AEF5B1D8013B900C5A2D9 /* PLSqliteMigrationVersionManager.m in Sources */,
 				077AEF611D8013B900C5A2D9 /* SSKeychain.m in Sources */,
 				077AEF131D80125B00C5A2D9 /* IFSubmitField.m in Sources */,
@@ -702,6 +717,7 @@
 				077AEF0D1D80125B00C5A2D9 /* IFFormTextField.m in Sources */,
 				077AEEF71D80125B00C5A2D9 /* IFMvFileCommand.m in Sources */,
 				077AEF4C1D8013B900C5A2D9 /* PlausibleDatabase.m in Sources */,
+				07B53B481D99688400732472 /* IFCMSFileset.m in Sources */,
 				077AEF291D80125B00C5A2D9 /* IFWPContentContainerFormFactory.m in Sources */,
 				077AEF591D8013B900C5A2D9 /* PLSqliteDatabase.m in Sources */,
 				07BC15491D86C3260025FA12 /* IFWPSearchPathRoot.m in Sources */,

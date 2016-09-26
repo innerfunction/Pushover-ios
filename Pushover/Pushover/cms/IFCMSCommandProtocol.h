@@ -36,5 +36,7 @@
 @property (nonatomic, strong) NSString *contentPath;
 /** An HTTP client instance. */
 @property (nonatomic, strong) IFHTTPClient *httpClient;
+/** Fileset caching policies. */
+@property (nonatomic, strong) NSDictionary *filesetCachePolicies;
 
 @end

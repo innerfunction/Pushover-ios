@@ -17,6 +17,7 @@
 //
 
 #import "IFCMSContentContainer.h"
+#import "IFCMSFileset.h"
 
 @implementation IFCMSContentContainer
 
@@ -31,6 +32,16 @@
                        forAuthority:authority
                                path:path
                          parameters:parameters];
+}
+
+#pragma mark - IFIOCTypeInspectable
+
+
+- (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
+    if ([@"filesets" isEqualToString:propertyName]) {
+        return [IFCMSFilesetCachePolicy class];
+    }
+    return nil;
 }
 
 @end

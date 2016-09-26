@@ -18,6 +18,7 @@
 
 #import "IFCMSCommandProtocol.h"
 #import "IFFileIO.h"
+#import "IFCMSFileset.h"
 
 #define URLEncode(s) ([s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]])
 
@@ -142,12 +143,17 @@
             // Queue downloads of updated category filesets.
             NSString *name = [self qualifyName:@"download-fileset"];
             for (id category in updatedCategories) {
-                NSMutableArray *args = [NSMutableArray new];
-                [args addObject:category];
-                if (commit) {
-                    [args addObject:commit];
+                // Check whether the fileset should be downloaded.
+                IFCMSFilesetCachePolicy *filesetCachePolicy = _filesetCachePolicies[category];
+                if (filesetCachePolicy.cachable) {
+                    NSMutableArray *args = [NSMutableArray new];
+                    [args addObject:category];
+                    [args addObject:filesetCachePolicy.path]; // Where to put the downloaded files.
+                    if (commit) {
+                        [args addObject:commit];
+                    }
+                    [commands addObject:@{ @"name": name, @"args": args }];
                 }
-                [commands addObject:@{ @"name": name, @"args": args }];
             }
         }
         [_promise resolve:commands];
@@ -197,11 +203,13 @@
     
     _promise = [[QPromise alloc] init];
     
-    // Build the fileset URL.
     id category = args[0];
+    id cachePath = args[1];
+    
+    // Build the fileset URL.
     NSString *filesetPath;
-    if ([args count] > 1) {
-        id commit = args[1];
+    if ([args count] > 2) {
+        id commit = args[2];
         filesetPath = [NSString stringWithFormat:@"/fileset/%@?since=%@", category, commit];
     }
     else {
@@ -214,7 +222,7 @@
     .then((id)^(IFHTTPClientResponse *response) {
         // Unzip downloaded file to content location.
         NSString *downloadPath = [response.downloadLocation path];
-        [IFFileIO unzipFileAtPath:downloadPath toPath:_contentPath overwrite:YES];
+        [IFFileIO unzipFileAtPath:downloadPath toPath:cachePath overwrite:YES];
         // Resolve empty list - no follow-on commands.
         [_promise resolve:@[]];
         return nil;

@@ -12,20 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Julian Goacher on 13/09/2016.
+//  Created by Julian Goacher on 26/09/2016.
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "IFAbstractContentContainer.h"
 #import "IFCMSFileDB.h"
-#import "IFCMSFilesetPathRoot.h"
-#import "IFIOCTypeInspectable.h"
+#import "IFCMSFileset.h"
 
-@interface IFCMSContentContainer : IFAbstractContentContainer <IFIOCTypeInspectable>
+@implementation IFCMSFileDB
 
-@property (nonatomic, strong) IFCMSFileDB *db;
-@property (nonatomic, strong) NSDictionary *filesetCachePolicies;
-@property (nonatomic, strong) IFCMSFilesetPathRoot *filesetPathRoot;
+#pragma mark - IFIOCTypeInspectable
+
+- (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
+    if ([@"filesets" isEqualToString:propertyName]) {
+        return [IFCMSFileset class];
+    }
+    return nil;
+}
 
 @end
