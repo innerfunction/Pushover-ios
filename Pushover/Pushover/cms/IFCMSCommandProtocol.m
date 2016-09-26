@@ -144,11 +144,11 @@
             NSString *name = [self qualifyName:@"download-fileset"];
             for (id category in updatedCategories) {
                 // Check whether the fileset should be downloaded.
-                IFCMSFilesetCachePolicy *filesetCachePolicy = _filesetCachePolicies[category];
-                if (filesetCachePolicy.cachable) {
+                IFCMSFileset *fileset = _fileDB.filesets[category];
+                if (fileset.cachable) {
                     NSMutableArray *args = [NSMutableArray new];
                     [args addObject:category];
-                    [args addObject:filesetCachePolicy.path]; // Where to put the downloaded files.
+                    [args addObject:fileset.path]; // Where to put the downloaded files.
                     if (commit) {
                         [args addObject:commit];
                     }

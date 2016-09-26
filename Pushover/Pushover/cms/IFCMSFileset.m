@@ -22,22 +22,18 @@
 
 @implementation IFCMSFileset
 
-@end
-
-@implementation IFCMSFilesetCachePolicy
-
-- (void)setPolicy:(NSString *)policy {
-    _policy = policy;
-    if ([@"NoCache" isEqualToString:policy]) {
+- (void)setCache:(NSString *)cache {
+    _cache = cache;
+    if ([@"none" isEqualToString:cache]) {
         _cachable = NO;
     }
-    if ([@"ContentCache" isEqualToString:policy]) {
+    if ([@"content" isEqualToString:cache]) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
         NSString *cachePath = [paths objectAtIndex:0];
         self.path = [cachePath stringByAppendingPathComponent:CacheDirName];
         _cachable = YES;
     }
-    else if ([@"AppCache" isEqualToString:policy]) {
+    else if ([@"app" isEqualToString:cache]) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         NSString *cachePath = [paths objectAtIndex:0];
         self.path = [cachePath stringByAppendingPathComponent:CacheDirName];

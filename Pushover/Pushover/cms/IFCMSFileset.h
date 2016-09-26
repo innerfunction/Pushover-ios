@@ -23,28 +23,20 @@
 /**
  * A class declaring the options available on a fileset database configuration entry.
  */
-@interface IFCMSFileset : NSObject
+@interface IFCMSFileset : NSObject <IFIOCObjectAware>
 
 /** A list of the mapping names supported by the fileset. */
 @property (nonatomic, strong) IFJSONArray *mappings;
-
-@end
-
-/**
- * A class describing a fileset's local caching policy.
- */
-@interface IFCMSFilesetCachePolicy : NSObject <IFIOCObjectAware>
-
 /**
  * The fileset's caching policy. One of the following strings:
- * * NoCache: The content is always downloaded from the server, never cached locally.
- * * ContentCache: The content is downloaded and stored in the content cache. Data
+ * * none: The content is always downloaded from the server, never cached locally.
+ * * content: The content is downloaded and stored in the content cache. Data
  *   in the content cache may be removed by the OS to free up space, after which the
  *   content needs to be downloaded again if required.
- * * AppCache: The content is downloaded and stored in the app cache. Data in the app
+ * * app: The content is downloaded and stored in the app cache. Data in the app
  *   cache will only be removed when the app is uninstalled.
  */
-@property (nonatomic, strong) NSString *policy;
+@property (nonatomic, strong) NSString *cache;
 /** The fileset's category name. */
 @property (nonatomic, strong) NSString *category;
 /** The fileset cache's file path root, under which fileset content is stored. */

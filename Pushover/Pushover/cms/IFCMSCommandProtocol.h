@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import "IFCommandProtocol.h"
-#import "IFDB.h"
+#import "IFCMSFileDB.h"
 #import "IFHTTPClient.h"
 #import "Q.h"
 
@@ -29,14 +29,12 @@
 /** The CMS feed URL. Note that query parameters will be appened to the URL. */
 @property (nonatomic, strong) NSString *feedURL;
 /** The local file database. */
-@property (nonatomic, strong) IFDB *fileDB;
+@property (nonatomic, strong) IFCMSFileDB *fileDB;
 /** Path to directory holding staged content. */
 @property (nonatomic, strong) NSString *stagingPath;
 /** Path to directory hosting downloaded content. */
 @property (nonatomic, strong) NSString *contentPath;
 /** An HTTP client instance. */
 @property (nonatomic, strong) IFHTTPClient *httpClient;
-/** Fileset caching policies. */
-@property (nonatomic, strong) NSDictionary *filesetCachePolicies;
 
 @end
