@@ -24,8 +24,6 @@
 #import "IFGetURLCommand.h"
 #import "IFDownloadZipCommand.h"
 #import "IFWPPostDBAdapter.h"
-#import "IFWPPostsPathRoot.h"
-#import "IFWPSearchPathRoot.h"
 #import "IFStringTemplate.h"
 #import "IFLogger.h"
 #import "NSDictionary+IF.h"
@@ -48,7 +46,6 @@ static IFLogger *Logger;
         _postDBName = @"com.innerfunction.semo.content";
         _feedURL = @"";
         _packagedContentPath = @"";
-        _uriSchemeName = @"wp";
         _wpRealm = @"semo";
         _listFormats = @{
             @"table": [[IFDataTableFormatter alloc] init]
@@ -121,14 +118,18 @@ static IFLogger *Logger;
             @"formFactory": @{
                 @"container":               @"@named:*container"
             },
-            @"postsPathRoot": @{
-                @"postDBAdapter":           @"@named:postDBAdapter",
-                @"httpClient":              @"@named:httpClient",
-                @"packagedContentPath":     @"$packagedContentPath",
-                @"contentPath":             @"$contentPath"
-            },
-            @"searchPathRoot": @{
-                @"postDBAdapter":           @"@named:postDBAdapter",
+            @"pathRoots": @{
+                @"posts": @{
+                    @"*ios-class":          @"IFWPPostsPathRoot",
+                    @"postDBAdapter":       @"@named:postDBAdapter",
+                    @"httpClient":          @"@named:httpClient",
+                    @"packagedContentPath": @"$packagedContentPath",
+                    @"contentPath":         @"$contentPath"
+                },
+                @"search": @{
+                    @"*ios-class":          @"IFWPSearchPathRoot",
+                    @"postDBAdapter":       @"@named:postDBAdapter"
+                }
             },
             @"packagedContentPath":         @"$packagedContentPath",
             @"contentPath":                 @"$contentPath"
@@ -191,7 +192,8 @@ static IFLogger *Logger;
 }
 
 - (NSString *)uriForPostWithID:(NSString *)postID {
-    NSDictionary *context = @{ @"uriSchemeName": _uriSchemeName, @"postID": postID };
+    // TODO: Build a proper content: uri, with content authority etc.
+    NSDictionary *context = @{ @"uriSchemeName": @"content", @"postID": postID };
     return [IFStringTemplate render:_postURITemplate context:context];
 }
 
@@ -254,35 +256,6 @@ static IFLogger *Logger;
 
 }
 
-#pragma mark - IFContentContainer
-
-- (void)writeResponse:(id<IFContentContainerResponse>)response
-         forAuthority:(NSString *)authority
-                 path:(IFContentPath *)path
-           parameters:(NSDictionary *)parameters {
-    // Look-up a path root for the first path component, and if one is found then delegate the request to it.
-    NSString *root = [path root];
-    if ([@"posts" isEqualToString:root]) {
-        [_postsPathRoot writeResponse:response
-                         forAuthority:authority
-                                 path:[path rest]
-                           parameters:parameters];
-    }
-    else if ([@"search" isEqualToString:root]) {
-        [_searchPathRoot writeResponse:response
-                          forAuthority:authority
-                                  path:[path rest]
-                            parameters:parameters];
-    }
-    else {
-        // Path not recognized, let super class return standard error response.
-        [super writeResponse:response
-                forAuthority:authority
-                        path:path
-                  parameters:parameters];
-    }
-}
-
 #pragma mark - IFMessageReceiver
 
 - (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
@@ -321,10 +294,6 @@ static IFLogger *Logger;
 }
 
 #pragma mark - IFIOCTypeInspectable
-
-- (BOOL)isDataCollection:(NSString *)propertyName {
-    return [@"postTypeRelations" isEqualToString:propertyName];
-}
 
 - (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
     return nil;

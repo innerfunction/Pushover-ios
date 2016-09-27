@@ -43,15 +43,15 @@
 /**
  * Select the object with the specified key value.
  * Returns the object record from the source table, with all related properties
- * joined from the related tables.
+ * named in the mappings argument joined from the related tables.
  */
-- (NSDictionary *)selectKey:(NSString *)key;
+- (NSDictionary *)selectKey:(NSString *)key mappings:(NSArray *)mappings;
 /**
  * Select the objects matching the specified where condition.
  * Returns an array of object records from the source table, with all related properties
- * joined from the related tables.
+ * named in the mappings argument joined from the related tables.
  */
-- (NSArray *)selectWhere:(NSString *)where values:(NSArray *)values;
+- (NSArray *)selectWhere:(NSString *)where values:(NSArray *)values mappings:(NSArray *)mappings;
 /**
  * Delete the object with the specified key value.
  * Deletes any related records unique to the deleted object.

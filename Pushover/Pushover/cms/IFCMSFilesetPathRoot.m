@@ -53,7 +53,8 @@
         // Join the wheres into a single where clause.
         NSString *where = [wheres componentsJoinedByString:@" AND "];
         // Execute the query.
-        id content = [_orm selectWhere:where values:values];
+        // TODO Get mappings to include from fileset
+        id content = [_orm selectWhere:where values:values mappings:@[]];
         [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
     }
     else if ([components count] == 2) {
@@ -68,7 +69,8 @@
         }
         
         // Read the content.
-        NSDictionary *content = [_orm selectKey:key];
+        // TODO Get mappings to include from fileset
+        NSDictionary *content = [_orm selectKey:key mappings:@[]];
         
         // NOTE Pushover CMS operation seems to be quite different to WP. Firstly, Pushover is
         // foremost a file-based CMS, and the file DB is a list of available files (see the

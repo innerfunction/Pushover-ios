@@ -19,29 +19,112 @@
 #import "IFCMSContentContainer.h"
 #import "IFCMSFileset.h"
 
+// TODO Content-container container:
+// The different content containers all need to share some common resources, e.g.:
+// - command scheduler
+// - http client
+// They also need unique content authority names, and a sensible way for the content
+// url protocol handler to discover each container from the authority name.
+// All this suggests that content containers should themselves be contained within
+// a parent container providing the common resources & authority name mappings.
+// The question then is whether this container is a new container type, or can it
+// be any generic container with the necessary global names, in which case should
+// an app container just be used for the job? Also, if a generic container is
+// suitable, then how/where is the standard configuration template for a content-
+// container container specified?
+
 @implementation IFCMSContentContainer
-
-#pragma mark - IFContentContainerPathRoot
-
-- (void)writeResponse:(id<IFContentContainerResponse>)response
-         forAuthority:(NSString *)authority
-                 path:(IFContentPath *)path
-           parameters:(NSDictionary *)parameters {
-    
-    [_filesetPathRoot writeResponse:response
-                       forAuthority:authority
-                               path:path
-                         parameters:parameters];
-}
-
-#pragma mark - IFIOCTypeInspectable
-
-
-- (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
-    if ([@"filesets" isEqualToString:propertyName]) {
-        return [IFCMSFilesetCachePolicy class];
+- (id)init {
+    self = [super init];
+    if (self) {
+        _dbName = @""; // TODO Should be derived from authority name.
+        id template = @{
+            @"fileDB": @{
+                @"name":    @"$dbName",
+                @"version": @1,
+                @"tables": @{
+                    @"files": @{
+                        @"columns": @{
+                            @"id":          @{ @"type": @"INTEGER", @"tag": @"id" },
+                            @"path":        @{ @"type": @"STRING" },
+                            @"category":    @{ @"type": @"STRING" },
+                            @"status":      @{ @"type": @"STRING" },
+                            @"commit":      @{ @"type": @"STRING" }
+                        }
+                    },
+                    @"posts": @{
+                        @"columns": @{
+                            @"id":          @{ @"type": @"INTEGER", @"tag": @"id" },
+                            @"type":        @{ @"type": @"STRING" },
+                            @"title":       @{ @"type": @"STRING" },
+                            @"body":        @{ @"type": @"STRING" },
+                            @"image":       @{ @"type": @"INTEGER" }
+                        }
+                    },
+                    @"commits": @{
+                        @"columns": @{
+                            @"commit":      @{ @"type": @"STRING", @"tag": @"id" },
+                            @"date":        @{ @"type": @"STRING" },
+                            @"subject":     @{ @"type": @"STRING" }
+                        }
+                    },
+                    @"meta": @{
+                        @"columns": @{
+                            @"id":          @{ @"type": @"STRING",  @"tag": @"id", @"format": @"{fileid}:{key}" },
+                            @"fileid":      @{ @"type": @"INTEGER", @"tag": @"ownerid" },
+                            @"key":         @{ @"type": @"STRING",  @"tag": @"key" },
+                            @"value":       @{ @"type": @"STRING" }
+                        }
+                    }
+                },
+                @"orm": @{
+                    @"source": @"files",
+                    @"mappings": @{
+                        @"post": @{
+                            @"relation":    @"object",
+                            @"table":       @"posts"
+                        },
+                        @"commit": @{
+                            @"relation":    @"shared-object",
+                            @"table":       @"commits"
+                        },
+                        @"meta": @{
+                            @"relation":    @"map",
+                            @"table":       @"meta"
+                        }
+                    }
+                },
+                @"filesets": @{
+                    @"posts": @{
+                        @"includes":        @[ @"posts/*.json" ],
+                        @"mappings":        @[ @"commit", @"meta", @"post" ],
+                        @"cache":           @"none"
+                    },
+                    @"pages": @{
+                        @"includes":        @[ @"pages/*.json" ],
+                        @"mappings":        @[ @"commit", @"meta" ],
+                        @"cache":           @"none"
+                    },
+                    @"images": @{
+                        @"includes":        @[ @"posts/images/*", @"pages/images/*" ],
+                        @"mappings":        @[ @"commit", @"meta" ],
+                        @"cache":           @"content"
+                    },
+                    @"assets": @{
+                        @"includes":        @[ @"assets/**" ],
+                        @"mappings":        @[ @"commit" ],
+                        @"cache":           @"content"
+                    },
+                    @"templates": @{
+                        @"includes":        @[ @"templates/**" ],
+                        @"mappings":        @[ @"commit" ],
+                        @"cache":           @"app"
+                    }
+                }
+            }
+        };
     }
-    return nil;
+    return self;
 }
 
 @end

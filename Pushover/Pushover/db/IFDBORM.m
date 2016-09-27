@@ -29,14 +29,14 @@
 
 @implementation IFDBORM
 
-- (NSDictionary *)selectKey:(NSString *)key {
+- (NSDictionary *)selectKey:(NSString *)key mappings:(NSArray *)mappings {
     NSString *idColumn = [self idColumnForTable:_source];
     NSString *where = [NSString stringWithFormat:@"%@.%@=?", _source, idColumn];
-    NSArray *result = [self selectWhere:where values:@[ key ]];
+    NSArray *result = [self selectWhere:where values:@[ key ] mappings:mappings];
     return [result count] ? result[0] : nil;
 }
 
-- (NSArray *)selectWhere:(NSString *)where values:(NSArray *)values {
+- (NSArray *)selectWhere:(NSString *)where values:(NSArray *)values mappings:(NSArray *)mappings {
     // The name of the ID column on the source table.
     NSString *sidColumn = [self idColumnForTable:_source];
     // Generate SQL to describe each join for each relation.
@@ -46,6 +46,11 @@
     NSMutableArray *collectionJoins = [NSMutableArray new];  // Array of collection relation names.
     [columns addObject:[self columnNamesForTable:_source withPrefix:_source]];
     for (NSString *mname in [_mappings keyEnumerator]) {
+        
+        // Skip the mapping if its name isn't in the list of mappings to include.
+        if (![mappings containsObject:mname]) {
+            continue;
+        }
         
         IFDBORMMapping *mapping = _mappings[mname];
         NSString *mtable = mapping.table;

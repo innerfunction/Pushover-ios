@@ -20,12 +20,10 @@
 #import "IFAbstractContentContainer.h"
 #import "IFCMSFileDB.h"
 #import "IFCMSFilesetPathRoot.h"
-#import "IFIOCTypeInspectable.h"
 
-@interface IFCMSContentContainer : IFAbstractContentContainer <IFIOCTypeInspectable>
+@interface IFCMSContentContainer : IFAbstractContentContainer
 
+@property (nonatomic, strong) NSString *dbName;
 @property (nonatomic, strong) IFCMSFileDB *db;
-@property (nonatomic, strong) NSDictionary *filesetCachePolicies;
-@property (nonatomic, strong) IFCMSFilesetPathRoot *filesetPathRoot;
 
 @end

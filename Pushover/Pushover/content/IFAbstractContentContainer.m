@@ -42,6 +42,7 @@
     self = [super init];
     if (self) {
         _liveResponses = [NSMutableSet new];
+        _pathRoots = [NSMutableDictionary new];
     }
     return self;
 }
@@ -86,11 +87,23 @@
                  path:(IFContentPath *)path
            parameters:(NSDictionary *)parameters {
     
-    // Subclasses should provide an implementation of this method.
-    
-    // Path not found, respond with error.
-    NSError *error = makePathNotFoundResponseError([path fullPath]);
-    [response respondWithError:error];
+    // Look-up a path root for the first path component, and if one is found then delegate the request to it.
+    NSString *root = [path root];
+    id<IFContentContainerPathRoot> pathRoot = _pathRoots[root];
+    if (pathRoot) {
+        // The path root only sees the rest of the path.
+        path = [path rest];
+        // Delegate the request.
+        [pathRoot writeResponse:response
+                   forAuthority:authority
+                           path:path
+                     parameters:parameters];
+    }
+    else {
+        // Path not found, respond with error.
+        NSError *error = makePathNotFoundResponseError([path fullPath]);
+        [response respondWithError:error];
+    }
 }
 
 @end

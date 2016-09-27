@@ -27,6 +27,7 @@
 #import "IFWPAuthManager.h"
 #import "IFMessageReceiver.h"
 #import "IFHTTPClient.h"
+#import "IFJSONData.h"
 
 @class IFWPClientTemplateContext;
 @class IFWPPostDBAdapter;
@@ -57,8 +58,6 @@
 @property (nonatomic, strong) NSString *baseContentPath;
 /** The location of downloaded post content once deployed. */
 @property (nonatomic, strong) NSString *contentPath;
-/** The scheme name the URI handler is bound to; defaults to wp: */
-@property (nonatomic, strong) NSString *uriSchemeName;
 /** The WP realm name. Used for authentication, defaults to 'semo'. */
 @property (nonatomic, strong) NSString *wpRealm;
 /** Action to be posted when the container wants to show the login form. */
@@ -73,10 +72,6 @@
 @property (nonatomic, assign) NSInteger updateCheckInterval;
 /** The content command protocol instance; manages feed downloads. */
 @property (nonatomic, strong) IFWPContentCommandProtocol *contentCommandProtocol;
-/** The path root for /posts content URLs. */
-@property (nonatomic, strong) IFWPPostsPathRoot *postsPathRoot;
-/** The path root for /search content URLs. */
-@property (nonatomic, strong) IFWPSearchPathRoot *searchPathRoot;
 /** Post list data formats. */
 @property (nonatomic, strong) NSDictionary *listFormats;
 /** Post data formats. */
@@ -103,7 +98,7 @@
  * Any post type not described in this property will allow any child post type.
  * Used by the getPostChildren: methods.
  */
-@property (nonatomic, strong) NSDictionary *postTypeRelations;
+@property (nonatomic, strong) IFJSONObject *postTypeRelations;
 
 /** Unpack packaged content. */
 - (void)unpackPackagedContent;
