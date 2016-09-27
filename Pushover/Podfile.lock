@@ -3,9 +3,9 @@ PODS:
     - JRSwizzle (~> 1.0)
   - JRSwizzle (1.0)
   - Q (0.0.1)
-  - SCFFLD (0.0.6):
-    - SCFFLD/noarc (= 0.0.6)
-  - SCFFLD/noarc (0.0.6)
+  - SCFFLD (0.0.8):
+    - SCFFLD/noarc (= 0.0.8)
+  - SCFFLD/noarc (0.0.8)
 
 DEPENDENCIES:
   - GRMustache (~> 6.8.4)
@@ -23,14 +23,14 @@ CHECKOUT OPTIONS:
     :commit: 3d815bd913196342d804a4546454b821c5955c49
     :git: git@github.com:innerfunction/Q-ios.git
   SCFFLD:
-    :commit: 4d719adbbad6c32682533efb854f9be2c1c0d5a7
+    :commit: fc36ac7a10ff12e0034939ecd628fb9e12942227
     :git: git@github.com:innerfunction/SCFFLD-ios.git
 
 SPEC CHECKSUMS:
   GRMustache: 7b2520d67b6373484c8b2c08b9788af90a461d61
   JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
   Q: 9594f4873ef929875f573aeb01926b9239f2a0cc
-  SCFFLD: 7e8f19c95fe78042db592e6412153a4d385447b0
+  SCFFLD: cbad30c4136f03654c1fafcbe434ae31b637dd0e
 
 PODFILE CHECKSUM: e3ffa5adeac7fe91b1228a372319c59074196a81
 

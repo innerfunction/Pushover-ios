@@ -19,11 +19,17 @@
 #import <Foundation/Foundation.h>
 #import "IFAbstractContentContainer.h"
 #import "IFCMSFileDB.h"
-#import "IFCMSFilesetPathRoot.h"
+#import "IFCMSFilesetCategoryPathRoot.h"
+#import "IFIOCConfigurationAware.h"
 
-@interface IFCMSContentContainer : IFAbstractContentContainer
+@class IFCMSPostsPathRoot;
+@class IFCMSFilesPathRoot;
+
+@interface IFCMSContentContainer : IFAbstractContentContainer <IFIOCConfigurationAware>
 
 @property (nonatomic, strong) NSString *dbName;
 @property (nonatomic, strong) IFCMSFileDB *db;
+@property (nonatomic, strong) IFCMSPostsPathRoot *postsPathRoot;
+@property (nonatomic, strong) IFCMSPostsPathRoot *pagesPathRoot;
 
 @end

@@ -20,17 +20,24 @@
 
 @implementation IFContentPath
 
-- (id)initWithPath:(NSArray *)path rootIndex:(NSInteger)rootIdx {
+- (id)initWithPath:(NSArray *)path rootIndex:(NSInteger)rootIdx ext:(NSString *)ext {
     self = [super init];
     if (self) {
         _path = path;
         _rootIdx = rootIdx;
+        _ext = ext;
     }
     return self;
 }
 
 - (id)initWithPath:(NSString *)path {
-    return [self initWithPath:[path componentsSeparatedByString:@"/"] rootIndex:0];
+    NSString *ext = nil;
+    NSRange range = [path rangeOfString:@"."];
+    if (range.location != NSNotFound) {
+        ext = [path substringFromIndex:range.location + 1];
+        path = [path substringToIndex:range.location];
+    }
+    return [self initWithPath:[path componentsSeparatedByString:@"/"] rootIndex:0 ext:ext];
 }
 
 - (id)initWithURL:(NSURL *)url {
@@ -41,11 +48,15 @@
     return [self isEmpty] ? nil : _path[_rootIdx];
 }
 
+- (NSString *)ext {
+    return _ext;
+}
+
 - (IFContentPath *)rest {
     if ([self isEmpty]) {
         return nil;
     }
-    return [[IFContentPath alloc] initWithPath:_path rootIndex:_rootIdx + 1];
+    return [[IFContentPath alloc] initWithPath:_path rootIndex:_rootIdx + 1 ext:_ext];
 }
 
 - (NSArray *)components {

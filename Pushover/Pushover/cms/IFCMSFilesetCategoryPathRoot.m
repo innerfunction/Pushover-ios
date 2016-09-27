@@ -16,9 +16,52 @@
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
-#import "IFCMSFilesetPathRoot.h"
+#import "IFCMSFilesetCategoryPathRoot.h"
+#import "IFCMSContentContainer.h"
+#import "IFCMSFileset.h"
+#import "IFDBORM.h"
 
-@implementation IFCMSFilesetPathRoot
+@implementation IFCMSFilesetCategoryPathRoot
+
+- (id)initWithFileset:(IFCMSFileset *)fileset container:(IFCMSContentContainer *)container {
+    self = [super init];
+    if (self) {
+        self.fileset = fileset;
+        self.container = container;
+    }
+    return self;
+}
+
+- (void)setContainer:(IFCMSContentContainer *)container {
+    _orm = container.db.orm;
+}
+
+- (NSArray *)queryWithParameters:(NSDictionary *)parameters {
+
+    NSMutableArray *wheres = [NSMutableArray new];
+    NSMutableArray *values = [NSMutableArray new];
+    
+    // Note that category field is qualifed by source table name.
+    [wheres addObject:[NSString stringWithFormat:@"%@.category = ?", _orm.source]];
+    [values addObject:_fileset.category];
+    
+    // Add filters for each of the specified parameters.
+    for (id key in [parameters keyEnumerator]) {
+        // Note that parameter names must be qualified by the correct relation name.
+        [wheres addObject:[NSString stringWithFormat:@"%@ = ?", key]];
+        [values addObject:parameters[key]];
+    }
+    
+    // Join the wheres into a single where clause.
+    NSString *where = [wheres componentsJoinedByString:@" AND "];
+    // Execute query and return result.
+    return [_orm selectWhere:where values:values mappings:_fileset.mappings];
+}
+
+- (NSDictionary *)entryWithKey:(NSString *)key {
+    // Read the content and return the result.
+    return [_orm selectKey:key mappings:_fileset.mappings];
+}
 
 #pragma mark - IFContentContainerPathRoot
 
@@ -27,51 +70,19 @@
                  path:(IFContentPath *)path
            parameters:(NSDictionary *)parameters {
     
-    NSArray *components = [path components];
-
-    if ([components count] == 1) {
-        
-        id category = components[0];
-        
-        NSMutableArray *wheres = [NSMutableArray new];
-        NSMutableArray *values = [NSMutableArray new];
-        
-        // If category is not 'files' then append filter by category.
-        if (![category isEqualToString:@"files"]) {
-            // Note that category field is qualifed by source table name.
-            [wheres addObject:[NSString stringWithFormat:@"%@.category = ?", _orm.source]];
-            [values addObject:category];
-        }
-        
-        // Add filters for each of the specified parameters.
-        for (id key in [parameters keyEnumerator]) {
-            // Note that parameter names must be qualified by the correct relation name.
-            [wheres addObject:[NSString stringWithFormat:@"%@ = ?", key]];
-            [values addObject:parameters[key]];
-        }
-        
-        // Join the wheres into a single where clause.
-        NSString *where = [wheres componentsJoinedByString:@" AND "];
-        // Execute the query.
-        // TODO Get mappings to include from fileset
-        id content = [_orm selectWhere:where values:values mappings:@[]];
+    if ([path isEmpty]) {
+        NSArray *content = [self queryWithParameters:parameters];
+        // TODO post query processing by type derived from path extension.
         [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
     }
-    else if ([components count] == 2) {
+    else if ([[path components] count] == 1) {
         // Content path specifies a resource. The resource identifier may be in the format
         // {key}.{type}, so following code attempts to break the identifier into these parts.
-        NSString *resource = components[1];
-        NSArray *resourceParts = [resource componentsSeparatedByString:@"."];
-        NSString *key = resourceParts[0];
-        NSString *type = nil;
-        if ([resourceParts count] > 1) {
-            type = resourceParts[1];
-        }
-        
-        // Read the content.
-        // TODO Get mappings to include from fileset
-        NSDictionary *content = [_orm selectKey:key mappings:@[]];
-        
+        NSString *key = [path root];
+        NSString *type = [path ext];
+
+        NSDictionary *entry = [self entryWithKey:key];
+    
         // NOTE Pushover CMS operation seems to be quite different to WP. Firstly, Pushover is
         // foremost a file-based CMS, and the file DB is a list of available files (see the
         // feed at http://semop.innerfunction.com/semop/0.1/updates/jloriente/gvg-test). This
@@ -96,12 +107,12 @@
         
         // Return the result.
         if (!type) {
-            [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
+            [response respondWithJSONData:entry cachePolicy:NSURLCacheStorageNotAllowed];
         }
         else {
-            NSString *path = content[@"path"];
+            NSString *path = entry[@"path"];
             if ([type isEqualToString:[path pathExtension]]) {
-                NSString *status = content[@"status"];
+                NSString *status = entry[@"status"];
                 // Is file downloaded? -> return file contents
                 // Else -> download file, cache if appropriate, return file contents
             }

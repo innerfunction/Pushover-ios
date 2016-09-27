@@ -19,16 +19,25 @@
 #import <Foundation/Foundation.h>
 #import "IFCompoundURI.h"
 
-/// An object representing a content path.
+/**
+ * An object representing a content path.
+ * A content path is a string in the form /{c0}/{c1}..{cx}.{ext}, i.e
+ * one or more path components followed by an optional path extension.
+ * The path root refers to the first component (i.e. c0). The [rest]
+ * method returns a new content path composed of all components after
+ * the current root (i.e. c1..cx), or nil if no components are left.
+ */
 @interface IFContentPath : NSObject {
     /// An array containing all components of the full path.
     NSArray *_path;
     /// The index of the current path's root component.
     NSInteger _rootIdx;
+    /// The extension at the end of the path.
+    NSString *_ext;
 }
 
-/// Initialize with a list of path components and a root component index.
-- (id)initWithPath:(NSArray *)path rootIndex:(NSInteger)rootIdx;
+/// Initialize with a list of path components, a root component index and path extension.
+- (id)initWithPath:(NSArray *)path rootIndex:(NSInteger)rootIdx ext:(NSString *)ext;
 
 /// Initialize with a string path.
 - (id)initWithPath:(NSString *)path;
@@ -38,6 +47,9 @@
 
 /// Return the root path component.
 - (NSString *)root;
+
+/// Return the path extension, or nil if the path has no extension.
+- (NSString *)ext;
 
 /**
  * Return the portion of the path after the root component.

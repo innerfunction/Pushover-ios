@@ -18,6 +18,7 @@
 
 #import "IFCMSContentContainer.h"
 #import "IFCMSFileset.h"
+#import "IFCMSFilesetCategoryPathRoot.h"
 
 // TODO Content-container container:
 // The different content containers all need to share some common resources, e.g.:
@@ -121,10 +122,37 @@
                         @"cache":           @"app"
                     }
                 }
+            },
+            @"pathRoots": @{
+                @"posts":   @"@named:postsPathRoot",
+                @"pages":   @"@named:pagesPathRoot",
+                @"files":   @"@named:filesPathRoot"
             }
         };
     }
     return self;
+}
+
+#pragma mark - IFIOCConfigurationAware
+
+- (void)beforeIOCConfiguration:(IFConfiguration *)configuration {
+}
+
+- (void)afterIOCConfiguration:(IFConfiguration *)configuration {
+    // Ensure a path root exists for each fileset, and is associated with the fileset.
+    for (NSString *category in [_db.filesets keyEnumerator]) {
+        IFCMSFileset *fileset = _db.filesets[category];
+        id pathRoot = self.pathRoots[category];
+        if (pathRoot == nil) {
+            // Create a default path root for the current category.
+            pathRoot = [[IFCMSFilesetCategoryPathRoot alloc] initWithFileset:fileset container:self];
+            self.pathRoots[category] = pathRoot;
+        }
+        else if ([pathRoot isKindOfClass:[IFCMSFilesetCategoryPathRoot class]]) {
+            // Path root for category found, match it up with its fileset.
+            ((IFCMSFilesetCategoryPathRoot *)pathRoot).fileset = fileset;
+        }
+    }
 }
 
 @end

@@ -125,8 +125,8 @@
 		07BC15611D8855C90025FA12 /* IFCMSFilesPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC155F1D8855C90025FA12 /* IFCMSFilesPathRoot.m */; };
 		07BC15701D8C42F20025FA12 /* IFDBORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BC156E1D8C42F20025FA12 /* IFDBORM.h */; };
 		07BC15711D8C42F20025FA12 /* IFDBORM.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC156F1D8C42F20025FA12 /* IFDBORM.m */; };
-		07D7611E1D958A770043F371 /* IFCMSFilesetPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D7611C1D958A770043F371 /* IFCMSFilesetPathRoot.h */; };
-		07D7611F1D958A770043F371 /* IFCMSFilesetPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D7611D1D958A770043F371 /* IFCMSFilesetPathRoot.m */; };
+		07D7611E1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D7611C1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.h */; };
+		07D7611F1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D7611D1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m */; };
 		184D817FC98DD2B9983F7E3C /* libPods-Pushover.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E62C7B947E8F970ADD1B041 /* libPods-Pushover.a */; };
 /* End PBXBuildFile section */
 
@@ -250,8 +250,8 @@
 		07BC155F1D8855C90025FA12 /* IFCMSFilesPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSFilesPathRoot.m; sourceTree = "<group>"; };
 		07BC156E1D8C42F20025FA12 /* IFDBORM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDBORM.h; sourceTree = "<group>"; };
 		07BC156F1D8C42F20025FA12 /* IFDBORM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDBORM.m; sourceTree = "<group>"; };
-		07D7611C1D958A770043F371 /* IFCMSFilesetPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSFilesetPathRoot.h; sourceTree = "<group>"; };
-		07D7611D1D958A770043F371 /* IFCMSFilesetPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSFilesetPathRoot.m; sourceTree = "<group>"; };
+		07D7611C1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSFilesetCategoryPathRoot.h; sourceTree = "<group>"; };
+		07D7611D1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSFilesetCategoryPathRoot.m; sourceTree = "<group>"; };
 		0E62C7B947E8F970ADD1B041 /* libPods-Pushover.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pushover.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		475B5346EA2E33941F625B57 /* Pods-Pushover.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pushover.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pushover/Pods-Pushover.release.xcconfig"; sourceTree = "<group>"; };
 		BC4E0D48EABCE6574E64087E /* Pods-Pushover.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pushover.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pushover/Pods-Pushover.debug.xcconfig"; sourceTree = "<group>"; };
@@ -316,8 +316,8 @@
 				07B53B421D9967DA00732472 /* IFCMSFileDB.m */,
 				07B53B451D99688400732472 /* IFCMSFileset.h */,
 				07B53B461D99688400732472 /* IFCMSFileset.m */,
-				07D7611C1D958A770043F371 /* IFCMSFilesetPathRoot.h */,
-				07D7611D1D958A770043F371 /* IFCMSFilesetPathRoot.m */,
+				07D7611C1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.h */,
+				07D7611D1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m */,
 				07BC155E1D8855C90025FA12 /* IFCMSFilesPathRoot.h */,
 				07BC155F1D8855C90025FA12 /* IFCMSFilesPathRoot.m */,
 			);
@@ -567,7 +567,7 @@
 				077AEF0C1D80125B00C5A2D9 /* IFFormTextField.h in Headers */,
 				077AEF061D80125B00C5A2D9 /* IFFormImageField.h in Headers */,
 				07BC15541D8753A70025FA12 /* IFWPLicenceBehaviour.h in Headers */,
-				07D7611E1D958A770043F371 /* IFCMSFilesetPathRoot.h in Headers */,
+				07D7611E1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.h in Headers */,
 				07BC15481D86C3260025FA12 /* IFWPSearchPathRoot.h in Headers */,
 				077AEF001D80125B00C5A2D9 /* IFDBHelper.h in Headers */,
 				077AEF4D1D8013B900C5A2D9 /* PLDatabase.h in Headers */,
@@ -692,7 +692,7 @@
 				07BC15611D8855C90025FA12 /* IFCMSFilesPathRoot.m in Sources */,
 				077AEF211D80125B00C5A2D9 /* IFWPChildPostRendering.m in Sources */,
 				07BC15711D8C42F20025FA12 /* IFDBORM.m in Sources */,
-				07D7611F1D958A770043F371 /* IFCMSFilesetPathRoot.m in Sources */,
+				07D7611F1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m in Sources */,
 				077AEEF11D80125B00C5A2D9 /* IFCommandScheduler.m in Sources */,
 				077AEF631D8013B900C5A2D9 /* SSKeychainQuery.m in Sources */,
 				077AEF5D1D8013B900C5A2D9 /* PLSqlitePreparedStatement.m in Sources */,
