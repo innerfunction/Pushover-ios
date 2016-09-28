@@ -78,9 +78,7 @@ static IFLogger *Logger;
         result = _database;
     }
     else {
-        // TODO: Is this the correct way to instantiate this class?
         PLSqliteMigrationVersionManager *migrationVersionManager = [[PLSqliteMigrationVersionManager alloc] init];
-        // TODO: Is this the correct way to instantiate & invoke this class? Will it work correctly if no migration is necessary?
         PLDatabaseMigrationManager *migrationManager
         = [[PLDatabaseMigrationManager alloc] initWithConnectionProvider:_connectionProvider
                                                       transactionManager:migrationVersionManager

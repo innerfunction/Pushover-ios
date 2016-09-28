@@ -91,6 +91,8 @@
 		077AEF611D8013B900C5A2D9 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 077AEF481D8013B900C5A2D9 /* SSKeychain.m */; };
 		077AEF621D8013B900C5A2D9 /* SSKeychainQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 077AEF491D8013B900C5A2D9 /* SSKeychainQuery.h */; };
 		077AEF631D8013B900C5A2D9 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 077AEF4A1D8013B900C5A2D9 /* SSKeychainQuery.m */; };
+		077C195F1D9C5A7E00783E9D /* IFContentProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 077C195D1D9C5A7D00783E9D /* IFContentProvider.h */; };
+		077C19601D9C5A7E00783E9D /* IFContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 077C195E1D9C5A7E00783E9D /* IFContentProvider.m */; };
 		07B53B431D9967DA00732472 /* IFCMSFileDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 07B53B411D9967DA00732472 /* IFCMSFileDB.h */; };
 		07B53B441D9967DA00732472 /* IFCMSFileDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B53B421D9967DA00732472 /* IFCMSFileDB.m */; };
 		07B53B471D99688400732472 /* IFCMSFileset.h in Headers */ = {isa = PBXBuildFile; fileRef = 07B53B451D99688400732472 /* IFCMSFileset.h */; };
@@ -216,6 +218,8 @@
 		077AEF481D8013B900C5A2D9 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
 		077AEF491D8013B900C5A2D9 /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
 		077AEF4A1D8013B900C5A2D9 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
+		077C195D1D9C5A7D00783E9D /* IFContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentProvider.h; sourceTree = "<group>"; };
+		077C195E1D9C5A7E00783E9D /* IFContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContentProvider.m; sourceTree = "<group>"; };
 		07B53B411D9967DA00732472 /* IFCMSFileDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSFileDB.h; sourceTree = "<group>"; };
 		07B53B421D9967DA00732472 /* IFCMSFileDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSFileDB.m; sourceTree = "<group>"; };
 		07B53B451D99688400732472 /* IFCMSFileset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSFileset.h; sourceTree = "<group>"; };
@@ -482,6 +486,8 @@
 				07BC15351D835BAF0025FA12 /* IFContentAuthority.m */,
 				07BC15361D835BAF0025FA12 /* IFContentPath.h */,
 				07BC15371D835BAF0025FA12 /* IFContentPath.m */,
+				077C195D1D9C5A7D00783E9D /* IFContentProvider.h */,
+				077C195E1D9C5A7E00783E9D /* IFContentProvider.m */,
 				07BC15381D835BAF0025FA12 /* IFContentSchemeHandler.h */,
 				07BC15391D835BAF0025FA12 /* IFContentSchemeHandler.m */,
 				07BC153A1D835BAF0025FA12 /* IFContentURLProtocol.h */,
@@ -530,6 +536,7 @@
 				077AEF081D80125B00C5A2D9 /* IFFormOptionField.h in Headers */,
 				077AEEED1D80125B00C5A2D9 /* IFCommand.h in Headers */,
 				077AEF551D8013B900C5A2D9 /* PLResultSet.h in Headers */,
+				077C195F1D9C5A7E00783E9D /* IFContentProvider.h in Headers */,
 				077AEF541D8013B900C5A2D9 /* PLPreparedStatement.h in Headers */,
 				077AEF621D8013B900C5A2D9 /* SSKeychainQuery.h in Headers */,
 				077AEEF21D80125B00C5A2D9 /* IFDownloadZipCommand.h in Headers */,
@@ -715,6 +722,7 @@
 				077AEEEF1D80125B00C5A2D9 /* IFCommandProtocol.m in Sources */,
 				077AEF161D80125B00C5A2D9 /* IFContentTableViewController.m in Sources */,
 				077AEF0D1D80125B00C5A2D9 /* IFFormTextField.m in Sources */,
+				077C19601D9C5A7E00783E9D /* IFContentProvider.m in Sources */,
 				077AEEF71D80125B00C5A2D9 /* IFMvFileCommand.m in Sources */,
 				077AEF4C1D8013B900C5A2D9 /* PlausibleDatabase.m in Sources */,
 				07B53B481D99688400732472 /* IFCMSFileset.m in Sources */,

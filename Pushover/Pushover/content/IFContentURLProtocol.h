@@ -19,9 +19,6 @@
 #import <Foundation/Foundation.h>
 #import "IFContentAuthority.h"
 
-/// The format used for content container names in the app container namespace.
-#define IFContentAuthorityNameFormat (@"*content*.%@")
-
 /**
  * A content URL protocol handler.
  * Content URLs follow closely the pattern used for Android content URIs
@@ -36,9 +33,9 @@
 @interface IFContentURLProtocol : NSURLProtocol
 
 /**
- * Find a content container for the specified authority name.
- * Performs a lookup of named objects within the app container.
+ * Find a content authority instance for the specified authority name.
+ * Forwards the request to the IFContentProvider singleton instance.
  */
-+ (id<IFContentAuthority>)findContentContainerForAuthority:(NSString *)authority;
++ (id<IFContentAuthority>)findContentAuthorityForName:(NSString *)name;
 
 @end

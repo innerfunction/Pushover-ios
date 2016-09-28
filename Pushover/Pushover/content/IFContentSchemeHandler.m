@@ -30,7 +30,7 @@
         NSString *authority = [uri.name substringToIndex:range.location];
         NSString *path = [uri.name substringFromIndex:range.location + 1];
         // Find the content container.
-        id<IFContentAuthority> contentContainer = [IFContentURLProtocol findContentContainerForAuthority:authority];
+        id<IFContentAuthority> contentContainer = [IFContentURLProtocol findContentAuthorityForName:authority];
         if (contentContainer) {
             // Get the content.
             content = [contentContainer contentForAuthority:authority path:path parameters:params];

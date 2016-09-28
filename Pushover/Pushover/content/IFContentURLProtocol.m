@@ -17,7 +17,7 @@
 //
 
 #import "IFContentURLProtocol.h"
-#import "IFAppContainer.h"
+#import "IFContentProvider.h"
 
 @implementation IFContentURLProtocol
 
@@ -29,17 +29,12 @@
     return request;
 }
 
-+ (id<IFContentAuthority>)findContentContainerForAuthority:(NSString *)authority {
-    NSString *contentContainerName = [NSString stringWithFormat:IFContentAuthorityNameFormat, authority];
-    id named = [[IFAppContainer getAppContainer] getNamed:contentContainerName];
-    if ([named conformsToProtocol:@protocol(IFContentAuthority)]) {
-        return (id<IFContentAuthority>)named;
-    }
-    return  nil;
++ (id<IFContentAuthority>)findContentAuthorityForName:(NSString *)name {
+    return [[IFContentProvider getInstance] contentAuthorityForName:name];
 }
 
 - (void)startLoading {
-    id<IFContentAuthority> contentContainer = [IFContentURLProtocol findContentContainerForAuthority:self.request.URL.host];
+    id<IFContentAuthority> contentContainer = [IFContentURLProtocol findContentAuthorityForName:self.request.URL.host];
     if (contentContainer) {
         [contentContainer handleURLProtocolRequest:self];
     }
@@ -56,7 +51,7 @@
 }
 
 - (void)stopLoading {
-    [[IFContentURLProtocol findContentContainerForAuthority:self.request.URL.host] cancelURLProtocolRequest:self];
+    [[IFContentURLProtocol findContentAuthorityForName:self.request.URL.host] cancelURLProtocolRequest:self];
 }
 
 @end
