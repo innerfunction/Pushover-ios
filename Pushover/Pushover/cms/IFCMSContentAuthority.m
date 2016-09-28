@@ -16,7 +16,7 @@
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
-#import "IFCMSContentContainer.h"
+#import "IFCMSContentAuthority.h"
 #import "IFCMSFileset.h"
 #import "IFCMSFilesetCategoryPathRoot.h"
 
@@ -34,7 +34,7 @@
 // suitable, then how/where is the standard configuration template for a content-
 // container container specified?
 
-@implementation IFCMSContentContainer
+@implementation IFCMSContentAuthority
 - (id)init {
     self = [super init];
     if (self) {

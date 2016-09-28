@@ -17,14 +17,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFContentContainer.h"
-#import "IFCMSContentContainer.h"
+#import "IFContentAuthority.h"
+#import "IFCMSContentAuthority.h"
 
-@interface IFCMSFilesPathRoot : NSObject <IFContentContainerPathRoot> {
-    __weak IFCMSContentContainer *_container;
+@interface IFCMSFilesPathRoot : NSObject <IFContentAuthorityPathRoot> {
+    __weak IFCMSContentAuthority *_container;
     NSFileManager *_fileManager;
 }
 
-- (id)initWithContainer:(IFCMSContentContainer *)container;
+- (id)initWithContainer:(IFCMSContentAuthority *)container;
 
 @end

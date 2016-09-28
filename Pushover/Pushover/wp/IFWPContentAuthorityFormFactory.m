@@ -16,8 +16,8 @@
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
-#import "IFWPContentContainerFormFactory.h"
-#import "IFWPContentContainer.h"
+#import "IFWPContentAuthorityFormFactory.h"
+#import "IFWPContentAuthority.h"
 #import "IFFormViewController.h"
 #import "IFAppContainer.h"
 #import "NSDictionary+IF.h"
@@ -26,7 +26,7 @@
 
 @implementation IFWPContentLoginBehaviour
 
-- (id)initWithContainer:(IFWPContentContainer *)container loginAction:(NSString *)loginAction {
+- (id)initWithContainer:(IFWPContentAuthority *)container loginAction:(NSString *)loginAction {
     self = [super init];
     if (self) {
         _container = container;
@@ -44,7 +44,7 @@
 
 @end
 
-@implementation IFWPContentContainerFormFactory
+@implementation IFWPContentAuthorityFormFactory
 
 - (id)init {
     NSDictionary *baseConfiguration = @{

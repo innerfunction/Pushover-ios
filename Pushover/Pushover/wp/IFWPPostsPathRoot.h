@@ -17,11 +17,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFContentContainer.h"
+#import "IFContentAuthority.h"
 #import "IFWPPostDBAdapter.h"
 #import "IFHTTPClient.h"
 
-@interface IFWPPostsPathRoot : NSObject <IFContentContainerPathRoot> {
+@interface IFWPPostsPathRoot : NSObject <IFContentAuthorityPathRoot> {
     NSFileManager *_fileManager;
 }
 

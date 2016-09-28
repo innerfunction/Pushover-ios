@@ -17,10 +17,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFContentContainer.h"
+#import "IFContentAuthority.h"
 #import "IFWPPostDBAdapter.h"
 
-@interface IFWPSearchPathRoot : NSObject <IFContentContainerPathRoot>
+@interface IFWPSearchPathRoot : NSObject <IFContentAuthorityPathRoot>
 
 @property (nonatomic, weak) IFWPPostDBAdapter *postDBAdapter;
 

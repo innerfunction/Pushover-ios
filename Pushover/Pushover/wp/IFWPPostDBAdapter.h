@@ -17,7 +17,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFWPContentContainer.h"
+#import "IFWPContentAuthority.h"
 #import "IFIOCContainerAware.h"
 
 /**
@@ -25,7 +25,7 @@
  */
 @interface IFWPPostDBAdapter : NSObject <IFIOCContainerAware> {
     /// The content container.
-    IFWPContentContainer *_container;
+    IFWPContentAuthority *_container;
     /// The file manager.
     NSFileManager *_fileManager;
 }

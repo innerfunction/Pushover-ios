@@ -22,8 +22,8 @@
 #import "IFCommandScheduler.h"
 #import "IFIOCContainerAware.h"
 #import "IFIOCTypeInspectable.h"
-#import "IFAbstractContentContainer.h"
-#import "IFWPContentContainerFormFactory.h"
+#import "IFAbstractContentAuthority.h"
+#import "IFWPContentAuthorityFormFactory.h"
 #import "IFWPAuthManager.h"
 #import "IFMessageReceiver.h"
 #import "IFHTTPClient.h"
@@ -34,7 +34,7 @@
 @class IFWPPostsPathRoot;
 @class IFWPSearchPathRoot;
 
-@interface IFWPContentContainer : IFAbstractContentContainer <IFIOCContainerAware, IFMessageReceiver, IFIOCTypeInspectable> {
+@interface IFWPContentAuthority : IFAbstractContentAuthority <IFIOCContainerAware, IFMessageReceiver, IFIOCTypeInspectable> {
     // Container configuration template.
     IFConfiguration *_configTemplate;
     // Command scheduler for unpack and refresh operations.
@@ -79,7 +79,7 @@
 /** Template for generating post URIs. See uriForPostWithID: */
 @property (nonatomic, strong) NSString *postURITemplate;
 /** Factory for producing login and account management forms. */
-@property (nonatomic, strong, readonly) IFWPContentContainerFormFactory *formFactory;
+@property (nonatomic, strong, readonly) IFWPContentAuthorityFormFactory *formFactory;
 /** Map of pre-defined post filters, keyed by name. */
 @property (nonatomic, strong) NSDictionary *filters;
 /** An object to use as the template context when rendering the client template for a post. */

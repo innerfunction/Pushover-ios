@@ -17,17 +17,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFContentContainer.h"
+#import "IFContentAuthority.h"
 #import "IFContainer.h"
 
 /**
- * An abstract content container.
+ * An abstract content authority.
  * This class provides standard functionality needed to service requests from content URLs and URIs. It
  * automatically handles cancellation of NSURLProtocol requests. All requests are forwarded to the
  * [writeResponse: forAuthority: path: parameters:] method, and subclasses should override this method
  * with an implementation which resolves content data as appropriate for the request.
  */
-@interface IFAbstractContentContainer : IFContainer <IFContentContainer> {
+@interface IFAbstractContentAuthority : IFContainer <IFContentAuthority> {
     /// A set of live NSURL responses.
     NSMutableSet *_liveResponses;
 }

@@ -19,11 +19,11 @@
 #import <Foundation/Foundation.h>
 #import "IFWPSchemeHandler.h"
 #import "IFIOCContainerAware.h"
-#import "IFWPContentContainer.h"
+#import "IFWPContentAuthority.h"
 #import "GRMustache.h"
 
 @interface IFWPChildPostRendering : NSObject <IFIOCContainerAware, GRMustacheRendering> {
-    IFWPContentContainer *_contentContainer;
+    IFWPContentAuthority *_contentContainer;
 }
 
 @property (nonatomic, weak) IFWPSchemeHandler *schemeHandler;

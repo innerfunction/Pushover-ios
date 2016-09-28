@@ -16,12 +16,12 @@
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
-#import "IFAbstractContentContainer.h"
+#import "IFAbstractContentAuthority.h"
 #import "IFResource.h"
 #import "NSArray+IF.h"
 #import "IFCompoundURI.h"
 
-@interface IFNSURLProtocolResponse : NSObject <IFContentContainerResponse> {
+@interface IFNSURLProtocolResponse : NSObject <IFContentAuthorityResponse> {
     __weak NSMutableSet *_liveResponses;
     NSURLProtocol *_protocol;
 }
@@ -30,13 +30,13 @@
 
 @end
 
-@interface IFSchemeHandlerResponse : IFResource <IFContentContainerResponse> {
+@interface IFSchemeHandlerResponse : IFResource <IFContentAuthorityResponse> {
     NSMutableData *_buffer;
 }
 
 @end
 
-@implementation IFAbstractContentContainer
+@implementation IFAbstractContentAuthority
 
 - (id)init {
     self = [super init];
@@ -47,7 +47,7 @@
     return self;
 }
 
-#pragma mark - IFContentContainer
+#pragma mark - IFContentAuthority
 
 - (void)handleURLProtocolRequest:(NSURLProtocol *)protocol {
     [_liveResponses addObject:protocol];
@@ -82,14 +82,14 @@
     return response;
 }
 
-- (void)writeResponse:(id<IFContentContainerResponse>)response
+- (void)writeResponse:(id<IFContentAuthorityResponse>)response
          forAuthority:(NSString *)authority
                  path:(IFContentPath *)path
            parameters:(NSDictionary *)parameters {
     
     // Look-up a path root for the first path component, and if one is found then delegate the request to it.
     NSString *root = [path root];
-    id<IFContentContainerPathRoot> pathRoot = _pathRoots[root];
+    id<IFContentAuthorityPathRoot> pathRoot = _pathRoots[root];
     if (pathRoot) {
         // The path root only sees the rest of the path.
         path = [path rest];

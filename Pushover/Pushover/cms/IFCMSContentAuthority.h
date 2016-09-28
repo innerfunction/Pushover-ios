@@ -12,31 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Julian Goacher on 16/02/2016.
+//  Created by Julian Goacher on 13/09/2016.
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "IFIOCObjectFactoryBase.h"
-#import "IFURIHandling.h"
-#import "IFViewBehaviourObject.h"
+#import "IFAbstractContentAuthority.h"
+#import "IFCMSFileDB.h"
+#import "IFCMSFilesetCategoryPathRoot.h"
+#import "IFIOCConfigurationAware.h"
 
-@class IFWPContentContainer;
+@class IFCMSPostsPathRoot;
+@class IFCMSFilesPathRoot;
 
-@interface IFWPContentContainerFormFactory : IFIOCObjectFactoryBase {
-    NSDictionary *_stdParams;
-    NSUserDefaults *_userDefaults;
-}
+@interface IFCMSContentAuthority : IFAbstractContentAuthority <IFIOCConfigurationAware>
 
-@property (nonatomic, weak) IFWPContentContainer *container;
-
-@end
-
-@interface IFWPContentLoginBehaviour : IFViewBehaviourObject
-
-- (id)initWithContainer:(IFWPContentContainer *)container loginAction:(NSString *)loginAction;
-
-@property (nonatomic, weak) IFWPContentContainer *container;
-@property (nonatomic, strong) NSString *loginAction;
+@property (nonatomic, strong) NSString *dbName;
+@property (nonatomic, strong) IFCMSFileDB *db;
+@property (nonatomic, strong) IFCMSPostsPathRoot *postsPathRoot;
+@property (nonatomic, strong) IFCMSPostsPathRoot *pagesPathRoot;
 
 @end

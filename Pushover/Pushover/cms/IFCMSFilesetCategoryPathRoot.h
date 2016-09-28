@@ -17,29 +17,33 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFContentContainer.h"
+#import "IFContentAuthority.h"
 #import "IFDBORM.h"
 
 @class IFCMSFileset;
-@class IFCMSContentContainer;
+@class IFCMSContentAuthority;
 
 /**
  * A default path root implementation for access to a single category of fileset contents.
  */
-@interface IFCMSFilesetCategoryPathRoot : NSObject <IFContentContainerPathRoot> {
+@interface IFCMSFilesetCategoryPathRoot : NSObject <IFContentAuthorityPathRoot> {
     __weak IFDBORM *_orm;
 }
 
 /// The fileset being accessed.
 @property (nonatomic, weak) IFCMSFileset *fileset;
 /// The content container.
-@property (nonatomic, weak) IFCMSContentContainer *container;
+@property (nonatomic, weak) IFCMSContentAuthority *container;
 
 /// Initialize the path root with the specified fileset and content container.
-- (id)initWithFileset:(IFCMSFileset *)fileset container:(IFCMSContentContainer *)container;
+- (id)initWithFileset:(IFCMSFileset *)fileset container:(IFCMSContentAuthority *)container;
 /// Query the file database for entries in the current fileset.
 - (NSArray *)queryWithParameters:(NSDictionary *)parameters;
 /// Read a single entry from the file database.
 - (NSDictionary *)entryWithKey:(NSString *)key;
+/// Write a query response.
+- (void)writeQueryContent:(NSArray *)content asType:(NSString *)type toResponse:(id<IFContentAuthorityResponse>)response;
+/// Write an entry response.
+- (void)writeEntryContent:(NSDictionary *)content asType:(NSString *)type toResponse:(id<IFContentAuthorityResponse>)response;
 
 @end

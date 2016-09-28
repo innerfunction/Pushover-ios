@@ -19,7 +19,7 @@
 #import <Foundation/Foundation.h>
 #import "IFDB.h"
 #import "IFIOCContainerAware.h"
-#import "IFWPContentContainer.h"
+#import "IFWPContentAuthority.h"
 
 /**
  * Data context implementation for the client template.

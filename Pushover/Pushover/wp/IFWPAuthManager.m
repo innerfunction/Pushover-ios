@@ -17,7 +17,7 @@
 //
 
 #import "IFWPAuthManager.h"
-#import "IFWPContentContainer.h"
+#import "IFWPContentAuthority.h"
 #import "IFAppContainer.h"
 #import "Q.h"
 #import "SSKeyChain.h"

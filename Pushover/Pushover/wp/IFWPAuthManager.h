@@ -19,13 +19,13 @@
 #import <Foundation/Foundation.h>
 #import "IFHTTPClient.h"
 
-@class IFWPContentContainer;
+@class IFWPContentAuthority;
 
 @interface IFWPAuthManager : NSObject <IFHTTPClientAuthenticationDelegate> {
     NSUserDefaults *_userDefaults;
 }
 
-@property (nonatomic, weak) IFWPContentContainer *container;
+@property (nonatomic, weak) IFWPContentAuthority *container;
 @property (nonatomic, readonly) NSString *loginURL;
 @property (nonatomic, readonly) NSString *createAccountURL;
 @property (nonatomic, readonly) NSString *profileURL;

@@ -16,7 +16,7 @@
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
-#import "IFContentContainer.h"
+#import "IFContentAuthority.h"
 
 NSError *makePathNotFoundResponseError(NSString *path) {
     NSString *description = [NSString stringWithFormat:@"Path not found: %@", path];

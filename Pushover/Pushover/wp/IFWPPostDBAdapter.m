@@ -293,7 +293,7 @@ static IFLogger *Logger;
 #pragma mark = IFIOCContainerAware
 
 - (void)setIocContainer:(IFContainer *)iocContainer {
-    _container = (IFWPContentContainer *)iocContainer;
+    _container = (IFWPContentAuthority *)iocContainer;
 }
 
 - (IFContainer *)iocContainer {

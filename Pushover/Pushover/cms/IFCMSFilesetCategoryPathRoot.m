@@ -17,13 +17,13 @@
 //
 
 #import "IFCMSFilesetCategoryPathRoot.h"
-#import "IFCMSContentContainer.h"
+#import "IFCMSContentAuthority.h"
 #import "IFCMSFileset.h"
 #import "IFDBORM.h"
 
 @implementation IFCMSFilesetCategoryPathRoot
 
-- (id)initWithFileset:(IFCMSFileset *)fileset container:(IFCMSContentContainer *)container {
+- (id)initWithFileset:(IFCMSFileset *)fileset container:(IFCMSContentAuthority *)container {
     self = [super init];
     if (self) {
         self.fileset = fileset;
@@ -32,7 +32,7 @@
     return self;
 }
 
-- (void)setContainer:(IFCMSContentContainer *)container {
+- (void)setContainer:(IFCMSContentAuthority *)container {
     _orm = container.db.orm;
 }
 
@@ -63,17 +63,63 @@
     return [_orm selectKey:key mappings:_fileset.mappings];
 }
 
-#pragma mark - IFContentContainerPathRoot
+- (void)writeQueryContent:(NSArray *)content asType:(NSString *)type toResponse:(id<IFContentAuthorityResponse>)response {
+    // TODO post query processing by type derived from path extension.
+    [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
+}
 
-- (void)writeResponse:(id<IFContentContainerResponse>)response
+- (void)writeEntryContent:(NSDictionary *)content asType:(NSString *)type toResponse:(id<IFContentAuthorityResponse>)response {
+    
+    // NOTE Pushover CMS operation seems to be quite different to WP. Firstly, Pushover is
+    // foremost a file-based CMS, and the file DB is a list of available files (see the
+    // feed at http://semop.innerfunction.com/semop/0.1/updates/jloriente/gvg-test). This
+    // suggests that posts be treated quite differently; the post html file should possibly
+    // be generated completely server side, i.e. no client side template (this works with
+    // Jekyll because of the nature of its operation; a theme change results in all post
+    // files being modified, unlike with WP); and a posts table should be added as a 1:1
+    // relation with the files table, holding information like post title etc.. However
+    // note that this approach has a disadvantage - post content can't so easily be presented
+    // within a list without the page surround - so the question instead is whether there
+    // is an extensable, filesets-based method to add posts functionality to the basic
+    // file database.
+    
+    // NOTE an ambiguity with the .json type; if the file entry is for an actual JSON file,
+    // then should the contents of that file be returned (YES) or database record (NO). It
+    // means that a separate type is needed for the actual data results (.data? .podata?)
+    
+    // NOTE it would be useful to allow certain JSON data formats - e.g. configuration formats
+    // suitable for configuring a web view - to be specified with a content file extension -
+    // they could then be defined as formatters on the container - question is what extension
+    // names to use - and does this share any similarity with the previous point?
+    
+    // Return the result.
+    if (!type) {
+        [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
+    }
+    else {
+        NSString *path = content[@"path"];
+        if ([type isEqualToString:[path pathExtension]]) {
+            NSString *status = content[@"status"];
+            // Is file downloaded? -> return file contents
+            // Else -> download file, cache if appropriate, return file contents
+        }
+        else {
+            // Other conversions
+        }
+    }
+}
+
+#pragma mark - IFContentAuthorityPathRoot
+
+- (void)writeResponse:(id<IFContentAuthorityResponse>)response
          forAuthority:(NSString *)authority
                  path:(IFContentPath *)path
            parameters:(NSDictionary *)parameters {
     
     if ([path isEmpty]) {
+        NSString *type = [path ext];
         NSArray *content = [self queryWithParameters:parameters];
-        // TODO post query processing by type derived from path extension.
-        [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
+        [self writeQueryContent:content asType:type toResponse:response];
     }
     else if ([[path components] count] == 1) {
         // Content path specifies a resource. The resource identifier may be in the format
@@ -82,44 +128,8 @@
         NSString *type = [path ext];
 
         NSDictionary *entry = [self entryWithKey:key];
-    
-        // NOTE Pushover CMS operation seems to be quite different to WP. Firstly, Pushover is
-        // foremost a file-based CMS, and the file DB is a list of available files (see the
-        // feed at http://semop.innerfunction.com/semop/0.1/updates/jloriente/gvg-test). This
-        // suggests that posts be treated quite differently; the post html file should possibly
-        // be generated completely server side, i.e. no client side template (this works with
-        // Jekyll because of the nature of its operation; a theme change results in all post
-        // files being modified, unlike with WP); and a posts table should be added as a 1:1
-        // relation with the files table, holding information like post title etc.. However
-        // note that this approach has a disadvantage - post content can't so easily be presented
-        // within a list without the page surround - so the question instead is whether there
-        // is an extensable, filesets-based method to add posts functionality to the basic
-        // file database.
-        
-        // NOTE an ambiguity with the .json type; if the file entry is for an actual JSON file,
-        // then should the contents of that file be returned (YES) or database record (NO). It
-        // means that a separate type is needed for the actual data results (.data? .podata?)
-        
-        // NOTE it would be useful to allow certain JSON data formats - e.g. configuration formats
-        // suitable for configuring a web view - to be specified with a content file extension -
-        // they could then be defined as formatters on the container - question is what extension
-        // names to use - and does this share any similarity with the previous point?
-        
-        // Return the result.
-        if (!type) {
-            [response respondWithJSONData:entry cachePolicy:NSURLCacheStorageNotAllowed];
-        }
-        else {
-            NSString *path = entry[@"path"];
-            if ([type isEqualToString:[path pathExtension]]) {
-                NSString *status = entry[@"status"];
-                // Is file downloaded? -> return file contents
-                // Else -> download file, cache if appropriate, return file contents
-            }
-            else {
-                // Other conversions
-            }
-        }
+        [self writeEntryContent:entry asType:type toResponse:response];
+
     }
     else {
         // Invalid path.

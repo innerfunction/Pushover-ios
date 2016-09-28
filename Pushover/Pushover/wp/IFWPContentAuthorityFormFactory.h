@@ -12,24 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Julian Goacher on 13/09/2016.
+//  Created by Julian Goacher on 16/02/2016.
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "IFAbstractContentContainer.h"
-#import "IFCMSFileDB.h"
-#import "IFCMSFilesetCategoryPathRoot.h"
-#import "IFIOCConfigurationAware.h"
+#import "IFIOCObjectFactoryBase.h"
+#import "IFURIHandling.h"
+#import "IFViewBehaviourObject.h"
 
-@class IFCMSPostsPathRoot;
-@class IFCMSFilesPathRoot;
+@class IFWPContentAuthority;
 
-@interface IFCMSContentContainer : IFAbstractContentContainer <IFIOCConfigurationAware>
+@interface IFWPContentAuthorityFormFactory : IFIOCObjectFactoryBase {
+    NSDictionary *_stdParams;
+    NSUserDefaults *_userDefaults;
+}
 
-@property (nonatomic, strong) NSString *dbName;
-@property (nonatomic, strong) IFCMSFileDB *db;
-@property (nonatomic, strong) IFCMSPostsPathRoot *postsPathRoot;
-@property (nonatomic, strong) IFCMSPostsPathRoot *pagesPathRoot;
+@property (nonatomic, weak) IFWPContentAuthority *container;
+
+@end
+
+@interface IFWPContentLoginBehaviour : IFViewBehaviourObject
+
+- (id)initWithContainer:(IFWPContentAuthority *)container loginAction:(NSString *)loginAction;
+
+@property (nonatomic, weak) IFWPContentAuthority *container;
+@property (nonatomic, strong) NSString *loginAction;
 
 @end

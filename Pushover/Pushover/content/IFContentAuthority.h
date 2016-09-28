@@ -23,7 +23,7 @@
 /**
  * A class providing functionality for writing responses to content URL and URI requests.
  */
-@protocol IFContentContainerResponse <NSObject>
+@protocol IFContentAuthorityResponse <NSObject>
 
 /**
  * Respond with content data.
@@ -56,13 +56,13 @@
 
 @end
 
-@protocol IFContentContainerPathRoot <NSObject>
+@protocol IFContentAuthorityPathRoot <NSObject>
 
 /**
  * Resolve content data for the specified authority, path and parameters, and write the data to the provided
  * response object.
  */
-- (void)writeResponse:(id<IFContentContainerResponse>)response
+- (void)writeResponse:(id<IFContentAuthorityResponse>)response
          forAuthority:(NSString *)authority
                  path:(IFContentPath *)path
            parameters:(NSDictionary *)parameters;
@@ -72,7 +72,7 @@
 /**
  * A protocol to be implemented by containers which are capable of providing data to content URIs and URLs.
  */
-@protocol IFContentContainer <IFContentContainerPathRoot>
+@protocol IFContentAuthority <IFContentAuthorityPathRoot>
 
 /// Handle an NSURLProtocol originating request.
 - (void)handleURLProtocolRequest:(NSURLProtocol *)protocol;

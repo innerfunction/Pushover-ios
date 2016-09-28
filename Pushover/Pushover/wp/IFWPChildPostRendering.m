@@ -25,8 +25,8 @@
 }
 
 - (void)setIocContainer:(IFContainer *)iocContainer {
-    if ([iocContainer isKindOfClass:[IFWPContentContainer class]]) {
-        _contentContainer = (IFWPContentContainer *)iocContainer;
+    if ([iocContainer isKindOfClass:[IFWPContentAuthority class]]) {
+        _contentContainer = (IFWPContentAuthority *)iocContainer;
     }
 }
 

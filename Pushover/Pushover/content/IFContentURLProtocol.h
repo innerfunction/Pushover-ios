@@ -17,10 +17,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFContentContainer.h"
+#import "IFContentAuthority.h"
 
 /// The format used for content container names in the app container namespace.
-#define IFContentContainerNameFormat (@"*content*.%@")
+#define IFContentAuthorityNameFormat (@"*content*.%@")
 
 /**
  * A content URL protocol handler.
@@ -39,6 +39,6 @@
  * Find a content container for the specified authority name.
  * Performs a lookup of named objects within the app container.
  */
-+ (id<IFContentContainer>)findContentContainerForAuthority:(NSString *)authority;
++ (id<IFContentAuthority>)findContentContainerForAuthority:(NSString *)authority;
 
 @end

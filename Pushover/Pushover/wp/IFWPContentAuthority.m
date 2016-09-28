@@ -16,7 +16,7 @@
 //  Copyright © 2015 InnerFunction. All rights reserved.
 //
 
-#import "IFWPContentContainer.h"
+#import "IFWPContentAuthority.h"
 #import "IFAppContainer.h"
 #import "IFNamedScheme.h"
 #import "IFDataTableFormatter.h"
@@ -32,12 +32,12 @@
 
 static IFLogger *Logger;
 
-@implementation IFWPContentContainer
+@implementation IFWPContentAuthority
 
 @synthesize iocContainer=_iocContainer;
 
 + (void)initialize {
-    Logger = [[IFLogger alloc] initWithTag:@"IFWPContentContainer"];
+    Logger = [[IFLogger alloc] initWithTag:@"IFWPContentAuthority"];
 }
 
 - (id)init {

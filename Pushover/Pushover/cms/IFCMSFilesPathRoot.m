@@ -20,7 +20,7 @@
 
 @implementation IFCMSFilesPathRoot
 
-- (id)initWithContainer:(IFCMSContentContainer *)container {
+- (id)initWithContainer:(IFCMSContentAuthority *)container {
     self = [super init];
     if (self) {
         _container = container;
@@ -29,9 +29,9 @@
     return self;
 }
 
-#pragma mark - IFContentContainerPathRoot
+#pragma mark - IFContentAuthorityPathRoot
 
-- (void)writeResponse:(id<IFContentContainerResponse>)response
+- (void)writeResponse:(id<IFContentAuthorityResponse>)response
          forAuthority:(NSString *)authority
                  path:(IFContentPath *)path
            parameters:(NSDictionary *)params {

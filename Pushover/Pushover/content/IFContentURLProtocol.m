@@ -29,17 +29,17 @@
     return request;
 }
 
-+ (id<IFContentContainer>)findContentContainerForAuthority:(NSString *)authority {
-    NSString *contentContainerName = [NSString stringWithFormat:IFContentContainerNameFormat, authority];
++ (id<IFContentAuthority>)findContentContainerForAuthority:(NSString *)authority {
+    NSString *contentContainerName = [NSString stringWithFormat:IFContentAuthorityNameFormat, authority];
     id named = [[IFAppContainer getAppContainer] getNamed:contentContainerName];
-    if ([named conformsToProtocol:@protocol(IFContentContainer)]) {
-        return (id<IFContentContainer>)named;
+    if ([named conformsToProtocol:@protocol(IFContentAuthority)]) {
+        return (id<IFContentAuthority>)named;
     }
     return  nil;
 }
 
 - (void)startLoading {
-    id<IFContentContainer> contentContainer = [IFContentURLProtocol findContentContainerForAuthority:self.request.URL.host];
+    id<IFContentAuthority> contentContainer = [IFContentURLProtocol findContentContainerForAuthority:self.request.URL.host];
     if (contentContainer) {
         [contentContainer handleURLProtocolRequest:self];
     }
