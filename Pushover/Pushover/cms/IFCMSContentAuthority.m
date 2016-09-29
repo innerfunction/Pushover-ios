@@ -35,10 +35,12 @@
 // container container specified?
 
 @implementation IFCMSContentAuthority
+
 - (id)init {
     self = [super init];
     if (self) {
         _dbName = @""; // TODO Should be derived from authority name.
+        _db = [IFCMSFileDB new];
         id template = @{
             @"fileDB": @{
                 @"name":    @"$dbName",
@@ -122,13 +124,13 @@
                         @"cache":           @"app"
                     }
                 }
-            },
-            @"pathRoots": @{
-                @"posts":   @"@named:postsPathRoot",
-                @"pages":   @"@named:pagesPathRoot",
-                @"files":   @"@named:filesPathRoot"
             }
         };
+        self.pathRoots = [[NSMutableDictionary alloc] initWithDictionary:@{
+            @"posts":   [IFCMSPostsPathRoot new],
+            @"pages":   [IFCMSPostsPathRoot new],
+            @"files":   [IFCMSFilesPathRoot new]
+        }];
     }
     return self;
 }

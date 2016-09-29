@@ -32,8 +32,8 @@
 
 /// The fileset being accessed.
 @property (nonatomic, weak) IFCMSFileset *fileset;
-/// The content container.
-@property (nonatomic, weak) IFCMSContentAuthority *container;
+/// The content authority.
+@property (nonatomic, weak) IFCMSContentAuthority *authority;
 
 /// Initialize the path root with the specified fileset and content container.
 - (id)initWithFileset:(IFCMSFileset *)fileset container:(IFCMSContentAuthority *)container;

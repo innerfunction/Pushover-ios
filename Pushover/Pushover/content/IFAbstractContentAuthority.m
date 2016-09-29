@@ -38,6 +38,8 @@
 
 @implementation IFAbstractContentAuthority
 
+@synthesize provider;
+
 - (id)init {
     self = [super init];
     if (self) {
@@ -104,6 +106,12 @@
         NSError *error = makePathNotFoundResponseError([path fullPath]);
         [response respondWithError:error];
     }
+}
+
+#pragma mark - IFIOCObjectAware
+
+- (void)notifyIOCObject:(id)object propertyName:(NSString *)propertyName {
+    self.authorityName = propertyName;
 }
 
 @end

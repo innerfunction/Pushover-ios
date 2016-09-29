@@ -123,10 +123,9 @@
 		07BC15591D8851A90025FA12 /* IFCMSCommandProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC15571D8851A90025FA12 /* IFCMSCommandProtocol.m */; };
 		07BC155C1D8852380025FA12 /* IFCMSContentAuthority.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BC155A1D8852380025FA12 /* IFCMSContentAuthority.h */; };
 		07BC155D1D8852380025FA12 /* IFCMSContentAuthority.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC155B1D8852380025FA12 /* IFCMSContentAuthority.m */; };
-		07BC15601D8855C90025FA12 /* IFCMSFilesPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BC155E1D8855C90025FA12 /* IFCMSFilesPathRoot.h */; };
-		07BC15611D8855C90025FA12 /* IFCMSFilesPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC155F1D8855C90025FA12 /* IFCMSFilesPathRoot.m */; };
 		07BC15701D8C42F20025FA12 /* IFDBORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BC156E1D8C42F20025FA12 /* IFDBORM.h */; };
 		07BC15711D8C42F20025FA12 /* IFDBORM.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BC156F1D8C42F20025FA12 /* IFDBORM.m */; };
+		07C1766E1D9D20DD005472B0 /* IFContentTypeConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07C1766D1D9D20DD005472B0 /* IFContentTypeConverter.h */; };
 		07D7611E1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D7611C1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.h */; };
 		07D7611F1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D7611D1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m */; };
 		184D817FC98DD2B9983F7E3C /* libPods-Pushover.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E62C7B947E8F970ADD1B041 /* libPods-Pushover.a */; };
@@ -250,10 +249,9 @@
 		07BC15571D8851A90025FA12 /* IFCMSCommandProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSCommandProtocol.m; sourceTree = "<group>"; };
 		07BC155A1D8852380025FA12 /* IFCMSContentAuthority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSContentAuthority.h; sourceTree = "<group>"; };
 		07BC155B1D8852380025FA12 /* IFCMSContentAuthority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSContentAuthority.m; sourceTree = "<group>"; };
-		07BC155E1D8855C90025FA12 /* IFCMSFilesPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSFilesPathRoot.h; sourceTree = "<group>"; };
-		07BC155F1D8855C90025FA12 /* IFCMSFilesPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSFilesPathRoot.m; sourceTree = "<group>"; };
 		07BC156E1D8C42F20025FA12 /* IFDBORM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDBORM.h; sourceTree = "<group>"; };
 		07BC156F1D8C42F20025FA12 /* IFDBORM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDBORM.m; sourceTree = "<group>"; };
+		07C1766D1D9D20DD005472B0 /* IFContentTypeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentTypeConverter.h; sourceTree = "<group>"; };
 		07D7611C1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSFilesetCategoryPathRoot.h; sourceTree = "<group>"; };
 		07D7611D1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSFilesetCategoryPathRoot.m; sourceTree = "<group>"; };
 		0E62C7B947E8F970ADD1B041 /* libPods-Pushover.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pushover.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -322,8 +320,6 @@
 				07B53B461D99688400732472 /* IFCMSFileset.m */,
 				07D7611C1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.h */,
 				07D7611D1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m */,
-				07BC155E1D8855C90025FA12 /* IFCMSFilesPathRoot.h */,
-				07BC155F1D8855C90025FA12 /* IFCMSFilesPathRoot.m */,
 			);
 			path = cms;
 			sourceTree = "<group>";
@@ -490,6 +486,7 @@
 				077C195E1D9C5A7E00783E9D /* IFContentProvider.m */,
 				07BC15381D835BAF0025FA12 /* IFContentSchemeHandler.h */,
 				07BC15391D835BAF0025FA12 /* IFContentSchemeHandler.m */,
+				07C1766D1D9D20DD005472B0 /* IFContentTypeConverter.h */,
 				07BC153A1D835BAF0025FA12 /* IFContentURLProtocol.h */,
 				07BC153B1D835BAF0025FA12 /* IFContentURLProtocol.m */,
 				07BC154A1D86EB290025FA12 /* IFDataTableFormatter.h */,
@@ -559,7 +556,6 @@
 				077AEF191D80125B00C5A2D9 /* IFDataFormatter.h in Headers */,
 				077AEF021D80125B00C5A2D9 /* IFFormField.h in Headers */,
 				07BC153C1D835BAF0025FA12 /* IFAbstractContentAuthority.h in Headers */,
-				07BC15601D8855C90025FA12 /* IFCMSFilesPathRoot.h in Headers */,
 				077AEF5E1D8013B900C5A2D9 /* PLSqliteResultSet.h in Headers */,
 				077AEEEE1D80125B00C5A2D9 /* IFCommandProtocol.h in Headers */,
 				077AEF4B1D8013B900C5A2D9 /* PlausibleDatabase.h in Headers */,
@@ -573,6 +569,7 @@
 				07BC155C1D8852380025FA12 /* IFCMSContentAuthority.h in Headers */,
 				077AEF0C1D80125B00C5A2D9 /* IFFormTextField.h in Headers */,
 				077AEF061D80125B00C5A2D9 /* IFFormImageField.h in Headers */,
+				07C1766E1D9D20DD005472B0 /* IFContentTypeConverter.h in Headers */,
 				07BC15541D8753A70025FA12 /* IFWPLicenceBehaviour.h in Headers */,
 				07D7611E1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.h in Headers */,
 				07BC15481D86C3260025FA12 /* IFWPSearchPathRoot.h in Headers */,
@@ -696,7 +693,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				07BC153D1D835BAF0025FA12 /* IFAbstractContentAuthority.m in Sources */,
-				07BC15611D8855C90025FA12 /* IFCMSFilesPathRoot.m in Sources */,
 				077AEF211D80125B00C5A2D9 /* IFWPChildPostRendering.m in Sources */,
 				07BC15711D8C42F20025FA12 /* IFDBORM.m in Sources */,
 				07D7611F1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m in Sources */,

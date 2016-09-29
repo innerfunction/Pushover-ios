@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Julian Goacher on 13/09/2016.
+//  Created by Julian Goacher on 29/09/2016.
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import "IFContentAuthority.h"
-#import "IFCMSContentAuthority.h"
 
-@interface IFCMSFilesPathRoot : NSObject <IFContentAuthorityPathRoot> {
-    __weak IFCMSContentAuthority *_container;
-    NSFileManager *_fileManager;
-}
+/**
+ * A protocol implemented by classes which can convert content data to some output format.
+ */
+@protocol IFContentTypeConverter <NSObject>
 
-- (id)initWithContainer:(IFCMSContentAuthority *)container;
+/// Convert some content to the output format, and write to the specified response object.
+- writeContent:(id)content toResponse:(id<IFContentAuthorityResponse>)response;
 
 @end

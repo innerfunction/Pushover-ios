@@ -18,7 +18,10 @@
 
 #import <Foundation/Foundation.h>
 #import "IFContentAuthority.h"
+#import "IFIOCObjectAware.h"
 #import "IFContainer.h"
+
+// TODO Does this class need to extend IFContainer any more?
 
 /**
  * An abstract content authority.
@@ -27,11 +30,13 @@
  * [writeResponse: forAuthority: path: parameters:] method, and subclasses should override this method
  * with an implementation which resolves content data as appropriate for the request.
  */
-@interface IFAbstractContentAuthority : IFContainer <IFContentAuthority> {
+@interface IFAbstractContentAuthority : IFContainer <IFContentAuthority, IFIOCObjectAware> {
     /// A set of live NSURL responses.
     NSMutableSet *_liveResponses;
 }
 
+/// The authority name the class instance is bound to.
+@property (nonatomic, strong) NSString *authorityName;
 /// A map of addressable path roots. For example, given the path files/all, the path root is 'files'.
 @property (nonatomic, strong) NSMutableDictionary *pathRoots;
 

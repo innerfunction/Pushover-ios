@@ -25,11 +25,20 @@
 @class IFCMSPostsPathRoot;
 @class IFCMSFilesPathRoot;
 
+/**
+ * A content authority which sources its content from a Pushover CMS
+ */
 @interface IFCMSContentAuthority : IFAbstractContentAuthority <IFIOCConfigurationAware>
 
 @property (nonatomic, strong) NSString *dbName;
 @property (nonatomic, strong) IFCMSFileDB *db;
 @property (nonatomic, strong) IFCMSPostsPathRoot *postsPathRoot;
 @property (nonatomic, strong) IFCMSPostsPathRoot *pagesPathRoot;
+/// The CMS base URL.
+@property (nonatomic, strong) NSString *cmsBaseURL;
+/// A map of available content record type converters.
+@property (nonatomic, strong) NSDictionary *recordTypes;
+/// A map of available content query type converters.
+@property (nonatomic, strong) NSDictionary *queryTypes;
 
 @end

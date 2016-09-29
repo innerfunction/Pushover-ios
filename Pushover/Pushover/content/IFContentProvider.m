@@ -1,6 +1,16 @@
+// Copyright 2016 InnerFunction Ltd.
 //
-//  IFContentProvider.m
-//  Pushover
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Julian Goacher on 28/09/2016.
 //  Copyright © 2016 InnerFunction. All rights reserved.
@@ -15,6 +25,7 @@
     self = [super init];
     if (self) {
         _commandScheduler = [IFCommandScheduler new];
+        _commandScheduler.queueDBName = @"po.commandqueue";
         _httpClient = [IFHTTPClient new];
     }
     return self;
@@ -24,9 +35,7 @@
     _authorities = authorities;
     for (id name in [authorities keyEnumerator]) {
         id<IFContentAuthority> authority = _authorities[name];
-        // TODO Pass scheduler & http client instances to authority here?
-        // TODO Or just pass a reference to this provider?
-        // TODO Or is there some way to do this using scffld?
+        authority.contentProvider = self;
     }
 }
 

@@ -17,6 +17,7 @@
 //
 
 #import "IFWPContentAuthority.h"
+#import "IFContentProvider.h"
 #import "IFAppContainer.h"
 #import "IFNamedScheme.h"
 #import "IFDataTableFormatter.h"
@@ -106,6 +107,7 @@ static IFLogger *Logger;
             @"clientTemplateContext": @{
                 @"*ios-class":              @"IFWPClientTemplateContext",
             },
+            /*
             @"commandScheduler": @{
                 @"*ios-class":              @"IFCommandScheduler"
             },
@@ -115,6 +117,7 @@ static IFLogger *Logger;
                     @"container":           @"@named:*container"
                 }
             },
+            */
             @"formFactory": @{
                 @"container":               @"@named:*container"
             },
@@ -171,17 +174,25 @@ static IFLogger *Logger;
     _postFormats = [_postFormats extendWith:postFormats];
 }
 
+- (void)setProvider:(IFContentProvider *)contentProvider {
+    super.provider = contentProvider;
+    _commandScheduler = contentProvider.commandScheduler;
+    self.httpClient = contentProvider.httpClient;
+}
+    
 #pragma mark - Instance methods
 
 - (void)unpackPackagedContent {
     NSInteger count = [_postDB countInTable:@"posts" where:@"1 = 1"];
     if (count == 0) {
-        [_commandScheduler appendCommand:@"content.unpack"];// -packagedContentPath %@", _packagedContentPath];
+        NSString *cmd = [NSString stringWithFormat:@"%@.unpack", self.authorityName];
+        [_commandScheduler appendCommand:cmd];// -packagedContentPath %@", _packagedContentPath];
     }
 }
 
 - (void)refreshContent {
-    [_commandScheduler appendCommand:@"content.refresh"];
+    NSString *cmd = [NSString stringWithFormat:@"%@.refresh", self.authorityName];
+    [_commandScheduler appendCommand:cmd];
     [_commandScheduler executeQueue];
 }
 
@@ -241,9 +252,9 @@ static IFLogger *Logger;
     [self configureWith:componentConfig];
 
     // Configure the command scheduler.
-    _commandScheduler.queueDBName = [NSString stringWithFormat:@"%@.scheduler", _postDBName];
     if (_contentCommandProtocol) {
-        _commandScheduler.commands = @{ @"content": _contentCommandProtocol };
+        // The authority's commands accessed using the authority name as prefix.
+        _commandScheduler.commands = @{ self.authorityName: _contentCommandProtocol };
     }
     
     IFGetURLCommand *getCmd = [[IFGetURLCommand alloc] initWithHTTPClient:_httpClient];

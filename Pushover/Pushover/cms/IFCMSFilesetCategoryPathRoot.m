@@ -17,9 +17,12 @@
 //
 
 #import "IFCMSFilesetCategoryPathRoot.h"
+#import "IFContentProvider.h"
 #import "IFCMSContentAuthority.h"
 #import "IFCMSFileset.h"
+#import "IFContentTypeConverter.h"
 #import "IFDBORM.h"
+#import "IFHTTPClient.h"
 
 @implementation IFCMSFilesetCategoryPathRoot
 
@@ -27,12 +30,12 @@
     self = [super init];
     if (self) {
         self.fileset = fileset;
-        self.container = container;
+        self.authority = container;
     }
     return self;
 }
 
-- (void)setContainer:(IFCMSContentAuthority *)container {
+- (void)setAuthority:(IFCMSContentAuthority *)container {
     _orm = container.db.orm;
 }
 
@@ -64,48 +67,78 @@
 }
 
 - (void)writeQueryContent:(NSArray *)content asType:(NSString *)type toResponse:(id<IFContentAuthorityResponse>)response {
-    // TODO post query processing by type derived from path extension.
-    [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
+    if (type) {
+        id<IFContentTypeConverter> typeConverter = self.authority.queryTypes[type];
+        if (typeConverter) {
+            [typeConverter writeContent:content toResponse:response];
+        }
+        else {
+            [response respondWithError:makeUnsupportedTypeResponseError(type)];
+        }
+    }
+    else {
+        [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
+    }
 }
 
 - (void)writeEntryContent:(NSDictionary *)content asType:(NSString *)type toResponse:(id<IFContentAuthorityResponse>)response {
-    
-    // NOTE Pushover CMS operation seems to be quite different to WP. Firstly, Pushover is
-    // foremost a file-based CMS, and the file DB is a list of available files (see the
-    // feed at http://semop.innerfunction.com/semop/0.1/updates/jloriente/gvg-test). This
-    // suggests that posts be treated quite differently; the post html file should possibly
-    // be generated completely server side, i.e. no client side template (this works with
-    // Jekyll because of the nature of its operation; a theme change results in all post
-    // files being modified, unlike with WP); and a posts table should be added as a 1:1
-    // relation with the files table, holding information like post title etc.. However
-    // note that this approach has a disadvantage - post content can't so easily be presented
-    // within a list without the page surround - so the question instead is whether there
-    // is an extensable, filesets-based method to add posts functionality to the basic
-    // file database.
-    
-    // NOTE an ambiguity with the .json type; if the file entry is for an actual JSON file,
-    // then should the contents of that file be returned (YES) or database record (NO). It
-    // means that a separate type is needed for the actual data results (.data? .podata?)
-    
-    // NOTE it would be useful to allow certain JSON data formats - e.g. configuration formats
-    // suitable for configuring a web view - to be specified with a content file extension -
-    // they could then be defined as formatters on the container - question is what extension
-    // names to use - and does this share any similarity with the previous point?
-    
-    // Return the result.
-    if (!type) {
-        [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
-    }
-    else {
-        NSString *path = content[@"path"];
-        if ([type isEqualToString:[path pathExtension]]) {
-            NSString *status = content[@"status"];
-            // Is file downloaded? -> return file contents
-            // Else -> download file, cache if appropriate, return file contents
+    if (type) {
+        id<IFContentTypeConverter> typeConverter = self.authority.recordTypes[type];
+        if (typeConverter) {
+            [typeConverter writeContent:content toResponse:response];
         }
         else {
-            // Other conversions
+            // No specific type converter found.
+            // Check if the content file type is compatible with the requested type.
+            NSString *path = content[@"path"];
+            if ([type isEqualToString:[path pathExtension]]) {
+                NSString *mimeType = @"TODO";
+                NSString *url = [self.authority.cmsBaseURL stringByAppendingPathComponent:path];
+                NSString *cachePath = [self.fileset.path stringByAppendingPathComponent:content[@"path"]];
+                BOOL cachable = [self.fileset cachable];
+                // Check if a local copy of the file exists in the cache.
+                if (cachable && [[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                    // Local copy found, respond with contents.
+                    [response respondWithFileData:cachePath
+                                         mimeType:mimeType
+                                      cachePolicy:NSURLCacheStorageNotAllowed];
+                }
+                else {
+                    // No local copy found, so download from server.
+                    IFHTTPClient *httpClient = self.authority.provider.httpClient;
+                    [httpClient getFile:url]
+                    .then((id)^(IFHTTPClientResponse *httpResponse) {
+                        NSString *downloadPath = [httpResponse.downloadLocation path];
+                        NSError *error = nil;
+                        // If cachable then move file to cache.
+                        if (cachable) {
+                            [[NSFileManager defaultManager] moveItemAtPath:downloadPath
+                                                                    toPath:cachePath
+                                                                     error:&error];
+                        }
+                        if (error) {
+                            [response respondWithError:error];
+                        }
+                        else {
+                            // Respond with file contents.
+                            NSString *contentPath = cachable ? cachePath : downloadPath;
+                            [response respondWithFileData:contentPath
+                                                 mimeType:mimeType
+                                              cachePolicy:NSURLCacheStorageNotAllowed];
+                        }
+                    })
+                    .fail(^(id error) {
+                        // TODO
+                    });
+                }
+            }
+            else {
+                [response respondWithError:makeUnsupportedTypeResponseError(type)];
+            }
         }
+    }
+    else {
+        [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
     }
 }
 

@@ -20,6 +20,8 @@
 #import "IFCompoundURI.h"
 #import "IFContentPath.h"
 
+@class IFContentProvider;
+
 /**
  * A class providing functionality for writing responses to content URL and URI requests.
  */
@@ -74,6 +76,9 @@
  */
 @protocol IFContentAuthority <IFContentAuthorityPathRoot>
 
+/// The content provider the authority belongs to.
+@property (nonatomic, weak) IFContentProvider *provider;
+
 /// Handle an NSURLProtocol originating request.
 - (void)handleURLProtocolRequest:(NSURLProtocol *)protocol;
 /// Cancel an NSURLProtocol request currently being processed by the container.
@@ -86,4 +91,6 @@
 NSError *makePathNotFoundResponseError(NSString *path);
 
 NSError *makeInvalidPathResponseError(NSString *path);
+
+NSError *makeUnsupportedTypeResponseError(NSString *type);
 

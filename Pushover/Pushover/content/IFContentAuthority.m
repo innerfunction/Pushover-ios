@@ -35,3 +35,12 @@ NSError *makeInvalidPathResponseError(NSString *path) {
                                      userInfo:@{ NSLocalizedDescriptionKey: description }];
     return error;
 }
+
+NSError *makeUnsupportedTypeResponseError(NSString *type) {
+    NSString *description = [NSString stringWithFormat:@"Unsupported type: %@", type];
+    // See http://nshipster.com/nserror/
+    NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                         code:NSURLErrorResourceUnavailable
+                                     userInfo:@{ NSLocalizedDescriptionKey: description }];
+    return error;
+}
