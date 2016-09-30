@@ -23,6 +23,7 @@
 #import "IFContentTypeConverter.h"
 #import "IFDBORM.h"
 #import "IFHTTPClient.h"
+#import "IFMIMETypes.h"
 
 @implementation IFCMSFilesetCategoryPathRoot
 
@@ -92,7 +93,7 @@
             // Check if the content file type is compatible with the requested type.
             NSString *path = content[@"path"];
             if ([type isEqualToString:[path pathExtension]]) {
-                NSString *mimeType = @"TODO";
+                NSString *mimeType = [IFMIMETypes mimeTypeForType:type];
                 NSString *url = [self.authority.cmsBaseURL stringByAppendingPathComponent:path];
                 NSString *cachePath = [self.fileset.path stringByAppendingPathComponent:content[@"path"]];
                 BOOL cachable = [self.fileset cachable];

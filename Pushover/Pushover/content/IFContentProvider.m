@@ -35,7 +35,7 @@
     _authorities = authorities;
     for (id name in [authorities keyEnumerator]) {
         id<IFContentAuthority> authority = _authorities[name];
-        authority.contentProvider = self;
+        authority.provider = self;
     }
 }
 

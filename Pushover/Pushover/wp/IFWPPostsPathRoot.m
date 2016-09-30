@@ -18,11 +18,10 @@
 
 #import "IFWPPostsPathRoot.h"
 #import "IFAbstractContentAuthority.h"
+#import "IFMIMETypes.h"
 
 @interface IFWPPostsPathRoot()
 
-/// Return the MIME type for a specified request type.
-NSString *mimeTypeForType(NSString *type);
 /// Return an NSError object generated from the function argument.
 NSError *errorFromResponseError(id error);
 
@@ -127,7 +126,7 @@ NSError *errorFromResponseError(id error);
                 [response respondWithStringData:url mimeType:@"text/url" cachePolicy:NSURLCacheStorageNotAllowed];
             }
             else if (type) {
-                NSString *mimeType = mimeTypeForType(type);
+                NSString *mimeType = [IFMIMETypes mimeTypeForType:type];
                 NSString *location = postData[@"location"];
                 if ([@"packaged" isEqualToString:location]) {
                     // This is used for content which is packaged with the app, and which is unpacked to a
@@ -212,25 +211,6 @@ NSError *errorFromResponseError(id error);
             [response respondWithError:makeInvalidPathResponseError([path fullPath])];
         }
     }
-}
-
-NSString *mimeTypeForType(NSString *type) {
-    if ([@"html" isEqualToString:type]) {
-        return @"text/html";
-    }
-    if ([@"json" isEqualToString:type]) {
-        return @"application/json";
-    }
-    if ([@"png" isEqualToString:type]) {
-        return @"image/png";
-    }
-    if ([@"jpg" isEqualToString:type] || [@"jpeg" isEqualToString:type]) {
-        return @"image/jpeg";
-    }
-    if ([@"gif" isEqualToString:type]) {
-        return @"image/gif";
-    }
-    return @"application/octet-stream";
 }
 
 NSError *errorFromResponseError(id responseError) {

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0753D5891D9E88E1009D8784 /* IFMIMETypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 0753D5871D9E88E1009D8784 /* IFMIMETypes.h */; };
+		0753D58A1D9E88E1009D8784 /* IFMIMETypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 0753D5881D9E88E1009D8784 /* IFMIMETypes.m */; };
+		0753D58D1D9E8D9E009D8784 /* IFCMSPostsPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 0753D58B1D9E8D9E009D8784 /* IFCMSPostsPathRoot.h */; };
+		0753D58E1D9E8D9E009D8784 /* IFCMSPostsPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0753D58C1D9E8D9E009D8784 /* IFCMSPostsPathRoot.m */; };
 		077AEEED1D80125B00C5A2D9 /* IFCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 077AEEA51D80125B00C5A2D9 /* IFCommand.h */; };
 		077AEEEE1D80125B00C5A2D9 /* IFCommandProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 077AEEA61D80125B00C5A2D9 /* IFCommandProtocol.h */; };
 		077AEEEF1D80125B00C5A2D9 /* IFCommandProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 077AEEA71D80125B00C5A2D9 /* IFCommandProtocol.m */; };
@@ -132,6 +136,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0753D5871D9E88E1009D8784 /* IFMIMETypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFMIMETypes.h; sourceTree = "<group>"; };
+		0753D5881D9E88E1009D8784 /* IFMIMETypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFMIMETypes.m; sourceTree = "<group>"; };
+		0753D58B1D9E8D9E009D8784 /* IFCMSPostsPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSPostsPathRoot.h; sourceTree = "<group>"; };
+		0753D58C1D9E8D9E009D8784 /* IFCMSPostsPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSPostsPathRoot.m; sourceTree = "<group>"; };
 		077AEDDB1D7F1D2500C5A2D9 /* Pushover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pushover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		077AEEA51D80125B00C5A2D9 /* IFCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCommand.h; sourceTree = "<group>"; };
 		077AEEA61D80125B00C5A2D9 /* IFCommandProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCommandProtocol.h; sourceTree = "<group>"; };
@@ -320,6 +328,8 @@
 				07B53B461D99688400732472 /* IFCMSFileset.m */,
 				07D7611C1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.h */,
 				07D7611D1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m */,
+				0753D58B1D9E8D9E009D8784 /* IFCMSPostsPathRoot.h */,
+				0753D58C1D9E8D9E009D8784 /* IFCMSPostsPathRoot.m */,
 			);
 			path = cms;
 			sourceTree = "<group>";
@@ -493,6 +503,8 @@
 				07BC154B1D86EB290025FA12 /* IFDataTableFormatter.m */,
 				07BC154C1D86EB290025FA12 /* IFDataWebviewFormatter.h */,
 				07BC154D1D86EB290025FA12 /* IFDataWebviewFormatter.m */,
+				0753D5871D9E88E1009D8784 /* IFMIMETypes.h */,
+				0753D5881D9E88E1009D8784 /* IFMIMETypes.m */,
 			);
 			path = content;
 			sourceTree = "<group>";
@@ -523,6 +535,7 @@
 			files = (
 				077AEF4E1D8013B900C5A2D9 /* PLDatabaseConnectionProvider.h in Headers */,
 				077AEF101D80125B00C5A2D9 /* IFFormViewController.h in Headers */,
+				0753D58D1D9E8D9E009D8784 /* IFCMSPostsPathRoot.h in Headers */,
 				077AEF151D80125B00C5A2D9 /* IFContentTableViewController.h in Headers */,
 				07BC15421D835BAF0025FA12 /* IFContentSchemeHandler.h in Headers */,
 				07BC15401D835BAF0025FA12 /* IFContentPath.h in Headers */,
@@ -584,6 +597,7 @@
 				077AEF201D80125B00C5A2D9 /* IFWPChildPostRendering.h in Headers */,
 				077AEF141D80125B00C5A2D9 /* Pushover.h in Headers */,
 				07BC154E1D86EB290025FA12 /* IFDataTableFormatter.h in Headers */,
+				0753D5891D9E88E1009D8784 /* IFMIMETypes.h in Headers */,
 				077AEF041D80125B00C5A2D9 /* IFFormHiddenField.h in Headers */,
 				077AEF1E1D80125B00C5A2D9 /* IFWPAuthManager.h in Headers */,
 				077AEF581D8013B900C5A2D9 /* PLSqliteDatabase.h in Headers */,
@@ -696,6 +710,7 @@
 				077AEF211D80125B00C5A2D9 /* IFWPChildPostRendering.m in Sources */,
 				07BC15711D8C42F20025FA12 /* IFDBORM.m in Sources */,
 				07D7611F1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m in Sources */,
+				0753D58E1D9E8D9E009D8784 /* IFCMSPostsPathRoot.m in Sources */,
 				077AEEF11D80125B00C5A2D9 /* IFCommandScheduler.m in Sources */,
 				077AEF631D8013B900C5A2D9 /* SSKeychainQuery.m in Sources */,
 				077AEF5D1D8013B900C5A2D9 /* PLSqlitePreparedStatement.m in Sources */,
@@ -744,6 +759,7 @@
 				07BC15431D835BAF0025FA12 /* IFContentSchemeHandler.m in Sources */,
 				077AEEF91D80125B00C5A2D9 /* IFRmFileCommand.m in Sources */,
 				077AEF271D80125B00C5A2D9 /* IFWPContentAuthority.m in Sources */,
+				0753D58A1D9E88E1009D8784 /* IFMIMETypes.m in Sources */,
 				077AEF031D80125B00C5A2D9 /* IFFormField.m in Sources */,
 				077AEF1F1D80125B00C5A2D9 /* IFWPAuthManager.m in Sources */,
 				07BC15551D8753A70025FA12 /* IFWPLicenceBehaviour.m in Sources */,
