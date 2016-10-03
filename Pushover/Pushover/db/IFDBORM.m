@@ -23,7 +23,6 @@
 
 - (NSString *)columnNamesForTable:(NSString *)table withPrefix:(NSString *)prefix;
 - (NSString *)idColumnForTable:(NSString *)table;
-- (NSString *)columnWithName:(NSString *)name orWithTag:(NSString *)tag onTable:(NSString *)table;
 
 @end
 

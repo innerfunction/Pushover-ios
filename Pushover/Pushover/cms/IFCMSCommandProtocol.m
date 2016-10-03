@@ -126,8 +126,10 @@
             // Delete trashed records.
             if ([trashedIDs count]) {
                 [_fileDB deleteIDs:trashedIDs fromTable:@"files"];
-                // TODO Delete joined records
             }
+            // Prune related records.
+            [_fileDB pruneRelatedValues];
+            // Commit the transaction.
             [_fileDB commitTransaction];
             
             // QUESTIONS ABOUT THE CODE ABOVE

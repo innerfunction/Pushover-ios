@@ -33,7 +33,8 @@
 @property (nonatomic, strong) NSString *dbName;
 @property (nonatomic, strong) IFCMSFileDB *db;
 @property (nonatomic, strong) IFCMSPostsPathRoot *postsPathRoot;
-@property (nonatomic, strong) IFCMSPostsPathRoot *pagesPathRoot;
+/// The filesets defined for this authority.
+@property (nonatomic, strong, readonly) NSDictionary *filesets;
 /// The CMS base URL.
 @property (nonatomic, strong) NSString *cmsBaseURL;
 /// A map of available content record type converters.

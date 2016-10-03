@@ -21,6 +21,40 @@
 
 @implementation IFCMSFileDB
 
+- (BOOL)pruneRelatedValues {
+    BOOL ok = YES;
+    // Read column names on source table.
+    NSString *source = self.orm.source;
+    NSString *idColumn = [self getColumnWithTag:@"id" fromTable:source];
+    NSString *verColumn = [self getColumnWithTag:@"version" fromTable:source];
+    if (verColumn) {
+        // Iterate over mappings.
+        NSDictionary *mappings = self.orm.mappings;
+        for (NSString *mappingName in [mappings keyEnumerator]) {
+            // Read column names on mapped table.
+            IFDBORMMapping *mapping = mappings[mappingName];
+            NSString *midColumn = [self getColumnWithTag:@"id" fromTable:mapping.table];
+            NSString *mverColumn = [self.orm columnWithName:mapping.verColumn orWithTag:@"version" onTable:mapping.table];
+            if (midColumn && mverColumn) {
+                // Construct where clause of delete query - select all records on mapped table where
+                // the version value doesn't match the version value on the source table.
+                NSString *where = [NSString stringWithFormat:@"%@ IN (SELECT %@.%@ FROM %@ OUTER JOIN %@ ON %@.%@ = %@.%@ AND %@.%@ != %@.%@)",
+                    midColumn,
+                    mapping.table, midColumn,
+                    source, mapping.table,
+                    source, idColumn, mapping.table, midColumn,
+                    source, verColumn, mapping.table, mverColumn ];
+                // Execute the delete and continue if ok.
+                ok = [self deleteFromTable:mapping.table where:where];
+                if (!ok) {
+                    break;
+                }
+            }
+        }
+    }
+    return ok;
+}
+
 #pragma mark - IFIOCTypeInspectable
 
 - (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {

@@ -19,6 +19,7 @@
 #import "IFCMSContentAuthority.h"
 #import "IFCMSFileset.h"
 #import "IFCMSFilesetCategoryPathRoot.h"
+#import "IFCMSPostsPathRoot.h"
 
 // TODO Content-container container:
 // The different content containers all need to share some common resources, e.g.:
@@ -52,7 +53,7 @@
                             @"path":        @{ @"type": @"STRING" },
                             @"category":    @{ @"type": @"STRING" },
                             @"status":      @{ @"type": @"STRING" },
-                            @"commit":      @{ @"type": @"STRING" }
+                            @"commit":      @{ @"type": @"STRING",  @"tag": @"version" }
                         }
                     },
                     @"posts": @{
@@ -61,7 +62,9 @@
                             @"type":        @{ @"type": @"STRING" },
                             @"title":       @{ @"type": @"STRING" },
                             @"body":        @{ @"type": @"STRING" },
-                            @"image":       @{ @"type": @"INTEGER" }
+                            @"image":       @{ @"type": @"INTEGER" },
+                            @"commit":      @{ @"type": @"STRING",  @"tag": @"version" }
+
                         }
                     },
                     @"commits": @{
@@ -76,7 +79,9 @@
                             @"id":          @{ @"type": @"STRING",  @"tag": @"id", @"format": @"{fileid}:{key}" },
                             @"fileid":      @{ @"type": @"INTEGER", @"tag": @"ownerid" },
                             @"key":         @{ @"type": @"STRING",  @"tag": @"key" },
-                            @"value":       @{ @"type": @"STRING" }
+                            @"value":       @{ @"type": @"STRING" },
+                            @"commit":      @{ @"type": @"STRING",  @"tag": @"version" }
+
                         }
                     }
                 },
@@ -126,13 +131,18 @@
                 }
             }
         };
+        self.postsPathRoot = [IFCMSPostsPathRoot new];
         self.pathRoots = [[NSMutableDictionary alloc] initWithDictionary:@{
-            @"posts":   [IFCMSPostsPathRoot new],
-            @"pages":   [IFCMSPostsPathRoot new],
+            @"posts":   self.postsPathRoot,
+            @"pages":   self.postsPathRoot,
             @"files":   [IFCMSFilesPathRoot new]
         }];
     }
     return self;
+}
+
+- (NSDictionary *)filesets {
+    return _db.filesets;
 }
 
 #pragma mark - IFIOCConfigurationAware
@@ -155,6 +165,7 @@
             ((IFCMSFilesetCategoryPathRoot *)pathRoot).fileset = fileset;
         }
     }
+    _postsPathRoot.templateFileset = _db.filesets[@"templates"];
 }
 
 @end

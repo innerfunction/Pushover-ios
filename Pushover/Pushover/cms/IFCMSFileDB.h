@@ -23,4 +23,11 @@
 
 @property (nonatomic, strong) NSDictionary *filesets;
 
+/**
+ * Prune ORM related values after applying updates to the database.
+ * Deletes records in related tables where the version value (as specified in the table's
+ * schema) doesn't match the version value on the source table.
+ */
+- (BOOL)pruneRelatedValues;
+
 @end

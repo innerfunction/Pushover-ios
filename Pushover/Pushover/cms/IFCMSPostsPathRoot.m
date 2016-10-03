@@ -17,7 +17,8 @@
 //
 
 #import "IFCMSPostsPathRoot.h"
-#import "IFContentAuthority.h"
+#import "IFCMSFileset.h"
+#import "IFCMSContentAuthority.h"
 #import "NSDictionary+IF.h"
 #import "GRMustache.h"
 #import "IFLogger.h"
@@ -34,15 +35,23 @@ static IFLogger *Logger;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *postType = postData[@"posts.type"];
     NSString *postHTML;
-    // Resolve the client template to use to render the post.
-    // TODO Storage location for templates
-    NSString *clientTemplatePath = [NSString stringWithFormat:@"%@/template-posts-%@.html", @"", postType];
-    if (![fileManager fileExistsAtPath:clientTemplatePath]) {
-        clientTemplatePath = [NSString stringWithFormat:@"%@/template-posts.html", @""];
+    NSString *clientTemplatePath = nil;
+    IFCMSFileset *templateFileset = self.authority.filesets[@"templates"];
+    // Check that the template fileset is available.
+    if (templateFileset) {
+        NSString *templatePath = templateFileset.path;
+        // Resolve the client template to use to render the post.
+        clientTemplatePath = [NSString stringWithFormat:@"%@/template-posts-%@.html", templatePath, postType];
         if (![fileManager fileExistsAtPath:clientTemplatePath]) {
-            [Logger warn:@"Client template not found for post type %@", postType];
-            clientTemplatePath = nil;
+            clientTemplatePath = [NSString stringWithFormat:@"%@/template-posts.html", templatePath];
+            if (![fileManager fileExistsAtPath:clientTemplatePath]) {
+                [Logger warn:@"Client template not found for post type %@", postType];
+                clientTemplatePath = nil;
+            }
         }
+    }
+    else {
+        [Logger warn:@"Templates fileset not found"];
     }
     if (clientTemplatePath) {
         // Load the template and render the post.

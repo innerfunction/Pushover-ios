@@ -57,6 +57,8 @@
  * Deletes any related records unique to the deleted object.
  */
 - (BOOL)deleteKey:(NSString *)key;
+/// Return a column name, or if not specified, the name of the column on a table with the specified tag.
+- (NSString *)columnWithName:(NSString *)name orWithTag:(NSString *)tag onTable:(NSString *)table;
 
 @end
 
@@ -78,5 +80,7 @@
 @property (nonatomic, strong) NSString *indexColumn;
 /// The name of the owner ID column for map/dictionary/array/list items.
 @property (nonatomic, strong) NSString *owneridColumn;
+/// The name of the version column.
+@property (nonatomic, strong) NSString *verColumn;
 
 @end
