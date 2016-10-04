@@ -23,15 +23,17 @@
 #import "IFIOCConfigurationAware.h"
 
 @class IFCMSPostsPathRoot;
-@class IFCMSFilesPathRoot;
 
 /**
  * A content authority which sources its content from a Pushover CMS
  */
 @interface IFCMSContentAuthority : IFAbstractContentAuthority <IFIOCConfigurationAware>
 
-@property (nonatomic, strong) NSString *dbName;
-@property (nonatomic, strong) IFCMSFileDB *db;
+/// The name of the file database.
+@property (nonatomic, strong) NSString *fileDBName;
+/// The file database.
+@property (nonatomic, strong) IFCMSFileDB *fileDB;
+/// The path root for 'posts'.
 @property (nonatomic, strong) IFCMSPostsPathRoot *postsPathRoot;
 /// The filesets defined for this authority.
 @property (nonatomic, strong, readonly) NSDictionary *filesets;

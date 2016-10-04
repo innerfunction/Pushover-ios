@@ -114,6 +114,18 @@
     self.authorityName = propertyName;
 }
 
+#pragma mark - IFIOCConfigurationAware
+
+- (void)beforeIOCConfiguration:(IFConfiguration *)configuration {}
+
+- (void)afterIOCConfiguration:(IFConfiguration *)configuration {
+    IFConfiguration *configTemplate = [[IFConfiguration alloc] initWithData:self.configurationTemplate];
+    IFConfiguration *config = [configTemplate extendWithParameters:self.configurationParameters];
+    config.uriHandler = self.uriHandler;
+    config.root = self;
+    [self configureWith:config]; // Is there a way to use [super configureWithData:] here?
+}
+
 @end
 
 @implementation IFNSURLProtocolResponse

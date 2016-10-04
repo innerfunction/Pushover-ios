@@ -44,10 +44,14 @@
 
     NSMutableArray *wheres = [NSMutableArray new];
     NSMutableArray *values = [NSMutableArray new];
+    NSArray *mappings = @[];
     
     // Note that category field is qualifed by source table name.
-    [wheres addObject:[NSString stringWithFormat:@"%@.category = ?", _orm.source]];
-    [values addObject:_fileset.category];
+    if (_fileset) {
+        [wheres addObject:[NSString stringWithFormat:@"%@.category = ?", _orm.source]];
+        [values addObject:_fileset.category];
+        mappings = _fileset.mappings;
+    }
     
     // Add filters for each of the specified parameters.
     for (id key in [parameters keyEnumerator]) {
@@ -59,7 +63,7 @@
     // Join the wheres into a single where clause.
     NSString *where = [wheres componentsJoinedByString:@" AND "];
     // Execute query and return result.
-    return [_orm selectWhere:where values:values mappings:_fileset.mappings];
+    return [_orm selectWhere:where values:values mappings:mappings];
 }
 
 - (NSDictionary *)entryWithKey:(NSString *)key {
@@ -90,9 +94,9 @@
         }
         else {
             // No specific type converter found.
-            // Check if the content file type is compatible with the requested type.
+            // Check if the content file type is compatible with the requested type, and that fileset info is available.
             NSString *path = content[@"path"];
-            if ([type isEqualToString:[path pathExtension]]) {
+            if (_fileset && [type isEqualToString:[path pathExtension]]) {
                 NSString *mimeType = [IFMIMETypes mimeTypeForType:type];
                 NSString *url = [self.authority.cmsBaseURL stringByAppendingPathComponent:path];
                 NSString *cachePath = [self.fileset.path stringByAppendingPathComponent:content[@"path"]];
@@ -128,8 +132,19 @@
                                               cachePolicy:NSURLCacheStorageNotAllowed];
                         }
                     })
-                    .fail(^(id error) {
-                        // TODO
+                    .fail(^(id err) {
+                        NSError *error;
+                        if ([err isKindOfClass:[NSError class]]) {
+                            error = (NSError *)err;
+                        }
+                        else {
+                            NSString *description = [err description];
+                            // See http://nshipster.com/nserror/
+                            error = [NSError errorWithDomain:NSURLErrorDomain
+                                                        code:NSURLErrorResourceUnavailable
+                                                    userInfo:@{ NSLocalizedDescriptionKey: description }];
+                        }
+                        [response respondWithError:error];
                     });
                 }
             }

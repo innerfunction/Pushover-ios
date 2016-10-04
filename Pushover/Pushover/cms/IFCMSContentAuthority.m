@@ -21,30 +21,15 @@
 #import "IFCMSFilesetCategoryPathRoot.h"
 #import "IFCMSPostsPathRoot.h"
 
-// TODO Content-container container:
-// The different content containers all need to share some common resources, e.g.:
-// - command scheduler
-// - http client
-// They also need unique content authority names, and a sensible way for the content
-// url protocol handler to discover each container from the authority name.
-// All this suggests that content containers should themselves be contained within
-// a parent container providing the common resources & authority name mappings.
-// The question then is whether this container is a new container type, or can it
-// be any generic container with the necessary global names, in which case should
-// an app container just be used for the job? Also, if a generic container is
-// suitable, then how/where is the standard configuration template for a content-
-// container container specified?
-
 @implementation IFCMSContentAuthority
 
 - (id)init {
     self = [super init];
     if (self) {
-        _dbName = @""; // TODO Should be derived from authority name.
-        _db = [IFCMSFileDB new];
-        id template = @{
+        _fileDB = [IFCMSFileDB new];
+        self.configurationTemplate = @{
             @"fileDB": @{
-                @"name":    @"$dbName",
+                @"name":    @"$fileDBName",
                 @"version": @1,
                 @"tables": @{
                     @"files": @{
@@ -69,7 +54,7 @@
                     },
                     @"commits": @{
                         @"columns": @{
-                            @"commit":      @{ @"type": @"STRING", @"tag": @"id" },
+                            @"commit":      @{ @"type": @"STRING",  @"tag": @"id" },
                             @"date":        @{ @"type": @"STRING" },
                             @"subject":     @{ @"type": @"STRING" }
                         }
@@ -129,20 +114,42 @@
                         @"cache":           @"app"
                     }
                 }
+            },
+            @"postsPathRoot": @{
+                @"*ios-class":              @"IFCMSPostsPathRoot"
+            },
+            @"pathRoots": @{
+                @"posts":                   @"$postsPathRoot",
+                @"pages":                   @"$postsPathRoot",
+                @"files": @{
+                    @"*ios-class":          @"IFCMSFilesetCategoryPathRoot"
+                }
             }
         };
-        self.postsPathRoot = [IFCMSPostsPathRoot new];
-        self.pathRoots = [[NSMutableDictionary alloc] initWithDictionary:@{
-            @"posts":   self.postsPathRoot,
-            @"pages":   self.postsPathRoot,
-            @"files":   [IFCMSFilesPathRoot new]
-        }];
     }
     return self;
 }
 
 - (NSDictionary *)filesets {
-    return _db.filesets;
+    return _fileDB.filesets;
+}
+
+- (void)setAuthorityName:(NSString *)authorityName {
+    super.authorityName = authorityName;
+    if (_fileDBName == nil) {
+        self.fileDBName = authorityName;
+    }
+    self.configurationParameters[@"authorityName"] = authorityName;
+}
+
+- (void)setFileDBName:(NSString *)fileDBName {
+    _fileDBName = fileDBName;
+    self.configurationParameters[@"fileDBName"] = fileDBName;
+}
+
+- (void)setPostsPathRoot:(IFCMSPostsPathRoot *)postsPathRoot {
+    _postsPathRoot = postsPathRoot;
+    self.configurationParameters[@"postsPathRoot"] = postsPathRoot;
 }
 
 #pragma mark - IFIOCConfigurationAware
@@ -151,9 +158,11 @@
 }
 
 - (void)afterIOCConfiguration:(IFConfiguration *)configuration {
+    [super afterIOCConfiguration:configuration];
     // Ensure a path root exists for each fileset, and is associated with the fileset.
-    for (NSString *category in [_db.filesets keyEnumerator]) {
-        IFCMSFileset *fileset = _db.filesets[category];
+    NSDictionary *filesets = [self filesets];
+    for (NSString *category in [filesets keyEnumerator]) {
+        IFCMSFileset *fileset = filesets[category];
         id pathRoot = self.pathRoots[category];
         if (pathRoot == nil) {
             // Create a default path root for the current category.
@@ -165,7 +174,6 @@
             ((IFCMSFilesetCategoryPathRoot *)pathRoot).fileset = fileset;
         }
     }
-    _postsPathRoot.templateFileset = _db.filesets[@"templates"];
 }
 
 @end
