@@ -71,4 +71,8 @@
     return [_path componentsJoinedByString:@"/"];
 }
 
+- (NSString *)relativePath {
+    return [[self components] componentsJoinedByString:@"/"];
+}
+
 @end

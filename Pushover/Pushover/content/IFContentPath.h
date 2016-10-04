@@ -67,4 +67,7 @@
 /// Return a string representation of the full path.
 - (NSString *)fullPath;
 
+/// Return a string representation of the relative portion of the path.
+- (NSString *)relativePath;
+
 @end

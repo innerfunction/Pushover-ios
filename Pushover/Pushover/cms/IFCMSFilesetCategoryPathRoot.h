@@ -39,8 +39,10 @@
 - (id)initWithFileset:(IFCMSFileset *)fileset container:(IFCMSContentAuthority *)container;
 /// Query the file database for entries in the current fileset.
 - (NSArray *)queryWithParameters:(NSDictionary *)parameters;
-/// Read a single entry from the file database.
+/// Read a single entry from the file database by key (i.e. file ID).
 - (NSDictionary *)entryWithKey:(NSString *)key;
+/// Read a single entry from the file database by file path.
+- (NSDictionary *)entryWithPath:(NSString *)path;
 /// Write a query response.
 - (void)writeQueryContent:(NSArray *)content asType:(NSString *)type toResponse:(id<IFContentAuthorityResponse>)response;
 /// Write an entry response.

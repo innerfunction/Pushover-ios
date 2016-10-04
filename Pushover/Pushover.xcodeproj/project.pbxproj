@@ -11,6 +11,12 @@
 		0753D58A1D9E88E1009D8784 /* IFMIMETypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 0753D5881D9E88E1009D8784 /* IFMIMETypes.m */; };
 		0753D58D1D9E8D9E009D8784 /* IFCMSPostsPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 0753D58B1D9E8D9E009D8784 /* IFCMSPostsPathRoot.h */; };
 		0753D58E1D9E8D9E009D8784 /* IFCMSPostsPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0753D58C1D9E8D9E009D8784 /* IFCMSPostsPathRoot.m */; };
+		0753D5951DA459EB009D8784 /* IFPlainContentTypeConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 0753D5931DA459EB009D8784 /* IFPlainContentTypeConverter.h */; };
+		0753D5961DA459EB009D8784 /* IFPlainContentTypeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0753D5941DA459EB009D8784 /* IFPlainContentTypeConverter.m */; };
+		0753D5991DA45B6B009D8784 /* IFCMSTableViewContentTypeConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 0753D5971DA45B6B009D8784 /* IFCMSTableViewContentTypeConverter.h */; };
+		0753D59A1DA45B6B009D8784 /* IFCMSTableViewContentTypeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0753D5981DA45B6B009D8784 /* IFCMSTableViewContentTypeConverter.m */; };
+		0753D59D1DA45D2D009D8784 /* IFCMSWebViewContentTypeConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 0753D59B1DA45D2D009D8784 /* IFCMSWebViewContentTypeConverter.h */; };
+		0753D59E1DA45D2D009D8784 /* IFCMSWebViewContentTypeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0753D59C1DA45D2D009D8784 /* IFCMSWebViewContentTypeConverter.m */; };
 		077AEEED1D80125B00C5A2D9 /* IFCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 077AEEA51D80125B00C5A2D9 /* IFCommand.h */; };
 		077AEEEE1D80125B00C5A2D9 /* IFCommandProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 077AEEA61D80125B00C5A2D9 /* IFCommandProtocol.h */; };
 		077AEEEF1D80125B00C5A2D9 /* IFCommandProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 077AEEA71D80125B00C5A2D9 /* IFCommandProtocol.m */; };
@@ -140,6 +146,12 @@
 		0753D5881D9E88E1009D8784 /* IFMIMETypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFMIMETypes.m; sourceTree = "<group>"; };
 		0753D58B1D9E8D9E009D8784 /* IFCMSPostsPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSPostsPathRoot.h; sourceTree = "<group>"; };
 		0753D58C1D9E8D9E009D8784 /* IFCMSPostsPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSPostsPathRoot.m; sourceTree = "<group>"; };
+		0753D5931DA459EB009D8784 /* IFPlainContentTypeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFPlainContentTypeConverter.h; sourceTree = "<group>"; };
+		0753D5941DA459EB009D8784 /* IFPlainContentTypeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFPlainContentTypeConverter.m; sourceTree = "<group>"; };
+		0753D5971DA45B6B009D8784 /* IFCMSTableViewContentTypeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSTableViewContentTypeConverter.h; sourceTree = "<group>"; };
+		0753D5981DA45B6B009D8784 /* IFCMSTableViewContentTypeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSTableViewContentTypeConverter.m; sourceTree = "<group>"; };
+		0753D59B1DA45D2D009D8784 /* IFCMSWebViewContentTypeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSWebViewContentTypeConverter.h; sourceTree = "<group>"; };
+		0753D59C1DA45D2D009D8784 /* IFCMSWebViewContentTypeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSWebViewContentTypeConverter.m; sourceTree = "<group>"; };
 		077AEDDB1D7F1D2500C5A2D9 /* Pushover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pushover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		077AEEA51D80125B00C5A2D9 /* IFCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCommand.h; sourceTree = "<group>"; };
 		077AEEA61D80125B00C5A2D9 /* IFCommandProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCommandProtocol.h; sourceTree = "<group>"; };
@@ -330,6 +342,10 @@
 				07D7611D1D958A770043F371 /* IFCMSFilesetCategoryPathRoot.m */,
 				0753D58B1D9E8D9E009D8784 /* IFCMSPostsPathRoot.h */,
 				0753D58C1D9E8D9E009D8784 /* IFCMSPostsPathRoot.m */,
+				0753D5971DA45B6B009D8784 /* IFCMSTableViewContentTypeConverter.h */,
+				0753D5981DA45B6B009D8784 /* IFCMSTableViewContentTypeConverter.m */,
+				0753D59B1DA45D2D009D8784 /* IFCMSWebViewContentTypeConverter.h */,
+				0753D59C1DA45D2D009D8784 /* IFCMSWebViewContentTypeConverter.m */,
 			);
 			path = cms;
 			sourceTree = "<group>";
@@ -505,6 +521,8 @@
 				07BC154D1D86EB290025FA12 /* IFDataWebviewFormatter.m */,
 				0753D5871D9E88E1009D8784 /* IFMIMETypes.h */,
 				0753D5881D9E88E1009D8784 /* IFMIMETypes.m */,
+				0753D5931DA459EB009D8784 /* IFPlainContentTypeConverter.h */,
+				0753D5941DA459EB009D8784 /* IFPlainContentTypeConverter.m */,
 			);
 			path = content;
 			sourceTree = "<group>";
@@ -557,6 +575,8 @@
 				077AEEF61D80125B00C5A2D9 /* IFMvFileCommand.h in Headers */,
 				077AEF1C1D80125B00C5A2D9 /* IFHTTPClient.h in Headers */,
 				077AEF221D80125B00C5A2D9 /* IFWPClientTemplateContext.h in Headers */,
+				0753D59D1DA45D2D009D8784 /* IFCMSWebViewContentTypeConverter.h in Headers */,
+				0753D5991DA45B6B009D8784 /* IFCMSTableViewContentTypeConverter.h in Headers */,
 				077AEF531D8013B900C5A2D9 /* PLDatabaseMigrationVersionManager.h in Headers */,
 				077AEEFC1D80125B00C5A2D9 /* IFDB.h in Headers */,
 				077AEEF81D80125B00C5A2D9 /* IFRmFileCommand.h in Headers */,
@@ -588,6 +608,7 @@
 				07BC15481D86C3260025FA12 /* IFWPSearchPathRoot.h in Headers */,
 				077AEF001D80125B00C5A2D9 /* IFDBHelper.h in Headers */,
 				077AEF4D1D8013B900C5A2D9 /* PLDatabase.h in Headers */,
+				0753D5951DA459EB009D8784 /* IFPlainContentTypeConverter.h in Headers */,
 				077AEF501D8013B900C5A2D9 /* PLDatabaseMigrationManager.h in Headers */,
 				077AEF4F1D8013B900C5A2D9 /* PLDatabaseMigrationDelegate.h in Headers */,
 				07BC15441D835BAF0025FA12 /* IFContentURLProtocol.h in Headers */,
@@ -715,6 +736,7 @@
 				077AEF631D8013B900C5A2D9 /* SSKeychainQuery.m in Sources */,
 				077AEF5D1D8013B900C5A2D9 /* PLSqlitePreparedStatement.m in Sources */,
 				077AEEFF1D80125B00C5A2D9 /* IFDBFilter.m in Sources */,
+				0753D59E1DA45D2D009D8784 /* IFCMSWebViewContentTypeConverter.m in Sources */,
 				077AEF511D8013B900C5A2D9 /* PLDatabaseMigrationManager.m in Sources */,
 				077AEF011D80125B00C5A2D9 /* IFDBHelper.m in Sources */,
 				077AEEF51D80125B00C5A2D9 /* IFGetURLCommand.m in Sources */,
@@ -722,6 +744,7 @@
 				077AEF5B1D8013B900C5A2D9 /* PLSqliteMigrationVersionManager.m in Sources */,
 				077AEF611D8013B900C5A2D9 /* SSKeychain.m in Sources */,
 				077AEF131D80125B00C5A2D9 /* IFSubmitField.m in Sources */,
+				0753D59A1DA45B6B009D8784 /* IFCMSTableViewContentTypeConverter.m in Sources */,
 				077AEF0B1D80125B00C5A2D9 /* IFFormSelectField.m in Sources */,
 				07BC15221D81FFFA0025FA12 /* IFWPPostsPathRoot.m in Sources */,
 				077AEF111D80125B00C5A2D9 /* IFFormViewController.m in Sources */,
@@ -758,6 +781,7 @@
 				077AEF051D80125B00C5A2D9 /* IFFormHiddenField.m in Sources */,
 				07BC15431D835BAF0025FA12 /* IFContentSchemeHandler.m in Sources */,
 				077AEEF91D80125B00C5A2D9 /* IFRmFileCommand.m in Sources */,
+				0753D5961DA459EB009D8784 /* IFPlainContentTypeConverter.m in Sources */,
 				077AEF271D80125B00C5A2D9 /* IFWPContentAuthority.m in Sources */,
 				0753D58A1D9E88E1009D8784 /* IFMIMETypes.m in Sources */,
 				077AEF031D80125B00C5A2D9 /* IFFormField.m in Sources */,

@@ -126,6 +126,8 @@
                 }
             }
         };
+        // TODO Record types (posts/pages): dbjson, html, webview
+        // TODO Query types: dbjson, tableview
     }
     return self;
 }

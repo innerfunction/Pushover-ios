@@ -37,7 +37,7 @@
 }
 
 - (void)setAuthority:(IFCMSContentAuthority *)container {
-    _orm = container.db.orm;
+    _orm = container.fileDB.orm;
 }
 
 - (NSArray *)queryWithParameters:(NSDictionary *)parameters {
@@ -69,6 +69,11 @@
 - (NSDictionary *)entryWithKey:(NSString *)key {
     // Read the content and return the result.
     return [_orm selectKey:key mappings:_fileset.mappings];
+}
+
+- (NSDictionary *)entryWithPath:(NSString *)path {
+    NSArray *result = [_orm selectWhere:@"path = ?" values:@[ path ] mappings:_fileset.mappings];
+    return [result count] > 0 ? result[0] : nil;
 }
 
 - (void)writeQueryContent:(NSArray *)content asType:(NSString *)type toResponse:(id<IFContentAuthorityResponse>)response {
@@ -166,23 +171,35 @@
            parameters:(NSDictionary *)parameters {
     
     if ([path isEmpty]) {
+        // Content path references a content query.
         NSString *type = [path ext];
         NSArray *content = [self queryWithParameters:parameters];
         [self writeQueryContent:content asType:type toResponse:response];
     }
-    else if ([[path components] count] == 1) {
-        // Content path specifies a resource. The resource identifier may be in the format
-        // {key}.{type}, so following code attempts to break the identifier into these parts.
-        NSString *key = [path root];
-        NSString *type = [path ext];
-
-        NSDictionary *entry = [self entryWithKey:key];
-        [self writeEntryContent:entry asType:type toResponse:response];
-
-    }
     else {
-        // Invalid path.
-        [response respondWithError:makeInvalidPathResponseError([path fullPath])];
+        // Content path references a resource (i.e. file entry). The resource identifier can be
+        // in the format ~{key}.{type}; i.e. if prefixed with a tilde then the resource is referenced
+        // by file ID and has a type modifier. Otherwise, the relative portion of the path at this
+        // point can be used to reference a resource by its file path.
+        NSDictionary *entry = nil;
+        NSString *head = [path root];
+        NSString *type = [path ext];
+        // Check for reference by ID.
+        if ([head hasPrefix:@"~"] && [[path components] count] == 1) {
+            NSString *key = [head substringFromIndex:1];
+            entry = [self entryWithKey:key];
+        }
+        // If no content yet then may be referenced by file path.
+        if (!entry) {
+            entry = [self entryWithPath:[path relativePath]];
+        }
+        // If now have an entry then return it, else return an error.
+        if (entry) {
+            [self writeEntryContent:entry asType:type toResponse:response];
+        }
+        else {
+            [response respondWithError:makeInvalidPathResponseError([path fullPath])];
+        }
     }
 }
 

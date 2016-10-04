@@ -12,19 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Julian Goacher on 29/09/2016.
+//  Created by Julian Goacher on 04/10/2016.
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "IFContentAuthority.h"
+#import "IFPlainContentTypeConverter.h"
 
-/**
- * A protocol implemented by classes which can convert content data to some output format.
- */
-@protocol IFContentTypeConverter <NSObject>
+@implementation IFPlainContentTypeConverter
 
-/// Convert some content to the output format, and write to the specified response object.
-- (void)writeContent:(id)content toResponse:(id<IFContentAuthorityResponse>)response;
+#pragma mark - IFContentTypeConverter
+
+- (void)writeContent:(id)content toResponse:(id<IFContentAuthorityResponse>)response {
+    [response respondWithJSONData:content cachePolicy:NSURLCacheStorageNotAllowed];
+}
 
 @end
