@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.platform        = :ios
 
   s.source          = { :git => "git@github.com:innerfunction/Pushover-ios.git" } #, :tag => "0.0.1" }
-  s.source_files    = "Pushover/Classes/Pushover.h", "Pushover/Classes/{cms,commands,content,db,forms,ui,utils}/*.{h,m}"
+  s.source_files    = "Pushover/Classes/Pushover.h", "Pushover/Classes/{cms,commands,content,db,forms,ui,utils}/*.{h,m}", "Pushover/Classes/SSKeychain/*.{h,m}"
   s.requires_arc    = true
 
   s.subspec 'plausedb' do |sp|
