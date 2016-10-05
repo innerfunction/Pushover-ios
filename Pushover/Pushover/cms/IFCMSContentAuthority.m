@@ -119,9 +119,9 @@
                 @"*ios-class":              @"IFCMSPostsPathRoot"
             },
             @"pathRoots": @{
-                @"posts":                   @"$postsPathRoot",
-                @"pages":                   @"$postsPathRoot",
-                @"files": @{
+                @"~posts":                  @"$postsPathRoot",
+                @"~pages":                  @"$postsPathRoot",
+                @"~files": @{
                     @"*ios-class":          @"IFCMSFilesetCategoryPathRoot"
                 }
             }
@@ -154,6 +154,33 @@
     self.configurationParameters[@"postsPathRoot"] = postsPathRoot;
 }
 
+#pragma mark - IFAbstractContentAuthority override
+
+- (void)writeResponse:(id<IFContentAuthorityResponse>)response
+         forAuthority:(NSString *)authority
+                 path:(IFContentPath *)path
+           parameters:(NSDictionary *)parameters {
+    
+    // A tilde at the start of a path indicates a fileset category reference; so any path which
+    // doesn't start with tilde is a direct reference to a file by its path. Convert the reference
+    // to a fileset reference by looking up the file ID and category for the path.
+    NSString *root = [path root];
+    if (![root hasPrefix:@"~"]) {
+        // Lookup file entry by path.
+        NSArray *result = [_fileDB performQuery:@"SELECT id, category FROM files WHERE path=?"
+                                     withParams:@[ [path fullPath] ]];
+        if ([result count] > 0) {
+            // File entry found in database; rewrite content path to a direct resource reference.
+            NSDictionary *row = result[0];
+            NSString *fileID = row[@"id"];
+            NSString *category = row[@"category"];
+            NSString *resourcePath = [NSString stringWithFormat:@"~%@/$%@", category, fileID];
+            path = [[IFContentPath alloc] initWithPath:resourcePath];
+        }
+    }
+    [super writeResponse:response forAuthority:authority path:path parameters:parameters];
+}
+
 #pragma mark - IFIOCConfigurationAware
 
 - (void)beforeIOCConfiguration:(IFConfiguration *)configuration {
@@ -165,11 +192,13 @@
     NSDictionary *filesets = [self filesets];
     for (NSString *category in [filesets keyEnumerator]) {
         IFCMSFileset *fileset = filesets[category];
-        id pathRoot = self.pathRoots[category];
+        // Note that fileset category path roots are prefixed with a tilde.
+        NSString *pathRootName = [@"~" stringByAppendingString:category];
+        id pathRoot = self.pathRoots[pathRootName];
         if (pathRoot == nil) {
             // Create a default path root for the current category.
             pathRoot = [[IFCMSFilesetCategoryPathRoot alloc] initWithFileset:fileset container:self];
-            self.pathRoots[category] = pathRoot;
+            self.pathRoots[pathRootName] = pathRoot;
         }
         else if ([pathRoot isKindOfClass:[IFCMSFilesetCategoryPathRoot class]]) {
             // Path root for category found, match it up with its fileset.

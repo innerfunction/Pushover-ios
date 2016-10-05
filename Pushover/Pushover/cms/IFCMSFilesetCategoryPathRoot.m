@@ -178,14 +178,14 @@
     }
     else {
         // Content path references a resource (i.e. file entry). The resource identifier can be
-        // in the format ~{key}.{type}; i.e. if prefixed with a tilde then the resource is referenced
-        // by file ID and has a type modifier. Otherwise, the relative portion of the path at this
-        // point can be used to reference a resource by its file path.
+        // in the format ${key}.{type}; i.e. if prefixed with a dollar symbol then the resource is
+        // referenced by file ID and has a type modifier. Otherwise, the relative portion of the path
+        // at this point can be used to reference a resource by its file path.
         NSDictionary *entry = nil;
         NSString *head = [path root];
         NSString *type = [path ext];
         // Check for reference by ID.
-        if ([head hasPrefix:@"~"] && [[path components] count] == 1) {
+        if ([head hasPrefix:@"$"] && [[path components] count] == 1) {
             NSString *key = [head substringFromIndex:1];
             entry = [self entryWithKey:key];
         }
