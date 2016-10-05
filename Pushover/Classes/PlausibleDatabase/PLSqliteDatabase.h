@@ -37,7 +37,7 @@
 #ifdef PL_MODULAR_SQLITE_IMPORT
 #import "sqlite3.h"
 #else
-#import <sqlite3.h>
+#import "sqlite3.h"
 #endif
 
 #endif
