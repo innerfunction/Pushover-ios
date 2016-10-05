@@ -3,7 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 workspace 'project.xcworkspace'
 target 'Pushover' do
-    pod 'GRMustache', '~> 6.8.4'
+    pod 'GRMustache', '~> 7.3.2'
     pod 'SCFFLD'
     pod 'Q'
 end

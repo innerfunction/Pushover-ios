@@ -31,7 +31,13 @@
 #ifdef WINDOWS
 #import "sqlite3.h"
 #else
+
+#ifdef PL_DB_PRIVATE
+@import sqlite3;
+#else
 #import <sqlite3.h>
+#endif
+
 #endif
 
 /* On older versions of sqlite3, sqlite3_prepare_v2() is not available */
