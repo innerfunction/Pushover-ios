@@ -82,7 +82,7 @@ Pod::Spec.new do |s|
 
   #s.source_files  = "Pushover/Classes/*.{h,m}", "Pushover/Classes/{cms,commands,content,db,forms,ui,utils}/*.{h,m}", "Pushover/Classes/SSKeychain/*.{h,m}"
   s.source_files  = "Pushover/Classes/**/*.{h,m}"
-  s.exclude_files = "Pushover/Classes/PlausibleDatabase/*.{h,m}"
+  s.exclude_files = "Pushover/Classes/PlausibleDatabase/*.{h,m}", "GRMustache/src/classes/*"
   s.requires_arc = true
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
