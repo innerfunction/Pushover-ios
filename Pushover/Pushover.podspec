@@ -29,8 +29,8 @@ Pod::Spec.new do |s|
 
   s.libraries       = 'sqlite3'
 
-  #s.xcconfig        = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
-  #s.pod_target_xcconfig = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
+  s.xcconfig        = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
+  s.pod_target_xcconfig = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
 
   s.dependency 'Q'
   s.dependency 'SCFFLD'
