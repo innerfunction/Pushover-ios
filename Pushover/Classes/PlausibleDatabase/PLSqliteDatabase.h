@@ -27,6 +27,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+@interface Dummy : NSObject
+@end
+
 /* On windows, use the included sqlite3 library */
 
 #ifdef WINDOWS

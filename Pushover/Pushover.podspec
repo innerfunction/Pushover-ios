@@ -14,14 +14,14 @@ Pod::Spec.new do |s|
   s.platform        = :ios
 
   s.source          = { :git => "git@github.com:innerfunction/Pushover-ios.git" } #, :tag => "0.0.1" }
-  s.source_files    = "Pushover/Classes/**/*.{h,m}"
-  s.exclude_files   = "Pushover/Classes/wp/*.{h,m}", "Pushover/Classes/PlausibleDatabase/*.{h,m}"
+  s.source_files    = "Pushover/Classes/{cms,commands,content,db,forms,ui,utils}/*.{h,m}"
+  #s.exclude_files   = "Pushover/Classes/wp/*.{h,m}", "Pushover/Classes/PlausibleDatabase/*.{h,m}"
   s.requires_arc    = true
 
   s.subspec 'plausedb' do |sp|
-    sp.source_files     = "Pushover/Classes/PlausibleDatabase/*.{h,m}"
-    sp.compiler_flags   = '-DPL_DB_PRIVATE=1', 'ALWAYS_SEARCH_USER_PATHS=NO'
-    sp.requires_arc     = false
+    sp.source_files         = 'Pushover/Classes/PlausibleDatabase/*.{h,m}'
+    sp.compiler_flags       = '-DPL_DB_PRIVATE=1'
+    sp.requires_arc         = false
   end
 
   # s.public_header_files = "Classes/**/*.h"
@@ -30,7 +30,8 @@ Pod::Spec.new do |s|
 
   s.libraries       = 'sqlite3'
 
-  s.xcconfig        = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
+  #s.xcconfig        = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
+  #s.pod_target_xcconfig = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
 
   s.dependency 'Q'
   s.dependency 'SCFFLD'
