@@ -28,12 +28,20 @@
  */
 
 /* On windows, use the included sqlite3 library */
+
+/* INFU CHANGE: Fix 'include of non-modular header inside framework module' error.
+ * See http://stackoverflow.com/a/28552525
+ * See https://github.com/AFNetworking/AFNetworking/issues/2205
+ * Tracking change made to PLSqliteDatabase.m
+
 #ifdef WINDOWS
 #import "sqlite3.h"
 #else
+#import <sqlite3.h>
+#endif
 
-// INFU addition: This code added to fix Podspec validation error
-#import "sqlite3.h"
+ * END OF INFU CHANGE
+ */
 
 #endif
 
