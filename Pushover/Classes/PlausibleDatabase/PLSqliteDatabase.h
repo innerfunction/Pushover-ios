@@ -27,15 +27,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-@interface Dummy : NSObject
-@end
-
 /* On windows, use the included sqlite3 library */
 
 #ifdef WINDOWS
 #import "sqlite3.h"
 #else
+/*
 #import <sqlite3.h>
+*/
 #endif
 
 /* On older versions of sqlite3, sqlite3_prepare_v2() is not available */
