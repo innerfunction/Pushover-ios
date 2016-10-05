@@ -9,29 +9,15 @@ PODS:
 
 DEPENDENCIES:
   - GRMustache (~> 6.8.4)
-  - Q (from `git@github.com:innerfunction/Q-ios.git`)
-  - SCFFLD (from `git@github.com:innerfunction/SCFFLD-ios.git`)
-
-EXTERNAL SOURCES:
-  Q:
-    :git: git@github.com:innerfunction/Q-ios.git
-  SCFFLD:
-    :git: git@github.com:innerfunction/SCFFLD-ios.git
-
-CHECKOUT OPTIONS:
-  Q:
-    :commit: 3d815bd913196342d804a4546454b821c5955c49
-    :git: git@github.com:innerfunction/Q-ios.git
-  SCFFLD:
-    :commit: 79c8bc3fbcaa3ed749e3e223a031ff2e51803a49
-    :git: git@github.com:innerfunction/SCFFLD-ios.git
+  - Q
+  - SCFFLD
 
 SPEC CHECKSUMS:
   GRMustache: 7b2520d67b6373484c8b2c08b9788af90a461d61
   JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
-  Q: 9594f4873ef929875f573aeb01926b9239f2a0cc
-  SCFFLD: 2305e48b4c4803584ff8f33bad0daac50325d8a4
+  Q: 72111c19d2f27972c2f9552c83dace781d9d0433
+  SCFFLD: fc1ad32e7341c62bcc4eee2ef1ec516914dce541
 
-PODFILE CHECKSUM: e3ffa5adeac7fe91b1228a372319c59074196a81
+PODFILE CHECKSUM: c1b78c4bfca11ec196e42f23ce6a5fd97e66934c
 
 COCOAPODS: 1.0.1

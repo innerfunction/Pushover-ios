@@ -178,6 +178,7 @@
             path = [[IFContentPath alloc] initWithPath:resourcePath];
         }
     }
+    // Continue with standard response behaviour.
     [super writeResponse:response forAuthority:authority path:path parameters:parameters];
 }
 
