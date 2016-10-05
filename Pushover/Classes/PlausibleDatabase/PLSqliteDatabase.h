@@ -32,7 +32,7 @@
 #ifdef WINDOWS
 #import "sqlite3.h"
 #else
-#import <sqlite3.h>
+#import "sqlite3.h"
 #endif
 
 /* On older versions of sqlite3, sqlite3_prepare_v2() is not available */
