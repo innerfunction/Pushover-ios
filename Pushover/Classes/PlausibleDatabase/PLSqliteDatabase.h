@@ -43,8 +43,6 @@
  * END OF INFU CHANGE
  */
 
-#endif
-
 /* On older versions of sqlite3, sqlite3_prepare_v2() is not available */
 #if SQLITE_VERSION_NUMBER <= 3003009
 #define PL_SQLITE_LEGACY_STMT_PREPARE 1
