@@ -32,8 +32,10 @@
 #import "sqlite3.h"
 #else
 
-#ifdef PL_DB_PRIVATE
-@import sqlite3;
+// INFU addition: This code added to fix Podspec validation error
+// (error: include of non-modular header inside framework module)
+#ifdef PL_MODULAR_SQLITE_IMPORT
+#import "sqlite3.h"
 #else
 #import <sqlite3.h>
 #endif

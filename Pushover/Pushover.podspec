@@ -15,12 +15,12 @@ Pod::Spec.new do |s|
 
   s.source          = { :git => "git@github.com:innerfunction/Pushover-ios.git" } #, :tag => "0.0.1" }
   s.source_files    = "Pushover/Classes/**/*.{h,m}"
-  s.exclude_files   = "Pushover/Classes/PlausibleDatabase/*.{h,m}"
+  s.exclude_files   = "Pushover/Classes/wp/*.{h,m}", "Pushover/Classes/PlausibleDatabase/*.{h,m}"
   s.requires_arc    = true
 
   s.subspec 'plausedb' do |sp|
     sp.source_files     = "Pushover/Classes/PlausibleDatabase/*.{h,m}"
-    sp.compiler_flags   = '-DPL_DB_PRIVATE=1'
+    sp.compiler_flags   = '-DPL_DB_PRIVATE=1 -DPL_MODULAR_SQLITE_IMPORT=1'
     sp.requires_arc     = false
   end
 
