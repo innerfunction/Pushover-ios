@@ -29,11 +29,12 @@
 
 /* On windows, use the included sqlite3 library */
 
-#ifdef WINDOWS
+// INFU CHANGE: Fix for 'include of non modular header inside framework module'
+// error when the project's podspec is compiled.
+// See http://stackoverflow.com/questions/34849464/using-sqlite-in-framework
+// for explanation.
+// Note that sqlite3.h has been copied to this directory as part of the fix.
 #import "sqlite3.h"
-#else
-#import "sqlite3.h"
-#endif
 
 /* On older versions of sqlite3, sqlite3_prepare_v2() is not available */
 #if SQLITE_VERSION_NUMBER <= 3003009

@@ -16,7 +16,6 @@
 //  Copyright © 2015 InnerFunction. All rights reserved.
 //
 
-#import "Pushover.h"
 #import "IFCommandScheduler.h"
 #import "IFCommand.h"
 #import "IFCommandProtocol.h"
