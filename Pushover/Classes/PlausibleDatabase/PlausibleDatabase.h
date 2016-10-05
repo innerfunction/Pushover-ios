@@ -92,11 +92,6 @@ typedef enum {
 #import "PLDatabase.h"
 
 #import "PLSqliteDatabase.h"
-
-// INFU CHANGE see note in PLSqliteDatabase.h
-#import <sqlite3.h>
-// END INFU CHANGE
-
 #import "PLSqlitePreparedStatement.h"
 #import "PLSqliteResultSet.h"
 

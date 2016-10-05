@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'plausedb' do |sp|
     sp.source_files     = "Pushover/Classes/PlausibleDatabase/*.{h,m}"
-    sp.compiler_flags   = '-DPL_DB_PRIVATE=1'
+    sp.compiler_flags   = '-DPL_DB_PRIVATE=1', 'ALWAYS_SEARCH_USER_PATHS=NO'
     sp.requires_arc     = false
   end
 

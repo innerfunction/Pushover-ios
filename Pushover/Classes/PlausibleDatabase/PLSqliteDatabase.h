@@ -29,19 +29,11 @@
 
 /* On windows, use the included sqlite3 library */
 
-/* INFU CHANGE: Fix 'include of non-modular header inside framework module' error.
- * See http://stackoverflow.com/a/28552525
- * See https://github.com/AFNetworking/AFNetworking/issues/2205
- * Tracking change made to PLSqliteDatabase.m
-
 #ifdef WINDOWS
 #import "sqlite3.h"
 #else
 #import <sqlite3.h>
 #endif
-
- * END OF INFU CHANGE
- */
 
 /* On older versions of sqlite3, sqlite3_prepare_v2() is not available */
 #if SQLITE_VERSION_NUMBER <= 3003009
