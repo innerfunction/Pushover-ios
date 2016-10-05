@@ -257,3 +257,8 @@
 }
 
 @end
+
+
+@implementation IFDBORMMapping
+
+@end
