@@ -17,10 +17,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Q/Q.h>
 #import "IFCommandProtocol.h"
 #import "IFCMSFileDB.h"
 #import "IFHTTPClient.h"
-#import "Q.h"
 
 @interface IFCMSCommandProtocol : IFCommandProtocol {
     QPromise *_promise;

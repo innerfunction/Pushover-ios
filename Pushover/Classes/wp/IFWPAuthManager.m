@@ -16,10 +16,10 @@
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
+#import <Q/Q.h>
 #import "IFWPAuthManager.h"
 #import "IFWPContentAuthority.h"
 #import "IFAppContainer.h"
-#import "Q.h"
 #import "SSKeyChain.h"
 
 #define AppendPathToURL(url,path)   ([url stringByAppendingString:[([url hasSuffix:@"/"] ? @"" : @"/") stringByAppendingString:path]])

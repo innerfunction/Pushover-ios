@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name            = "Pushover"
-  s.version         = "0.0.1"
+  s.version         = "0.0.2"
   s.summary         = "Pushover CMS mobile SDK for iOS"
   s.description     = <<-DESC
     An iOS client SDK for the Pushover content and document management system.
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
 
   s.platform        = :ios
 
-  s.source          = { :git => "git@github.com:innerfunction/Pushover-ios.git" } #, :tag => "0.0.1" }
+  s.source          = { :git => "git@github.com:innerfunction/Pushover-ios.git", :tag => "0.0.2" }
   s.source_files    = "Pushover/Classes/Pushover.h", "Pushover/Classes/{cms,commands,content,db,forms,ui,utils}/*.{h,m}", "Pushover/Classes/SSKeychain/*.{h,m}"
   s.requires_arc    = true
 
@@ -29,8 +29,8 @@ Pod::Spec.new do |s|
 
   s.libraries       = 'sqlite3'
 
-  s.xcconfig        = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
-  s.pod_target_xcconfig = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
+  #s.xcconfig        = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
+  #s.pod_target_xcconfig = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
 
   s.dependency 'Q'
   s.dependency 'SCFFLD'

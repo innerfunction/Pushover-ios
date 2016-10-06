@@ -2,11 +2,11 @@ PODS:
   - GRMustache (7.3.2):
     - JRSwizzle (~> 1.0)
   - JRSwizzle (1.0)
-  - Q (0.0.1)
-  - SCFFLD (0.0.10):
-    - SCFFLD/noarc (= 0.0.10)
+  - Q (0.0.4)
+  - SCFFLD (0.0.11):
+    - SCFFLD/noarc (= 0.0.11)
     - ZipArchive
-  - SCFFLD/noarc (0.0.10):
+  - SCFFLD/noarc (0.0.11):
     - ZipArchive
   - ZipArchive (1.4.0)
 
@@ -18,10 +18,10 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   GRMustache: ebe6104fd30a6d22c1f36af131e19e2dbf7cd292
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
-  Q: 72111c19d2f27972c2f9552c83dace781d9d0433
-  SCFFLD: 13e3cfba8bafd8a9ba54e46804725a4f3bb99867
+  Q: 89cc7b938b1a3e035dc0ba50f70f3eb3801934ca
+  SCFFLD: 1db581c2c8211a418d5769a1c84b5cba1e7d9013
   ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
 
-PODFILE CHECKSUM: e931b71893fa73b2dbb2a4685f09cf6e1a2e83bf
+PODFILE CHECKSUM: a59766a84d296d1e05dedd185c2c746af02e1779
 
 COCOAPODS: 1.0.1

@@ -4,4 +4,4 @@
 # on the command line.
 # Note that this shouldn't be necessary once Q and SCFFLD are published to the standard
 # CocoaPods repo.
-pod spec lint Pushover.podspec --sources='ssh://git@git.innerfunction.com:22222/julian/if-podspecs.git,https://github.com/CocoaPods/Specs.git' --verbose
+pod spec lint Pushover.podspec --sources='ssh://git@git.innerfunction.com:22222/julian/if-podspecs.git,https://github.com/CocoaPods/Specs.git' --verbose --no-clean
