@@ -26,8 +26,12 @@
     QPromise *_promise;
 }
 
-/** The CMS feed URL. Note that query parameters will be appened to the URL. */
-@property (nonatomic, strong) NSString *feedURL;
+/** The CMS host name. */
+@property (nonatomic, strong) NSString *cmsHost;
+/** The CMS account name. */
+@property (nonatomic, strong) NSString *cmsAccount;
+/** The CMS repo name. */
+@property (nonatomic, strong) NSString *cmsRepo;
 /** The local file database. */
 @property (nonatomic, strong) IFCMSFileDB *fileDB;
 /** Path to directory holding staged content. */

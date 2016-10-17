@@ -24,6 +24,8 @@
 
 @interface IFCMSCommandProtocol ()
 
+/// Make a feed URL.
+- (NSString *)feedURLWithRoot:(NSString *)root trailingPath:(NSString *)path;
 /// Start a content refresh.
 - (QPromise *)refresh:(NSArray *)args;
 /// Update the file db and fileset schema.
@@ -58,11 +60,19 @@
     return self;
 }
 
+- (NSString *)feedURLWithRoot:(NSString *)root trailingPath:(NSString *)path {
+    NSString *url = [NSString stringWithFormat:@"http://%@/0.1/%@/%@/%@", _cmsHost, root, _cmsAccount, _cmsRepo];
+    if (path) {
+        url = [url stringByAppendingString:path];
+    }
+    return url;
+}
+
 - (QPromise *)refresh:(NSArray *)args {
     
     _promise = [[QPromise alloc] init];
     
-    NSString *refreshURL = [_feedURL stringByAppendingString:@"/updates"];
+    NSString *refreshURL = [self feedURLWithRoot:@"updates" trailingPath:nil];
     
     // Query the file DB for the latest commit ID.
     NSString *commit = nil;
@@ -179,7 +189,7 @@
     if ([args count] > 0) {
         params = @{ @"version": args[0] };
     }
-    NSString *schemaURL = [_feedURL stringByAppendingString:@"/schema"];
+    NSString *schemaURL = [self feedURLWithRoot:@"schema" trailingPath:nil];
     [_httpClient get:schemaURL data:params]
     .then((id)^(IFHTTPClientResponse *response) {
         id schema = [response parseData];
@@ -212,13 +222,13 @@
     NSString *filesetPath;
     if ([args count] > 2) {
         id commit = args[2];
-        filesetPath = [NSString stringWithFormat:@"/fileset/%@?since=%@", category, commit];
+        filesetPath = [NSString stringWithFormat:@"/%@?since=%@", category, commit];
     }
     else {
-        filesetPath = [NSString stringWithFormat:@"/fileset/%@", category];
+        filesetPath = [NSString stringWithFormat:@"/%@", category];
     }
-    NSString *filesetURL = [_feedURL stringByAppendingString:filesetPath];
-    
+    NSString *filesetURL = [self feedURLWithRoot:@"fileset" trailingPath:filesetPath];
+
     // Download the fileset.
     [_httpClient getFile:filesetURL]
     .then((id)^(IFHTTPClientResponse *response) {

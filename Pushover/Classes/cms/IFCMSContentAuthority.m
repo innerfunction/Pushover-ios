@@ -182,6 +182,15 @@
     [super writeResponse:response forAuthority:authority path:path parameters:parameters];
 }
 
+#pragma mark - IFIOCObjectAware
+
+- (void)notifyIOCObject:(id)object propertyName:(NSString *)propertyName {
+    if (!_fileDBName) {
+        // If no explicit file DB name has been set then default to the authority name.
+        self.fileDBName = propertyName;
+    }
+}
+
 #pragma mark - IFIOCConfigurationAware
 
 - (void)beforeIOCConfiguration:(IFConfiguration *)configuration {

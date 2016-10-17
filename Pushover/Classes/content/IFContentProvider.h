@@ -20,6 +20,7 @@
 #import "IFContentAuthority.h"
 #import "IFCommandScheduler.h"
 #import "IFHTTPClient.h"
+#import "IFIOCTypeInspectable.h"
 #import "IFIOCSingleton.h"
 
 /**
@@ -27,7 +28,7 @@
  * A content provider is a collection of content authorities, which encapsulate different
  * sources of content.
  */
-@interface IFContentProvider : NSObject <IFIOCSingleton>
+@interface IFContentProvider : NSObject <IFIOCSingleton, IFIOCTypeInspectable>
 
 /// A map of content authority instances keyed by authority name.
 @property (nonatomic, strong) NSDictionary *authorities;

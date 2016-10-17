@@ -103,7 +103,7 @@
             NSString *path = content[@"path"];
             if (_fileset && [type isEqualToString:[path pathExtension]]) {
                 NSString *mimeType = [IFMIMETypes mimeTypeForType:type];
-                NSString *url = [self.authority.cmsBaseURL stringByAppendingPathComponent:path];
+                NSString *url = [self.authority.cmsURL stringByAppendingPathComponent:path];
                 NSString *cachePath = [self.fileset.path stringByAppendingPathComponent:content[@"path"]];
                 BOOL cachable = [self.fileset cachable];
                 // Check if a local copy of the file exists in the cache.

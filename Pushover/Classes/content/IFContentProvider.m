@@ -18,6 +18,7 @@
 
 #import "IFContentProvider.h"
 #import "IFContentAuthority.h"
+#import "IFCMSContentAuthority.h"
 
 @implementation IFContentProvider
 
@@ -49,6 +50,16 @@
         instance = [IFContentProvider new];
     }
     return instance;
+}
+
+#pragma mark - IFIOCTypeInspectable
+
+- (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
+    if ([@"authorities" isEqualToString:propertyName]) {
+        // Use CMSContentAuthority as the default authority type.
+        return [IFCMSContentAuthority class];
+    }
+    return nil;
 }
 
 #pragma mark - IFIOCSingleton

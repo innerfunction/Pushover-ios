@@ -20,6 +20,7 @@
 #import "IFAbstractContentAuthority.h"
 #import "IFCMSFileDB.h"
 #import "IFCMSFilesetCategoryPathRoot.h"
+#import "IFIOCObjectAware.h"
 #import "IFIOCConfigurationAware.h"
 
 @class IFCMSPostsPathRoot;
@@ -27,7 +28,7 @@
 /**
  * A content authority which sources its content from a Pushover CMS
  */
-@interface IFCMSContentAuthority : IFAbstractContentAuthority <IFIOCConfigurationAware>
+@interface IFCMSContentAuthority : IFAbstractContentAuthority <IFIOCConfigurationAware, IFIOCObjectAware>
 
 /// The name of the file database.
 @property (nonatomic, strong) NSString *fileDBName;
@@ -37,8 +38,12 @@
 @property (nonatomic, strong) IFCMSPostsPathRoot *postsPathRoot;
 /// The filesets defined for this authority.
 @property (nonatomic, strong, readonly) NSDictionary *filesets;
-/// The CMS base URL.
-@property (nonatomic, strong) NSString *cmsBaseURL;
+/// The CMS host (name, and port if needed).
+@property (nonatomic, strong) NSString *host;
+/// The CMS account name.
+@property (nonatomic, strong) NSString *account;
+/// The CMS repository name.
+@property (nonatomic, strong) NSString *repo;
 /// A map of available content record type converters.
 @property (nonatomic, strong) NSDictionary *recordTypes;
 /// A map of available content query type converters.
