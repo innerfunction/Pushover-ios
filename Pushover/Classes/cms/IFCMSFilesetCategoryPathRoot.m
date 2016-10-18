@@ -98,12 +98,16 @@
             [typeConverter writeContent:content toResponse:response];
         }
         else {
-            // No specific type converter found.
-            // Check if the content file type is compatible with the requested type, and that fileset info is available.
+            // No specific type converter found. Check if the content file type is compatible
+            // with the requested type and that fileset info is available.
             NSString *path = content[@"path"];
             if (_fileset && [type isEqualToString:[path pathExtension]]) {
                 NSString *mimeType = [IFMIMETypes mimeTypeForType:type];
-                NSString *url = [self.authority.cmsURL stringByAppendingPathComponent:path];
+                NSString *url = [NSString stringWithFormat:@"http://%@/files/%@/%@/%@",
+                    self.authority.host,
+                    self.authority.account,
+                    self.authority.repo,
+                    path];
                 NSString *cachePath = [self.fileset.path stringByAppendingPathComponent:content[@"path"]];
                 BOOL cachable = [self.fileset cachable];
                 // Check if a local copy of the file exists in the cache.

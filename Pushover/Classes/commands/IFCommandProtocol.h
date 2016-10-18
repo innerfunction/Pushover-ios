@@ -28,8 +28,10 @@ typedef QPromise *(^IFCommandProtocolBlock) (NSArray *args);
  */
 @interface IFCommandProtocol : NSObject <IFCommand> {
     NSDictionary *_commands;
-    NSString *_commandPrefix;
 }
+
+/** The protocol's command prefix. */
+@property (nonatomic, strong) NSString *commandPrefix;
 
 /** Return a list of command names supported by this protocol. */
 - (NSArray *)supportedCommands;

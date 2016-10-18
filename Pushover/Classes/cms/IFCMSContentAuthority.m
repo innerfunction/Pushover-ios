@@ -20,6 +20,7 @@
 #import "IFCMSFileset.h"
 #import "IFCMSFilesetCategoryPathRoot.h"
 #import "IFCMSPostsPathRoot.h"
+#import "IFContentProvider.h"
 
 @implementation IFCMSContentAuthority
 
@@ -116,14 +117,24 @@
                 }
             },
             @"postsPathRoot": @{
-                @"*ios-class":              @"IFCMSPostsPathRoot"
+                @"@class":                  @"IFCMSPostsPathRoot"
             },
             @"pathRoots": @{
                 @"~posts":                  @"$postsPathRoot",
                 @"~pages":                  @"$postsPathRoot",
                 @"~files": @{
-                    @"*ios-class":          @"IFCMSFilesetCategoryPathRoot"
+                    @"@class":              @"IFCMSFilesetCategoryPathRoot"
                 }
+            },
+            @"commandProtocol": @{
+                @"cmsHost":                 @"@named:host",
+                @"cmsAccount":              @"@named:account",
+                @"cmsRepo":                 @"@named:repo",
+                @"fileDB":                  @"@named:fileDB",
+                // TODO Should the following two properties be configured on the provider?
+                @"stagingPath":             @"",
+                @"contentPath":             @"",
+                @"httpClient":              @"@named:provider#httpClient"
             }
         };
         // TODO Record types (posts/pages): dbjson, html, webview
@@ -215,6 +226,8 @@
             ((IFCMSFilesetCategoryPathRoot *)pathRoot).fileset = fileset;
         }
     }
+    // Register command protocol with the scheduler.
+    self.provider.commandScheduler.commands = @{ self.authorityName: _commandProtocol };
 }
 
 @end

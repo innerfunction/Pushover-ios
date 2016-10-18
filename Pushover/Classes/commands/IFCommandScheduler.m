@@ -136,6 +136,7 @@ static void *execQueueKey = "IFCommandScheduler.execQueue";
         id<IFCommand> command = [commands objectForKey:name];
         if ([command isKindOfClass:[IFCommandProtocol class]]) {
             IFCommandProtocol *protocol = (IFCommandProtocol *)command;
+            protocol.commandPrefix = name;
             // Iterate over the protocol's supported commands and add to the command
             // namespace under a fully qualified name.
             for (NSString *subname in [protocol supportedCommands]) {

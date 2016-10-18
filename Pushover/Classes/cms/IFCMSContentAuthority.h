@@ -20,6 +20,7 @@
 #import "IFAbstractContentAuthority.h"
 #import "IFCMSFileDB.h"
 #import "IFCMSFilesetCategoryPathRoot.h"
+#import "IFCMSCommandProtocol.h"
 #import "IFIOCObjectAware.h"
 #import "IFIOCConfigurationAware.h"
 
@@ -48,5 +49,7 @@
 @property (nonatomic, strong) NSDictionary *recordTypes;
 /// A map of available content query type converters.
 @property (nonatomic, strong) NSDictionary *queryTypes;
+/// The authority's scheduled command protocol.
+@property (nonatomic, strong) IFCMSCommandProtocol *commandProtocol;
 
 @end
