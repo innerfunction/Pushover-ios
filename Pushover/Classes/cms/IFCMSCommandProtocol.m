@@ -21,6 +21,7 @@
 #import "IFCMSFileset.h"
 
 #define URLEncode(s) ([s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]])
+#define PushoverAPIVersion (@"0.1")
 
 @interface IFCMSCommandProtocol ()
 
@@ -29,11 +30,9 @@
 /// Start a content refresh.
 - (QPromise *)refresh:(NSArray *)args;
 /// Update the file db and fileset schema.
-- (QPromise *)updateSchema:(NSArray *)args;
+//- (QPromise *)updateSchema:(NSArray *)args;
 /// Download a fileset.
 - (QPromise *)downloadFileset:(NSArray *)args;
-/// Unpack content packaged with the app.
-- (QPromise *)unpack:(NSArray *)args;
 
 @end
 
@@ -47,21 +46,20 @@
         [self addCommand:@"refresh" withBlock:^QPromise *(NSArray *args) {
             return [this refresh:args];
         }];
+        /*
         [self addCommand:@"update-schema" withBlock:^QPromise *(NSArray *args) {
             return [this updateSchema:args];
         }];
+        */
         [self addCommand:@"download-fileset" withBlock:^QPromise *(NSArray *args) {
             return [this downloadFileset:args];
-        }];
-        [self addCommand:@"unpack" withBlock:^QPromise *(NSArray *args) {
-            return [this unpack:args];
         }];
     }
     return self;
 }
 
 - (NSString *)feedURLWithRoot:(NSString *)root trailingPath:(NSString *)path {
-    NSString *url = [NSString stringWithFormat:@"http://%@/0.1/%@/%@/%@", _cmsHost, root, _cmsAccount, _cmsRepo];
+    NSString *url = [NSString stringWithFormat:@"http://%@/%@/%@/%@/%@", _cmsHost, root, PushoverAPIVersion, _cmsAccount, _cmsRepo];
     if (path) {
         url = [url stringByAppendingString:path];
     }
@@ -96,6 +94,7 @@
         // Check file DB schema version.
         id version = [updateData valueForKeyPath:@"db.version"];
         if (![version isEqual:_fileDB.version]) {
+            /*
             // Update the file DB schema and then schedule a new refresh.
             id updateSchema = @{
                 @"name": [self qualifyName:@"update-schema"],
@@ -107,6 +106,8 @@
             };
             [commands addObject:updateSchema];
             [commands addObject:refresh];
+            */
+            NSLog(@"Database version mismatch error");
         }
         else {
             // Write updates to database.
@@ -128,8 +129,8 @@
             for (NSDictionary *record in trashed) {
                 [trashedIDs addObject:record[@"id"]];
                 // Delete cached file, if exists.
-                NSString *path = [_contentPath stringByAppendingPathComponent:record[@"path"]];
-                if ([fileManager fileExistsAtPath:path]) {
+                NSString *path = [_fileDB cacheLocationForFile:record];
+                if (path && [fileManager fileExistsAtPath:path]) {
                     [fileManager removeItemAtPath:path error:nil];
                 }
             }
@@ -155,12 +156,12 @@
             // Queue downloads of updated category filesets.
             NSString *name = [self qualifyName:@"download-fileset"];
             for (id category in updatedCategories) {
-                // Check whether the fileset should be downloaded.
-                IFCMSFileset *fileset = _fileDB.filesets[category];
-                if (fileset.cachable) {
+                // Get cache location for fileset; if nil then don't download the fileset.
+                NSString *cacheLocation = [_fileDB cacheLocationForFileset:category];
+                if (cacheLocation) {
                     NSMutableArray *args = [NSMutableArray new];
                     [args addObject:category];
-                    [args addObject:fileset.path]; // Where to put the downloaded files.
+                    [args addObject:cacheLocation]; // Where to put the downloaded files.
                     if (commit) {
                         [args addObject:commit];
                     }
@@ -180,6 +181,7 @@
     return _promise;
 }
 
+/*
 - (QPromise *)updateSchema:(NSArray *)args {
     
     _promise = [[QPromise alloc] init];
@@ -210,6 +212,7 @@
     // Return deferred promise.
     return _promise;
 }
+*/
 
 - (QPromise *)downloadFileset:(NSArray *)args {
     
@@ -245,14 +248,6 @@
     });
 
     // Return deferred promise.
-    return _promise;
-}
-
-- (QPromise *)unpack:(NSArray *)args {
-    // TODO Copy packaged file db from app to installed location.
-    // Should content unpacking be something that happens when the container starts? i.e. to ensure content
-    // is available before app fully starts, and to avoid contention problems with the file db when executed
-    // as a scheduled task.
     return _promise;
 }
 

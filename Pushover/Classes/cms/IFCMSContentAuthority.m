@@ -27,7 +27,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        _fileDB = [IFCMSFileDB new];
+        _fileDB = [[IFCMSFileDB alloc] initWithContentAuthority:self];
         self.configurationTemplate = @{
             @"fileDB": @{
                 @"name":    @"$fileDBName",
@@ -131,9 +131,6 @@
                 @"cmsAccount":              @"@named:account",
                 @"cmsRepo":                 @"@named:repo",
                 @"fileDB":                  @"@named:fileDB",
-                // TODO Should the following two properties be configured on the provider?
-                @"stagingPath":             @"",
-                @"contentPath":             @"",
                 @"httpClient":              @"@named:provider#httpClient"
             }
         };
@@ -209,6 +206,11 @@
 
 - (void)afterIOCConfiguration:(IFConfiguration *)configuration {
     [super afterIOCConfiguration:configuration];
+    
+    if (!_fileDB.initialCopyPath) {
+        _fileDB.initialCopyPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:_fileDBName];
+    }
+    
     // Ensure a path root exists for each fileset, and is associated with the fileset.
     NSDictionary *filesets = [self filesets];
     for (NSString *category in [filesets keyEnumerator]) {

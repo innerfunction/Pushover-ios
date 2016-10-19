@@ -37,7 +37,7 @@
 }
 
 - (void)setAuthority:(IFCMSContentAuthority *)container {
-    _orm = container.fileDB.orm;
+    _fileDB = container.fileDB;
 }
 
 - (NSArray *)queryWithParameters:(NSDictionary *)parameters {
@@ -48,7 +48,7 @@
     
     // Note that category field is qualifed by source table name.
     if (_fileset) {
-        [wheres addObject:[NSString stringWithFormat:@"%@.category = ?", _orm.source]];
+        [wheres addObject:[NSString stringWithFormat:@"%@.category = ?", _fileDB.orm.source]];
         [values addObject:_fileset.category];
         mappings = _fileset.mappings;
     }
@@ -63,16 +63,16 @@
     // Join the wheres into a single where clause.
     NSString *where = [wheres componentsJoinedByString:@" AND "];
     // Execute query and return result.
-    return [_orm selectWhere:where values:values mappings:mappings];
+    return [_fileDB.orm selectWhere:where values:values mappings:mappings];
 }
 
 - (NSDictionary *)entryWithKey:(NSString *)key {
     // Read the content and return the result.
-    return [_orm selectKey:key mappings:_fileset.mappings];
+    return [_fileDB.orm selectKey:key mappings:_fileset.mappings];
 }
 
 - (NSDictionary *)entryWithPath:(NSString *)path {
-    NSArray *result = [_orm selectWhere:@"path = ?" values:@[ path ] mappings:_fileset.mappings];
+    NSArray *result = [_fileDB.orm selectWhere:@"path = ?" values:@[ path ] mappings:_fileset.mappings];
     return [result count] > 0 ? result[0] : nil;
 }
 
@@ -108,7 +108,7 @@
                     self.authority.account,
                     self.authority.repo,
                     path];
-                NSString *cachePath = [self.fileset.path stringByAppendingPathComponent:content[@"path"]];
+                NSString *cachePath = [_fileDB cacheLocationForFile:content];
                 BOOL cachable = [self.fileset cachable];
                 // Check if a local copy of the file exists in the cache.
                 if (cachable && [[NSFileManager defaultManager] fileExistsAtPath:path]) {

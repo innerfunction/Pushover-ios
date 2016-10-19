@@ -21,6 +21,14 @@
 
 @implementation IFCMSFileDB
 
+- (id)initWithContentAuthority:(IFCMSContentAuthority *)authority {
+    self = [super init];
+    if (self) {
+        _authority = authority;
+    }
+    return self;
+}
+
 - (BOOL)pruneRelatedValues {
     BOOL ok = YES;
     // Read column names on source table.
@@ -53,6 +61,26 @@
         }
     }
     return ok;
+}
+
+- (NSString *)cacheLocationForFileset:(NSString *)category {
+    NSString *path = nil;
+    IFCMSFileset *fileset = _filesets[category];
+    if (fileset != nil && fileset.cachable) {
+        path = [fileset cachePath:_authority];
+    }
+    return path;
+}
+    
+- (NSString *)cacheLocationForFile:(NSDictionary *)fileRecord {
+    NSString *path = nil;
+    NSString *category = fileRecord[@"category"];
+    IFCMSFileset *fileset = _filesets[category];
+    if (fileset != nil && fileset.cachable) {
+        NSString *cachePath = [fileset cachePath:_authority];
+        path = [cachePath stringByAppendingPathComponent:fileRecord[@"path"]];
+    }
+    return path;
 }
 
 #pragma mark - IFIOCTypeInspectable

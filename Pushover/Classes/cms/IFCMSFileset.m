@@ -18,31 +18,24 @@
 
 #import "IFCMSFileset.h"
 
-#define CacheDirName ([NSString stringWithFormat:@"pushover.fileset.%@", _category])
+#define CacheDirName ([NSString stringWithFormat:@"fileset.%@", _category])
 
 @implementation IFCMSFileset
 
 - (void)setCache:(NSString *)cache {
     _cache = cache;
-    if ([@"none" isEqualToString:cache]) {
-        _cachable = NO;
+    _cachable = ([@"content" isEqualToString:cache] || [@"app" isEqualToString:cache]);
+}
+
+- (NSString *)cachePath:(IFCMSContentAuthority *)authority {
+    NSString *path = nil;
+    if ([@"content" isEqualToString:_cache]) {
+        path = [authority.contentCachePath stringByAppendingString:CacheDirName];
     }
-    if ([@"content" isEqualToString:cache]) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-        NSString *cachePath = [paths objectAtIndex:0];
-        self.path = [cachePath stringByAppendingPathComponent:CacheDirName];
-        _cachable = YES;
+    else if ([@"app" isEqualToString:_cache]) {
+        path = [authority.appCachePath stringByAppendingString:CacheDirName];
     }
-    else if ([@"app" isEqualToString:cache]) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *cachePath = [paths objectAtIndex:0];
-        self.path = [cachePath stringByAppendingPathComponent:CacheDirName];
-        _cachable = YES;
-    }
-    else {
-        // Unrecognized cache policy.
-        _cachable = NO;
-    }
+    return path;
 }
 
 #pragma mark - IFIOCObjectAware

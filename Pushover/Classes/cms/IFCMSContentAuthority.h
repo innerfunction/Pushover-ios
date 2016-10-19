@@ -26,6 +26,8 @@
 
 @class IFCMSPostsPathRoot;
 
+// TODO Rename class group - and change class name prefix - to po / PO?
+
 /**
  * A content authority which sources its content from a Pushover CMS
  */

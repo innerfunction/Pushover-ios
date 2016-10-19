@@ -20,14 +20,45 @@
 #import "IFContentAuthority.h"
 #import "IFCMSContentAuthority.h"
 
+#define PushoverNamePrefix (@"po")
+
 @implementation IFContentProvider
 
 - (id)init {
     self = [super init];
     if (self) {
         _commandScheduler = [IFCommandScheduler new];
-        _commandScheduler.queueDBName = @"po.commandqueue";
+        _commandScheduler.queueDBName = [NSString stringWithFormat:@"%@.commandqueue", PushoverNamePrefix];
         _httpClient = [IFHTTPClient new];
+        
+        // NOTES on staging and cache paths:
+        // * Freshly downloaded content is stored under the staging path until the download is complete,
+        //   after which it is deployed to the appropriate cache path and deleted from the staging location.
+        //   The staging path is placed under NSApplicationSupportDirectory to avoid it being deleted by
+        //   the system mid-download, in the case where the system needs to free up disk space.
+        // * App content is deployed under NSApplicationSupportDirectory to avoid it being cleared by the system.
+        // * All other content is deployed under NSCachesDirectory, where the system may remove it if it needs to
+        //   recover disk space. If this happens then Semo will attempt to re-downloaded the content again, if
+        //   needed.
+        // See:
+        // * http://developer.apple.com/library/ios/#documentation/FileManagement/Conceptual/FileSystemProgrammingGUide/FileSystemOverview/FileSystemOverview.html
+        //
+        // * https://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/PerformanceTuning/PerformanceTuning.html#//apple_ref/doc/uid/TP40007072-CH8-SW8
+        //
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+        NSString *cachePath = [paths objectAtIndex:0];
+        NSString *dirName = [NSString stringWithFormat:@"%@.staging", PushoverNamePrefix];
+        _stagingPath = [cachePath stringByAppendingPathComponent:dirName];
+        dirName = [NSString stringWithFormat:@"%@.app", PushoverNamePrefix];
+        _appCachePath = [cachePath stringByAppendingPathComponent:dirName];
+        
+        // Switch cache path for content location.
+        paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        cachePath = [paths objectAtIndex:0];
+        dirName = [NSString stringWithFormat:@"%@.content", PushoverNamePrefix];
+        _contentCachePath = [cachePath stringByAppendingPathComponent:dirName];
+
     }
     return self;
 }

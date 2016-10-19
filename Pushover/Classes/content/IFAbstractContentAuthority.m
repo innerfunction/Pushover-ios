@@ -17,6 +17,7 @@
 //
 
 #import "IFAbstractContentAuthority.h"
+#import "IFContentProvider.h"
 #import "IFResource.h"
 #import "NSArray+IF.h"
 #import "IFCompoundURI.h"
@@ -47,6 +48,18 @@
         _pathRoots = [NSMutableDictionary new];
     }
     return self;
+}
+
+- (NSString *)stagingPath {
+    return [self.provider.stagingPath stringByAppendingString:_authorityName];
+}
+
+- (NSString *)appCachePath {
+    return [self.provider.appCachePath stringByAppendingString:_authorityName];
+}
+
+- (NSString *)contentCachePath {
+    return [self.provider.contentCachePath stringByAppendingString:_authorityName];
 }
 
 #pragma mark - IFContentAuthority

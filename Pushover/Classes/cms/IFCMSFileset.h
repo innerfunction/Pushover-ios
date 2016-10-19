@@ -17,6 +17,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IFCMSContentAuthority.h"
 #import "IFJSONData.h"
 #import "IFIOCObjectAware.h"
 
@@ -39,9 +40,10 @@
 @property (nonatomic, strong) NSString *cache;
 /** The fileset's category name. */
 @property (nonatomic, strong) NSString *category;
-/** The fileset cache's file path root, under which fileset content is stored. */
-@property (nonatomic, strong) NSString *path;
 /** A flag indicating whether a fileset's content should be downloaded and cached. */
 @property (nonatomic, assign) BOOL cachable;
+
+/// Get the path of the cache location for this fileset.
+- (NSString *)cachePath:(IFCMSContentAuthority *)authority;
 
 @end

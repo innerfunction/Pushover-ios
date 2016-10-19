@@ -36,6 +36,12 @@
 @property (nonatomic, strong) IFCommandScheduler *commandScheduler;
 /// An HTTP client to be used by the different content authorities.
 @property (nonatomic, strong) IFHTTPClient *httpClient;
+/// A path for temporarily staging downloaded content.
+@property (nonatomic, strong) NSString *stagingPath;
+/// A path for caching app content.
+@property (nonatomic, strong) NSString *appCachePath;
+/// A property for caching downloaded content.
+@property (nonatomic, strong) NSString *contentCachePath;
 
 /// Find a content authority by name, or return nil of no match found.
 - (id<IFContentAuthority>)contentAuthorityForName:(NSString *)name;

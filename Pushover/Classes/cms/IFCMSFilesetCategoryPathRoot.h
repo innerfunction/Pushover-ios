@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import "IFContentAuthority.h"
-#import "IFDBORM.h"
+#import "IFCMSFileDB.h"
 
 @class IFCMSFileset;
 @class IFCMSContentAuthority;
@@ -26,14 +26,14 @@
 /**
  * A default path root implementation for access to a single category of fileset contents.
  */
-@interface IFCMSFilesetCategoryPathRoot : NSObject <IFContentAuthorityPathRoot> {
-    __weak IFDBORM *_orm;
-}
+@interface IFCMSFilesetCategoryPathRoot : NSObject <IFContentAuthorityPathRoot>
 
 /// The fileset being accessed.
 @property (nonatomic, weak) IFCMSFileset *fileset;
 /// The content authority.
 @property (nonatomic, weak) IFCMSContentAuthority *authority;
+/// The file database.
+@property (nonatomic, weak) IFCMSFileDB *fileDB;
 
 /// Initialize the path root with the specified fileset and content container.
 - (id)initWithFileset:(IFCMSFileset *)fileset container:(IFCMSContentAuthority *)container;

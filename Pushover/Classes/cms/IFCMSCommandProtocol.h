@@ -34,10 +34,6 @@
 @property (nonatomic, strong) NSString *cmsRepo;
 /** The local file database. */
 @property (nonatomic, strong) IFCMSFileDB *fileDB;
-/** Path to directory holding staged content. */
-@property (nonatomic, strong) NSString *stagingPath;
-/** Path to directory hosting downloaded content. */
-@property (nonatomic, strong) NSString *contentPath;
 /** An HTTP client instance. */
 @property (nonatomic, strong) IFHTTPClient *httpClient;
 

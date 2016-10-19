@@ -19,9 +19,16 @@
 #import "IFDB.h"
 #import "IFIOCTypeInspectable.h"
 
-@interface IFCMSFileDB : IFDB <IFIOCTypeInspectable>
+@class IFCMSContentAuthority;
 
+@interface IFCMSFileDB : IFDB <IFIOCTypeInspectable> {
+    __weak IFCMSContentAuthority *_authority;
+}
+
+/// The fileset categories defined for the database.
 @property (nonatomic, strong) NSDictionary *filesets;
+
+- (id)initWithContentAuthority:(IFCMSContentAuthority *)authority;
 
 /**
  * Prune ORM related values after applying updates to the database.
@@ -29,5 +36,15 @@
  * schema) doesn't match the version value on the source table.
  */
 - (BOOL)pruneRelatedValues;
+/**
+ * Return the path of the cache location for files of the specified fileset category.
+ * Returns nil if the fileset category isn't locally cachable.
+ */
+- (NSString *)cacheLocationForFileset:(NSString *)category;
+/**
+ * Return the absolute path for the cache location of the specified file record.
+ * Returns nil if the file isn't locally cachable.
+ */
+- (NSString *)cacheLocationForFile:(NSDictionary *)fileRecord;
 
 @end

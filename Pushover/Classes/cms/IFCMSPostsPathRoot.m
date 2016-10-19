@@ -36,10 +36,8 @@ static IFLogger *Logger;
     NSString *postType = postData[@"posts.type"];
     NSString *postHTML;
     NSString *clientTemplatePath = nil;
-    IFCMSFileset *templateFileset = self.authority.filesets[@"templates"];
-    // Check that the template fileset is available.
-    if (templateFileset) {
-        NSString *templatePath = templateFileset.path;
+    NSString *templatePath = [self.fileDB cacheLocationForFileset:@"templates"];
+    if (templatePath) {
         // Resolve the client template to use to render the post.
         clientTemplatePath = [NSString stringWithFormat:@"%@/template-posts-%@.html", templatePath, postType];
         if (![fileManager fileExistsAtPath:clientTemplatePath]) {

@@ -44,5 +44,11 @@
 @property (nonatomic, strong) NSString *authorityName;
 /// A map of addressable path roots. For example, given the path files/all, the path root is 'files'.
 @property (nonatomic, strong) NSMutableDictionary *pathRoots;
+/// A path for temporarily staging downloaded content.
+@property (nonatomic, readonly) NSString *stagingPath;
+/// A path for caching app content.
+@property (nonatomic, readonly) NSString *appCachePath;
+/// A property for caching downloaded content.
+@property (nonatomic, readonly) NSString *contentCachePath;
 
 @end
