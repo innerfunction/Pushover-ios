@@ -18,7 +18,7 @@
 
 #import "IFCMSFileset.h"
 
-#define CacheDirName ([NSString stringWithFormat:@"fileset.%@", _category])
+#define CacheDirName ([@"~" stringByAppendingString:_category])
 
 @implementation IFCMSFileset
 

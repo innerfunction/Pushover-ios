@@ -39,9 +39,10 @@ static IFLogger *Logger;
     NSString *templatePath = [self.fileDB cacheLocationForFileset:@"templates"];
     if (templatePath) {
         // Resolve the client template to use to render the post.
-        clientTemplatePath = [NSString stringWithFormat:@"%@/template-posts-%@.html", templatePath, postType];
+        NSString *clientTemplateFilename = [NSString stringWithFormat:@"template-posts-%@.html", postType];
+        clientTemplatePath = [templatePath stringByAppendingPathComponent:clientTemplateFilename];
         if (![fileManager fileExistsAtPath:clientTemplatePath]) {
-            clientTemplatePath = [NSString stringWithFormat:@"%@/template-posts.html", templatePath];
+            clientTemplatePath = [templatePath stringByAppendingPathComponent:@"template-posts.html"];
             if (![fileManager fileExistsAtPath:clientTemplatePath]) {
                 [Logger warn:@"Client template not found for post type %@", postType];
                 clientTemplatePath = nil;

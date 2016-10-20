@@ -21,10 +21,10 @@
 
 @class IFCMSContentAuthority;
 
-@interface IFCMSFileDB : IFDB <IFIOCTypeInspectable> {
-    __weak IFCMSContentAuthority *_authority;
-}
+@interface IFCMSFileDB : IFDB <IFIOCTypeInspectable>
 
+/// The content authority this database belongs to.
+@property (nonatomic, weak) IFCMSContentAuthority *authority;
 /// The fileset categories defined for the database.
 @property (nonatomic, strong) NSDictionary *filesets;
 

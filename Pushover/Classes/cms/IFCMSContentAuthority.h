@@ -29,6 +29,9 @@
 
 // TODO Rename class group - and change class name prefix - to po / PO?
 
+// TODO Consider having a config proxy for this class, to separate its configurable properties from its runtime properties?
+// (Note that the config template & properties would then belong to the proxy)
+
 /**
  * A content authority which sources its content from a Pushover CMS
  */
