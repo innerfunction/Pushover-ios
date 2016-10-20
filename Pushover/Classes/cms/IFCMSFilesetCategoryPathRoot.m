@@ -103,11 +103,7 @@
             NSString *path = content[@"path"];
             if (_fileset && [type isEqualToString:[path pathExtension]]) {
                 NSString *mimeType = [IFMIMETypes mimeTypeForType:type];
-                NSString *url = [NSString stringWithFormat:@"http://%@/files/%@/%@/%@",
-                    self.authority.host,
-                    self.authority.account,
-                    self.authority.repo,
-                    path];
+                NSString *url = [_authority.cms urlForFile:path];
                 NSString *cachePath = [_fileDB cacheLocationForFile:content];
                 BOOL cachable = [self.fileset cachable];
                 // Check if a local copy of the file exists in the cache.
@@ -118,7 +114,7 @@
                                       cachePolicy:NSURLCacheStorageNotAllowed];
                 }
                 else {
-                    // No local copy found, so download from server.
+                    // No local copy found, download from server.
                     IFHTTPClient *httpClient = self.authority.provider.httpClient;
                     [httpClient getFile:url]
                     .then((id)^(IFHTTPClientResponse *httpResponse) {

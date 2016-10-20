@@ -27,8 +27,8 @@
  * 
  *      content://{authority}/{path}
  *
- * Where 'authority' corresponds to a content container name, and 'path' is interpreted
- * by the container as a reference to the required data.
+ * Where 'authority' corresponds to a content authority name, and 'path' is interpreted
+ * by the authority as a reference to the required data.
  */
 @interface IFContentURLProtocol : NSURLProtocol
 

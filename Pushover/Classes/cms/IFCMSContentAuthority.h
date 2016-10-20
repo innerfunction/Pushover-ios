@@ -21,6 +21,7 @@
 #import "IFCMSFileDB.h"
 #import "IFCMSFilesetCategoryPathRoot.h"
 #import "IFCMSCommandProtocol.h"
+#import "IFCMSSettings.h"
 #import "IFIOCObjectAware.h"
 #import "IFIOCConfigurationAware.h"
 
@@ -41,12 +42,8 @@
 @property (nonatomic, strong) IFCMSPostsPathRoot *postsPathRoot;
 /// The filesets defined for this authority.
 @property (nonatomic, strong, readonly) NSDictionary *filesets;
-/// The CMS host (name, and port if needed).
-@property (nonatomic, strong) NSString *host;
-/// The CMS account name.
-@property (nonatomic, strong) NSString *account;
-/// The CMS repository name.
-@property (nonatomic, strong) NSString *repo;
+/// The CMS settings (host / account / repo).
+@property (nonatomic, strong) IFCMSSettings *cms;
 /// A map of available content record type converters.
 @property (nonatomic, strong) NSDictionary *recordTypes;
 /// A map of available content query type converters.

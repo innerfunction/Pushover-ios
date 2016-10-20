@@ -8,25 +8,27 @@
 
 #import "IFMIMETypes.h"
 
+static NSDictionary *IFMIMETypes_lookup;
+
 @implementation IFMIMETypes
 
++  (void)initialize {
+    IFMIMETypes_lookup = @{
+        @"html":    @"text/html",
+        @"json":    @"application/json",
+        @"png":     @"image/png",
+        @"jpg":     @"image/jpg",
+        @"jpeg":    @"image/jpeg",
+        @"gif":     @"image/gif"
+    };
+}
+
 + (NSString *)mimeTypeForType:(NSString *)type {
-    if ([@"html" isEqualToString:type]) {
-        return @"text/html";
+    NSString *mimeType = IFMIMETypes_lookup[type];
+    if (!mimeType) {
+        mimeType = @"application/octet-stream";
     }
-    if ([@"json" isEqualToString:type]) {
-        return @"application/json";
-    }
-    if ([@"png" isEqualToString:type]) {
-        return @"image/png";
-    }
-    if ([@"jpg" isEqualToString:type] || [@"jpeg" isEqualToString:type]) {
-        return @"image/jpeg";
-    }
-    if ([@"gif" isEqualToString:type]) {
-        return @"image/gif";
-    }
-    return @"application/octet-stream";
+    return mimeType;
 }
 
 @end

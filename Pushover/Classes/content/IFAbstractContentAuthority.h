@@ -40,7 +40,7 @@
 @property (nonatomic, strong) NSDictionary *configurationTemplate;
 /// A map of configuration parameters.
 @property (nonatomic, strong) NSMutableDictionary *configurationParameters;
-/// The authority name the class instance is bound to.
+/// The name of the authority that the class instance is bound to.
 @property (nonatomic, strong) NSString *authorityName;
 /// A map of addressable path roots. For example, given the path files/all, the path root is 'files'.
 @property (nonatomic, strong) NSMutableDictionary *pathRoots;

@@ -19,6 +19,7 @@
 #import <Foundation/Foundation.h>
 #import <Q/Q.h>
 #import "IFCommandProtocol.h"
+#import "IFCMSSettings.h"
 #import "IFCMSFileDB.h"
 #import "IFHTTPClient.h"
 
@@ -26,12 +27,8 @@
     QPromise *_promise;
 }
 
-/** The CMS host name. */
-@property (nonatomic, strong) NSString *cmsHost;
-/** The CMS account name. */
-@property (nonatomic, strong) NSString *cmsAccount;
-/** The CMS repo name. */
-@property (nonatomic, strong) NSString *cmsRepo;
+/** The content repository's settings. */
+@property (nonatomic, weak) IFCMSSettings *cms;
 /** The local file database. */
 @property (nonatomic, strong) IFCMSFileDB *fileDB;
 /** An HTTP client instance. */

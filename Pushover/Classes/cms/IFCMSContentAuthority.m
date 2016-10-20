@@ -127,9 +127,7 @@
                 }
             },
             @"commandProtocol": @{
-                @"cmsHost":                 @"@named:host",
-                @"cmsAccount":              @"@named:account",
-                @"cmsRepo":                 @"@named:repo",
+                @"cms":                     @"@named:cms",
                 @"fileDB":                  @"@named:fileDB",
                 @"httpClient":              @"@named:provider#httpClient"
             }
@@ -207,8 +205,10 @@
 - (void)afterIOCConfiguration:(IFConfiguration *)configuration {
     [super afterIOCConfiguration:configuration];
     
+    // By default, the initial copy of the db file is stored in the main app bundle under the db name.
     if (!_fileDB.initialCopyPath) {
-        _fileDB.initialCopyPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:_fileDBName];
+        NSString *filename = [_fileDBName stringByAppendingPathExtension:@"sqlite"];
+        _fileDB.initialCopyPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:filename];
     }
     
     // Ensure a path root exists for each fileset, and is associated with the fileset.
@@ -228,7 +228,8 @@
             ((IFCMSFilesetCategoryPathRoot *)pathRoot).fileset = fileset;
         }
     }
-    // Register command protocol with the scheduler.
+    
+    // Register command protocol with the scheduler, using the authority name as the command prefix.
     self.provider.commandScheduler.commands = @{ self.authorityName: _commandProtocol };
 }
 

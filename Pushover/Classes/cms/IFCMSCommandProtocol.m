@@ -21,12 +21,9 @@
 #import "IFCMSFileset.h"
 
 #define URLEncode(s) ([s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]])
-#define PushoverAPIVersion (@"0.1")
 
 @interface IFCMSCommandProtocol ()
 
-/// Make a feed URL.
-- (NSString *)feedURLWithRoot:(NSString *)root trailingPath:(NSString *)path;
 /// Start a content refresh.
 - (QPromise *)refresh:(NSArray *)args;
 /// Update the file db and fileset schema.
@@ -58,19 +55,11 @@
     return self;
 }
 
-- (NSString *)feedURLWithRoot:(NSString *)root trailingPath:(NSString *)path {
-    NSString *url = [NSString stringWithFormat:@"http://%@/%@/%@/%@/%@", _cmsHost, root, PushoverAPIVersion, _cmsAccount, _cmsRepo];
-    if (path) {
-        url = [url stringByAppendingString:path];
-    }
-    return url;
-}
-
 - (QPromise *)refresh:(NSArray *)args {
     
     _promise = [[QPromise alloc] init];
     
-    NSString *refreshURL = [self feedURLWithRoot:@"updates" trailingPath:nil];
+    NSString *refreshURL = [_cms urlForUpdates];
     
     // Query the file DB for the latest commit ID.
     NSString *commit = nil;
@@ -222,18 +211,15 @@
     id cachePath = args[1];
     
     // Build the fileset URL.
-    NSString *filesetPath;
+    NSString *filesetURL = [_cms urlForFileset:category];
+    NSDictionary *data = nil;
     if ([args count] > 2) {
         id commit = args[2];
-        filesetPath = [NSString stringWithFormat:@"/%@?since=%@", category, commit];
+        data = @{ @"since": commit };
     }
-    else {
-        filesetPath = [NSString stringWithFormat:@"/%@", category];
-    }
-    NSString *filesetURL = [self feedURLWithRoot:@"fileset" trailingPath:filesetPath];
-
+    
     // Download the fileset.
-    [_httpClient getFile:filesetURL]
+    [_httpClient getFile:filesetURL data:data]
     .then((id)^(IFHTTPClientResponse *response) {
         // Unzip downloaded file to content location.
         NSString *downloadPath = [response.downloadLocation path];

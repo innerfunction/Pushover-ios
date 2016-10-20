@@ -48,6 +48,7 @@
 - (QPromise *)get:(NSString *)url;
 - (QPromise *)get:(NSString *)url data:(NSDictionary *)data;
 - (QPromise *)getFile:(NSString *)url;
+- (QPromise *)getFile:(NSString *)url data:(NSDictionary *)data;
 - (QPromise *)post:(NSString *)url data:(NSDictionary *)data;
 - (QPromise *)submit:(NSString *)method url:(NSString *)url data:(NSDictionary *)data;
 

@@ -61,7 +61,7 @@
 @protocol IFContentAuthorityPathRoot <NSObject>
 
 /**
- * Resolve content data for the specified authority, path and parameters, and write the data to the provided
+ * Resolve content data for the specified authority, path and parameters, and write the result to the provided
  * response object.
  */
 - (void)writeResponse:(id<IFContentAuthorityResponse>)response

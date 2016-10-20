@@ -17,6 +17,8 @@ typedef QPromise *(^IFHTTPClientAction)();
 - (QPromise *)reauthenticate;
 - (QPromise *)submitAction:(IFHTTPClientAction)action;
 
+NSURL *makeURL(NSString *url, NSDictionary *params);
+
 @end
 
 @implementation IFHTTPClientResponse
@@ -104,18 +106,8 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 - (QPromise *)get:(NSString *)url data:(NSDictionary *)data {
     return [self submitAction:^QPromise *{
         QPromise *promise = [QPromise new];
-        // Build URL.
-        NSURLComponents *urlParts = [NSURLComponents componentsWithString:url];
-        if (data) {
-            NSMutableArray *queryItems = [[NSMutableArray alloc] init];
-            for (NSString *name in data) {
-                NSURLQueryItem *queryItem = [NSURLQueryItem queryItemWithName:name value:[data objectForKey:name]];
-                [queryItems addObject:queryItem];
-            }
-            urlParts.queryItems = queryItems;
-        }
         // Send request.
-        NSURLRequest *request = [NSURLRequest requestWithURL:urlParts.URL];
+        NSURLRequest *request = [NSURLRequest requestWithURL:makeURL(url, data)];
         NSURLSession *session = [NSURLSession sharedSession];
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                                 completionHandler:
@@ -133,9 +125,13 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 }
 
 - (QPromise *)getFile:(NSString *)url {
+    return [self getFile:url data:nil];
+}
+
+- (QPromise *)getFile:(NSString *)url data:(NSDictionary *)data {
     return [self submitAction:^QPromise *{
         QPromise *promise = [QPromise new];
-        NSURL *fileURL = [NSURL URLWithString:url];
+        NSURL *fileURL = makeURL(url, data);
         // See note here about NSURLConnection cacheing: http://blackpixel.com/blog/2012/05/caching-and-nsurlconnection.html
         NSURLRequest *request = [NSURLRequest requestWithURL:fileURL
                                                  cachePolicy:NSURLRequestReloadRevalidatingCacheData // NOTE
@@ -244,6 +240,19 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
         [promise reject:error];
     });
     return promise;
+}
+
+NSURL *makeURL(NSString *url, NSDictionary *params) {
+    NSURLComponents *urlParts = [NSURLComponents componentsWithString:url];
+    if (params) {
+        NSMutableArray *queryItems = [[NSMutableArray alloc] init];
+        for (NSString *name in params) {
+            NSURLQueryItem *queryItem = [NSURLQueryItem queryItemWithName:name value:params[name]];
+            [queryItems addObject:queryItem];
+        }
+        urlParts.queryItems = queryItems;
+    }
+    return urlParts.URL;
 }
 
 @end
