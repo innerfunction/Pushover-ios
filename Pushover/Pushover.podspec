@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.platform        = :ios
   s.ios.deployment_target = '8.0'
 
-  s.source          = { :git => "git@github.com:innerfunction/Pushover-ios.git", :tag => "0.0.5" }
+  s.source          = { :git => "git@github.com:innerfunction/Pushover-ios.git", :tag => "0.0.8" }
   s.source_files    = "Pushover/Classes/Pushover.h", "Pushover/Classes/{cms,commands,content,db,forms,ui,utils}/*.{h,m}", "Pushover/Classes/SSKeychain/*.{h,m}"
   s.requires_arc    = true
 
