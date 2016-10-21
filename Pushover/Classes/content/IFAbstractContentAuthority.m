@@ -22,6 +22,19 @@
 #import "NSArray+IF.h"
 #import "IFCompoundURI.h"
 
+@implementation IFCMSAbstractContentAuthorityConfigurationProxy
+
+#pragma mark - IFIOCObjectAware
+
+- (void)notifyIOCObject:(id)object propertyName:(NSString *)propertyName {
+    if (!_authorityName) {
+        // Default the authority name to the name of the property it's bound to.
+        _authorityName = propertyName;
+    }
+}
+
+@end
+
 @interface IFNSURLProtocolResponse : NSObject <IFContentAuthorityResponse> {
     __weak NSMutableSet *_liveResponses;
     NSURLProtocol *_protocol;
@@ -119,24 +132,6 @@
         NSError *error = makePathNotFoundResponseError([path fullPath]);
         [response respondWithError:error];
     }
-}
-
-#pragma mark - IFIOCObjectAware
-
-- (void)notifyIOCObject:(id)object propertyName:(NSString *)propertyName {
-    self.authorityName = propertyName;
-}
-
-#pragma mark - IFIOCConfigurationAware
-
-- (void)beforeIOCConfiguration:(IFConfiguration *)configuration {}
-
-- (void)afterIOCConfiguration:(IFConfiguration *)configuration {
-    IFConfiguration *configTemplate = [[IFConfiguration alloc] initWithData:self.configurationTemplate];
-    IFConfiguration *config = [configTemplate extendWithParameters:self.configurationParameters];
-    config.uriHandler = self.uriHandler;
-    config.root = self;
-    [self configureWith:config]; // Is there a way to use [super configureWithData:] here?
 }
 
 @end

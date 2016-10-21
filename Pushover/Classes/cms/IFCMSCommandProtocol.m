@@ -19,6 +19,8 @@
 #import "IFCMSCommandProtocol.h"
 #import "IFFileIO.h"
 #import "IFCMSFileset.h"
+#import "IFCMSContentAuthority.h"
+#import "IFContentProvider.h"
 
 #define URLEncode(s) ([s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]])
 
@@ -35,9 +37,12 @@
 
 @implementation IFCMSCommandProtocol
 
-- (id)init {
+- (id)initWithAuthority:(IFCMSContentAuthority *)authority {
     self = [super init];
     if (self) {
+        self.cms = authority.cms;
+        self.fileDB = authority.fileDB;
+        self.httpClient = authority.provider.httpClient;
         // Register command handlers.
         __block id this = self;
         [self addCommand:@"refresh" withBlock:^QPromise *(NSArray *args) {

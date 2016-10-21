@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name            = "Pushover"
-  s.version         = "0.0.7"
+  s.version         = "0.0.8"
   s.summary         = "Pushover CMS mobile SDK for iOS"
   s.description     = <<-DESC
     An iOS client SDK for the Pushover content and document management system.

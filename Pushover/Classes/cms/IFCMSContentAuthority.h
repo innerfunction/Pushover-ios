@@ -23,7 +23,9 @@
 #import "IFCMSCommandProtocol.h"
 #import "IFCMSSettings.h"
 #import "IFIOCObjectAware.h"
+#import "IFIOCContainerAware.h"
 #import "IFIOCConfigurationAware.h"
+#import "IFJSONData.h"
 
 @class IFCMSPostsPathRoot;
 
@@ -31,14 +33,20 @@
 
 // TODO Consider having a config proxy for this class, to separate its configurable properties from its runtime properties?
 // (Note that the config template & properties would then belong to the proxy)
+@interface IFCMSContentAuthorityConfigurationProxy : IFCMSAbstractContentAuthorityConfigurationProxy <IFIOCContainerAware>
+
+/// The file database settings.
+@property (nonatomic, strong) IFJSONObject *fileDB;
+/// The CMS settings (host / account / repo).
+@property (nonatomic, strong) IFCMSSettings *cms;
+
+@end
 
 /**
  * A content authority which sources its content from a Pushover CMS
  */
-@interface IFCMSContentAuthority : IFAbstractContentAuthority <IFIOCConfigurationAware, IFIOCObjectAware>
+@interface IFCMSContentAuthority : IFAbstractContentAuthority <IFService>
 
-/// The name of the file database.
-@property (nonatomic, strong) NSString *fileDBName;
 /// The file database.
 @property (nonatomic, strong) IFCMSFileDB *fileDB;
 /// The path root for 'posts'.

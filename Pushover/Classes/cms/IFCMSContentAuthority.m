@@ -22,116 +22,172 @@
 #import "IFCMSPostsPathRoot.h"
 #import "IFContentProvider.h"
 
+@implementation IFCMSContentAuthorityConfigurationProxy
+
+@synthesize iocContainer;
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.fileDB = [[IFJSONObject alloc] initWithDictionary:@{
+            @"name":    @"$authorityName",
+            @"version": @1,
+            @"tables": @{
+                @"files": @{
+                    @"columns": @{
+                        @"id":          @{ @"type": @"INTEGER", @"tag": @"id" },
+                        @"path":        @{ @"type": @"STRING" },
+                        @"category":    @{ @"type": @"STRING" },
+                        @"status":      @{ @"type": @"STRING" },
+                        @"commit":      @{ @"type": @"STRING",  @"tag": @"version" }
+                    }
+                },
+                @"posts": @{
+                    @"columns": @{
+                        @"id":          @{ @"type": @"INTEGER", @"tag": @"id" },
+                        @"type":        @{ @"type": @"STRING" },
+                        @"title":       @{ @"type": @"STRING" },
+                        @"body":        @{ @"type": @"STRING" },
+                        @"image":       @{ @"type": @"INTEGER" },
+                        @"commit":      @{ @"type": @"STRING",  @"tag": @"version" }
+
+                    }
+                },
+                @"commits": @{
+                    @"columns": @{
+                        @"commit":      @{ @"type": @"STRING",  @"tag": @"id" },
+                        @"date":        @{ @"type": @"STRING" },
+                        @"subject":     @{ @"type": @"STRING" }
+                    }
+                },
+                @"meta": @{
+                    @"columns": @{
+                        @"id":          @{ @"type": @"STRING",  @"tag": @"id", @"format": @"{fileid}:{key}" },
+                        @"fileid":      @{ @"type": @"INTEGER", @"tag": @"ownerid" },
+                        @"key":         @{ @"type": @"STRING",  @"tag": @"key" },
+                        @"value":       @{ @"type": @"STRING" },
+                        @"commit":      @{ @"type": @"STRING",  @"tag": @"version" }
+
+                    }
+                }
+            },
+            @"orm": @{
+                @"source": @"files",
+                @"mappings": @{
+                    @"post": @{
+                        @"relation":    @"object",
+                        @"table":       @"posts"
+                    },
+                    @"commit": @{
+                        @"relation":    @"shared-object",
+                        @"table":       @"commits"
+                    },
+                    @"meta": @{
+                        @"relation":    @"map",
+                        @"table":       @"meta"
+                    }
+                }
+            },
+            @"filesets": @{
+                @"posts": @{
+                    @"includes":        @[ @"posts/*.json" ],
+                    @"mappings":        @[ @"commit", @"meta", @"post" ],
+                    @"cache":           @"none"
+                },
+                @"pages": @{
+                    @"includes":        @[ @"pages/*.json" ],
+                    @"mappings":        @[ @"commit", @"meta" ],
+                    @"cache":           @"none"
+                },
+                @"images": @{
+                    @"includes":        @[ @"posts/images/*", @"pages/images/*" ],
+                    @"mappings":        @[ @"commit", @"meta" ],
+                    @"cache":           @"content"
+                },
+                @"assets": @{
+                    @"includes":        @[ @"assets/**" ],
+                    @"mappings":        @[ @"commit" ],
+                    @"cache":           @"content"
+                },
+                @"templates": @{
+                    @"includes":        @[ @"templates/**" ],
+                    @"mappings":        @[ @"commit" ],
+                    @"cache":           @"app"
+                }
+            }
+        }];
+        self.pathRoots = [[IFJSONObject alloc] initWithDictionary:@{
+            @"~posts":                  @"$postsPathRoot",
+            @"~pages":                  @"$postsPathRoot",
+            @"~files": @{
+                @"@class":              @"IFCMSFilesetCategoryPathRoot"
+            }
+        }];
+    }
+    return self;
+}
+
+- (id)unwrapValue {
+    // Build configuration for authority object.
+    IFConfiguration *config = [[IFConfiguration alloc] initWithData:@{
+        @"@class":      @"IFCMSContentAuthority",
+        @"fileDB":      _fileDB,
+        @"pathRoots":   self.pathRoots
+    }];
+    config = [config extendWithParameters:@{
+        @"authorityName":   self.authorityName,
+        @"postsPathRoot":   [IFCMSPostsPathRoot new]
+    }];
+    
+    // Ask the container to build the authority object.
+    IFCMSContentAuthority *authority = (IFCMSContentAuthority *)[self.iocContainer buildObjectWithConfiguration:config
+                                                                                                     identifier:self.authorityName];
+    
+    // By default, the initial copy of the db file is stored in the main app bundle under the db name.
+    IFCMSFileDB *fileDB = authority.fileDB;
+    if (!fileDB.initialCopyPath) {
+        NSString *filename = [fileDB.name stringByAppendingPathExtension:@"sqlite"];
+        fileDB.initialCopyPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:filename];
+    }
+    
+    // Ensure a path root exists for each fileset, and is associated with the fileset.
+    NSDictionary *filesets = fileDB.filesets;
+    for (NSString *category in [filesets keyEnumerator]) {
+        IFCMSFileset *fileset = filesets[category];
+        // Note that fileset category path roots are prefixed with a tilde.
+        NSString *pathRootName = [@"~" stringByAppendingString:category];
+        id pathRoot = self.pathRoots[pathRootName];
+        if (pathRoot == nil) {
+            // Create a default path root for the current category.
+            pathRoot = [[IFCMSFilesetCategoryPathRoot alloc] initWithFileset:fileset authority:authority];
+            authority.pathRoots[pathRootName] = pathRoot;
+        }
+        else if ([pathRoot isKindOfClass:[IFCMSFilesetCategoryPathRoot class]]) {
+            // Path root for category found, match it up with its fileset and the authority.
+            ((IFCMSFilesetCategoryPathRoot *)pathRoot).fileset = fileset;
+            ((IFCMSFilesetCategoryPathRoot *)pathRoot).authority = authority;
+        }
+    }
+    
+    return authority;
+}
+
+#pragma mark - Class methods
+
++ (void)load {
+    // Register the proxy class.
+    [IFIOCProxyObject registerConfigurationProxyClass:self forClassName:@"IFCMSContentAuthority"];
+}
+
+@end
+
 @implementation IFCMSContentAuthority
 
 - (id)init {
     self = [super init];
     if (self) {
         _fileDB = [[IFCMSFileDB alloc] initWithContentAuthority:self];
-        self.configurationTemplate = @{
-            @"fileDB": @{
-                @"name":    @"$fileDBName",
-                @"version": @1,
-                @"tables": @{
-                    @"files": @{
-                        @"columns": @{
-                            @"id":          @{ @"type": @"INTEGER", @"tag": @"id" },
-                            @"path":        @{ @"type": @"STRING" },
-                            @"category":    @{ @"type": @"STRING" },
-                            @"status":      @{ @"type": @"STRING" },
-                            @"commit":      @{ @"type": @"STRING",  @"tag": @"version" }
-                        }
-                    },
-                    @"posts": @{
-                        @"columns": @{
-                            @"id":          @{ @"type": @"INTEGER", @"tag": @"id" },
-                            @"type":        @{ @"type": @"STRING" },
-                            @"title":       @{ @"type": @"STRING" },
-                            @"body":        @{ @"type": @"STRING" },
-                            @"image":       @{ @"type": @"INTEGER" },
-                            @"commit":      @{ @"type": @"STRING",  @"tag": @"version" }
-
-                        }
-                    },
-                    @"commits": @{
-                        @"columns": @{
-                            @"commit":      @{ @"type": @"STRING",  @"tag": @"id" },
-                            @"date":        @{ @"type": @"STRING" },
-                            @"subject":     @{ @"type": @"STRING" }
-                        }
-                    },
-                    @"meta": @{
-                        @"columns": @{
-                            @"id":          @{ @"type": @"STRING",  @"tag": @"id", @"format": @"{fileid}:{key}" },
-                            @"fileid":      @{ @"type": @"INTEGER", @"tag": @"ownerid" },
-                            @"key":         @{ @"type": @"STRING",  @"tag": @"key" },
-                            @"value":       @{ @"type": @"STRING" },
-                            @"commit":      @{ @"type": @"STRING",  @"tag": @"version" }
-
-                        }
-                    }
-                },
-                @"orm": @{
-                    @"source": @"files",
-                    @"mappings": @{
-                        @"post": @{
-                            @"relation":    @"object",
-                            @"table":       @"posts"
-                        },
-                        @"commit": @{
-                            @"relation":    @"shared-object",
-                            @"table":       @"commits"
-                        },
-                        @"meta": @{
-                            @"relation":    @"map",
-                            @"table":       @"meta"
-                        }
-                    }
-                },
-                @"filesets": @{
-                    @"posts": @{
-                        @"includes":        @[ @"posts/*.json" ],
-                        @"mappings":        @[ @"commit", @"meta", @"post" ],
-                        @"cache":           @"none"
-                    },
-                    @"pages": @{
-                        @"includes":        @[ @"pages/*.json" ],
-                        @"mappings":        @[ @"commit", @"meta" ],
-                        @"cache":           @"none"
-                    },
-                    @"images": @{
-                        @"includes":        @[ @"posts/images/*", @"pages/images/*" ],
-                        @"mappings":        @[ @"commit", @"meta" ],
-                        @"cache":           @"content"
-                    },
-                    @"assets": @{
-                        @"includes":        @[ @"assets/**" ],
-                        @"mappings":        @[ @"commit" ],
-                        @"cache":           @"content"
-                    },
-                    @"templates": @{
-                        @"includes":        @[ @"templates/**" ],
-                        @"mappings":        @[ @"commit" ],
-                        @"cache":           @"app"
-                    }
-                }
-            },
-            @"postsPathRoot": @{
-                @"@class":                  @"IFCMSPostsPathRoot"
-            },
-            @"pathRoots": @{
-                @"~posts":                  @"$postsPathRoot",
-                @"~pages":                  @"$postsPathRoot",
-                @"~files": @{
-                    @"@class":              @"IFCMSFilesetCategoryPathRoot"
-                }
-            },
-            @"commandProtocol": @{
-                @"cms":                     @"@named:cms",
-                @"fileDB":                  @"@named:fileDB",
-                @"httpClient":              @"@named:provider#httpClient"
-            }
-        };
+        _commandProtocol = [[IFCMSCommandProtocol alloc] initWithAuthority:self];
         // TODO Record types (posts/pages): dbjson, html, webview
         // TODO Query types: dbjson, tableview
     }
@@ -140,24 +196,6 @@
 
 - (NSDictionary *)filesets {
     return _fileDB.filesets;
-}
-
-- (void)setAuthorityName:(NSString *)authorityName {
-    super.authorityName = authorityName;
-    if (_fileDBName == nil) {
-        self.fileDBName = authorityName;
-    }
-    self.configurationParameters[@"authorityName"] = authorityName;
-}
-
-- (void)setFileDBName:(NSString *)fileDBName {
-    _fileDBName = fileDBName;
-    self.configurationParameters[@"fileDBName"] = fileDBName;
-}
-
-- (void)setPostsPathRoot:(IFCMSPostsPathRoot *)postsPathRoot {
-    _postsPathRoot = postsPathRoot;
-    self.configurationParameters[@"postsPathRoot"] = postsPathRoot;
 }
 
 #pragma mark - IFAbstractContentAuthority override
@@ -188,47 +226,9 @@
     [super writeResponse:response forAuthority:authority path:path parameters:parameters];
 }
 
-#pragma mark - IFIOCObjectAware
+#pragma mark - IFService
 
-- (void)notifyIOCObject:(id)object propertyName:(NSString *)propertyName {
-    if (!_fileDBName) {
-        // If no explicit file DB name has been set then default to the authority name.
-        self.fileDBName = propertyName;
-    }
-}
-
-#pragma mark - IFIOCConfigurationAware
-
-- (void)beforeIOCConfiguration:(IFConfiguration *)configuration {
-}
-
-- (void)afterIOCConfiguration:(IFConfiguration *)configuration {
-    [super afterIOCConfiguration:configuration];
-    
-    // By default, the initial copy of the db file is stored in the main app bundle under the db name.
-    if (!_fileDB.initialCopyPath) {
-        NSString *filename = [_fileDBName stringByAppendingPathExtension:@"sqlite"];
-        _fileDB.initialCopyPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:filename];
-    }
-    
-    // Ensure a path root exists for each fileset, and is associated with the fileset.
-    NSDictionary *filesets = [self filesets];
-    for (NSString *category in [filesets keyEnumerator]) {
-        IFCMSFileset *fileset = filesets[category];
-        // Note that fileset category path roots are prefixed with a tilde.
-        NSString *pathRootName = [@"~" stringByAppendingString:category];
-        id pathRoot = self.pathRoots[pathRootName];
-        if (pathRoot == nil) {
-            // Create a default path root for the current category.
-            pathRoot = [[IFCMSFilesetCategoryPathRoot alloc] initWithFileset:fileset container:self];
-            self.pathRoots[pathRootName] = pathRoot;
-        }
-        else if ([pathRoot isKindOfClass:[IFCMSFilesetCategoryPathRoot class]]) {
-            // Path root for category found, match it up with its fileset.
-            ((IFCMSFilesetCategoryPathRoot *)pathRoot).fileset = fileset;
-        }
-    }
-    
+- (void)startService {
     // Register command protocol with the scheduler, using the authority name as the command prefix.
     self.provider.commandScheduler.commands = @{ self.authorityName: _commandProtocol };
 }

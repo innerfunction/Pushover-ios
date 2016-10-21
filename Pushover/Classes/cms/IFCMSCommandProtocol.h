@@ -23,9 +23,13 @@
 #import "IFCMSFileDB.h"
 #import "IFHTTPClient.h"
 
+@class IFCMSContentAuthority;
+
 @interface IFCMSCommandProtocol : IFCommandProtocol {
     QPromise *_promise;
 }
+
+- (id)initWithAuthority:(IFCMSContentAuthority *)authority;
 
 /** The content repository's settings. */
 @property (nonatomic, weak) IFCMSSettings *cms;

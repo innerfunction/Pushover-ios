@@ -27,11 +27,11 @@
 
 @implementation IFCMSFilesetCategoryPathRoot
 
-- (id)initWithFileset:(IFCMSFileset *)fileset container:(IFCMSContentAuthority *)container {
+- (id)initWithFileset:(IFCMSFileset *)fileset authority:(IFCMSContentAuthority *)authority {
     self = [super init];
     if (self) {
         self.fileset = fileset;
-        self.authority = container;
+        self.authority = authority;
     }
     return self;
 }

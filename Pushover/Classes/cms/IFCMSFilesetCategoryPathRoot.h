@@ -35,8 +35,8 @@
 /// The file database.
 @property (nonatomic, weak) IFCMSFileDB *fileDB;
 
-/// Initialize the path root with the specified fileset and content container.
-- (id)initWithFileset:(IFCMSFileset *)fileset container:(IFCMSContentAuthority *)container;
+/// Initialize the path root with the specified fileset and content authority.
+- (id)initWithFileset:(IFCMSFileset *)fileset authority:(IFCMSContentAuthority *)authority;
 /// Query the file database for entries in the current fileset.
 - (NSArray *)queryWithParameters:(NSDictionary *)parameters;
 /// Read a single entry from the file database by key (i.e. file ID).
