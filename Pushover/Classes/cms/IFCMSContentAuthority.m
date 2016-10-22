@@ -201,8 +201,7 @@
 #pragma mark - IFAbstractContentAuthority override
 
 - (void)writeResponse:(id<IFContentAuthorityResponse>)response
-         forAuthority:(NSString *)authority
-                 path:(IFContentPath *)path
+              forPath:(IFContentPath *)path
            parameters:(NSDictionary *)parameters {
     
     // A tilde at the start of a path indicates a fileset category reference; so any path which
@@ -223,7 +222,7 @@
         }
     }
     // Continue with standard response behaviour.
-    [super writeResponse:response forAuthority:authority path:path parameters:parameters];
+    [super writeResponse:response forPath:path parameters:parameters];
 }
 
 #pragma mark - IFService

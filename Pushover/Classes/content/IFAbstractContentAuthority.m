@@ -82,7 +82,6 @@
     IFNSURLProtocolResponse *response = [[IFNSURLProtocolResponse alloc] initWithNSURLProtocol:protocol
                                                                                  liveResponses:_liveResponses];
     NSURL *url = protocol.request.URL;
-    NSString *authority = url.host;
     IFContentPath *contentPath = [[IFContentPath alloc] initWithURL:url];
     
     // Parse the URL's scheme and path parts as a compound URI; this is to allow encoding of
@@ -91,8 +90,7 @@
     NSDictionary *parameters = [self.uriHandler dereferenceParameters:uri];
     
     [self writeResponse:response
-           forAuthority:authority
-                   path:contentPath
+                forPath:contentPath
              parameters:parameters];
 }
 
@@ -100,19 +98,17 @@
     [_liveResponses removeObject:protocol];
 }
 
-- (id)contentForAuthority:(NSString *)authority path:(NSString *)path parameters:(NSDictionary *)parameters {
+- (id)contentForPath:(NSString *)path parameters:(NSDictionary *)parameters {
     IFSchemeHandlerResponse *response = [IFSchemeHandlerResponse new];
     IFContentPath *contentPath = [[IFContentPath alloc] initWithPath:path];
     [self writeResponse:response
-           forAuthority:authority
-                   path:contentPath
+                forPath:contentPath
              parameters:parameters];
     return response;
 }
 
 - (void)writeResponse:(id<IFContentAuthorityResponse>)response
-         forAuthority:(NSString *)authority
-                 path:(IFContentPath *)path
+              forPath:(IFContentPath *)path
            parameters:(NSDictionary *)parameters {
     
     // Look-up a path root for the first path component, and if one is found then delegate the request to it.
@@ -123,7 +119,7 @@
         path = [path rest];
         // Delegate the request.
         [pathRoot writeResponse:response
-                   forAuthority:authority
+                   forAuthority:self
                            path:path
                      parameters:parameters];
     }

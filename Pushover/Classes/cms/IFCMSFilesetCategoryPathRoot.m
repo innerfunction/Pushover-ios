@@ -166,7 +166,7 @@
 #pragma mark - IFContentAuthorityPathRoot
 
 - (void)writeResponse:(id<IFContentAuthorityResponse>)response
-         forAuthority:(NSString *)authority
+         forAuthority:(id<IFContentAuthority>)authority
                  path:(IFContentPath *)path
            parameters:(NSDictionary *)parameters {
     

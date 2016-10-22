@@ -36,7 +36,7 @@
         id<IFContentAuthority> contentAuthority = [IFContentURLProtocol findContentAuthorityForName:authority];
         if (contentAuthority) {
             // Get the content.
-            content = [contentAuthority contentForAuthority:authority path:path parameters:params];
+            content = [contentAuthority contentForPath:path parameters:params];
         }
     }
     return content;

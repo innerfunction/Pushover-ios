@@ -21,6 +21,7 @@
 #import "IFContentPath.h"
 
 @class IFContentProvider;
+@protocol IFContentAuthority;
 
 /**
  * A class providing functionality for writing responses to content URL and URI requests.
@@ -65,7 +66,7 @@
  * response object.
  */
 - (void)writeResponse:(id<IFContentAuthorityResponse>)response
-         forAuthority:(NSString *)authority
+         forAuthority:(id<IFContentAuthority>)authority
                  path:(IFContentPath *)path
            parameters:(NSDictionary *)parameters;
 
@@ -74,7 +75,7 @@
 /**
  * A protocol to be implemented by containers which are capable of providing data to content URIs and URLs.
  */
-@protocol IFContentAuthority <IFContentAuthorityPathRoot>
+@protocol IFContentAuthority
 
 /// The content provider the authority belongs to.
 @property (nonatomic, weak) IFContentProvider *provider;
@@ -84,7 +85,12 @@
 /// Cancel an NSURLProtocol request currently being processed by the container.
 - (void)cancelURLProtocolRequest:(NSURLProtocol *)protocol;
 /// Return content for an internal content URI.
-- (id)contentForAuthority:(NSString *)authority path:(NSString *)path parameters:(NSDictionary *)parameters;
+- (id)contentForPath:(NSString *)path parameters:(NSDictionary *)parameters;
+/// Write a content reponse for the specified path.
+- (void)writeResponse:(id<IFContentAuthorityResponse>)response
+              forPath:(IFContentPath *)path
+           parameters:(NSDictionary *)parameters;
+
 
 @end
 
