@@ -55,9 +55,21 @@
         NSString *mtable = mapping.table;
 
         if ([@"object" isEqualToString:mapping.relation] ||
-            [@"property" isEqualToString:mapping.relation] ||
-            [@"shared-object" isEqualToString:mapping.relation] ||
-            [@"shared-property" isEqualToString:mapping.relation]) {
+            [@"property" isEqualToString:mapping.relation]) {
+
+            [columns addObject:[self columnNamesForTable:mapping.table withPrefix:mname]];
+            NSString *midColumn = [self columnWithName:mapping.idColumn orWithTag:@"id" onTable:mtable];
+            NSString *join = [NSString stringWithFormat:@"LEFT OUTER JOIN %@ %@ ON %@.%@=%@.%@",
+                              mtable,
+                              mname,
+                              mtable,
+                              midColumn,
+                              _source,
+                              sidColumn];
+            [joins addObject:join];
+        }
+        else if ([@"shared-object" isEqualToString:mapping.relation] ||
+                 [@"shared-property" isEqualToString:mapping.relation]) {
 
             [columns addObject:[self columnNamesForTable:mapping.table withPrefix:mname]];
             NSString *midColumn = [self columnWithName:mapping.idColumn orWithTag:@"id" onTable:mtable];
@@ -97,7 +109,7 @@
                      [columns componentsJoinedByString:@","],
                      _source,
                      _source,
-                     [joins componentsJoinedByString:@""],
+                     [joins componentsJoinedByString:@" "],
                      where];
     
     if ([orderBys count]) {
@@ -135,7 +147,7 @@
             }
         }
         // Check if dealing with a new object.
-        if (obj == nil || ![obj[sidColumn] isEqualToString:key]) {
+        if (obj == nil || ![obj[sidColumn] isEqual:key]) {
             // Convert groups into object + properties.
             obj = groups[_source];
             for (NSString *rname in [groups keyEnumerator]) {
@@ -148,7 +160,7 @@
                     }
                     else {
                         // Else map the object property name to the value.
-                        obj[rname] = rname;
+                        obj[rname] = value;
                     }
                 }
             }
@@ -211,7 +223,8 @@
         NSDictionary *columnDefs = tableDef[@"columns"];
         NSMutableArray *columns = [NSMutableArray new];
         for (NSString *name in [columnDefs keyEnumerator]) {
-            [columns addObject:[NSString stringWithFormat:@"%@.%@", prefix, name]];
+            NSString *column = [NSString stringWithFormat:@"%@.%@", prefix, name];
+            [columns addObject:[NSString stringWithFormat:@"%@ AS '%@'", column, column]];
         }
         columnNames = [columns componentsJoinedByString:@","];
     }

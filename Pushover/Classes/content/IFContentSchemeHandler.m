@@ -25,15 +25,18 @@
     id content = nil;
     // The compound URI name contains both the authority and content path (e.g. as
     // content://{authority}/{path/to/content}).
-    NSRange range = [uri.name rangeOfString:@"/"];
+    // Split leading // from name.
+    NSString *name = [uri.name substringFromIndex:2];
+    // Find end of authority name.
+    NSRange range = [name rangeOfString:@"/"];
     if (range.location != NSNotFound) {
-        NSString *authority = [uri.name substringToIndex:range.location];
-        NSString *path = [uri.name substringFromIndex:range.location + 1];
+        NSString *authority = [name substringToIndex:range.location];
+        NSString *path = [name substringFromIndex:range.location + 1];
         // Find the content container.
-        id<IFContentAuthority> contentContainer = [IFContentURLProtocol findContentAuthorityForName:authority];
-        if (contentContainer) {
+        id<IFContentAuthority> contentAuthority = [IFContentURLProtocol findContentAuthorityForName:authority];
+        if (contentAuthority) {
             // Get the content.
-            content = [contentContainer contentForAuthority:authority path:path parameters:params];
+            content = [contentAuthority contentForAuthority:authority path:path parameters:params];
         }
     }
     return content;

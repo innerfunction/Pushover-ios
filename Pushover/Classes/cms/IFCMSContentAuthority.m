@@ -130,9 +130,9 @@
 - (id)unwrapValue {
     // Build configuration for authority object.
     IFConfiguration *config = [[IFConfiguration alloc] initWithData:@{
-        @"@class":      @"IFCMSContentAuthority",
-        @"fileDB":      _fileDB,
-        @"pathRoots":   self.pathRoots
+        @"authorityName":   self.authorityName,
+        @"fileDB":          _fileDB,
+        @"pathRoots":       self.pathRoots
     }];
     config = [config extendWithParameters:@{
         @"authorityName":   self.authorityName,
@@ -140,14 +140,14 @@
     }];
     
     // Ask the container to build the authority object.
-    IFCMSContentAuthority *authority = (IFCMSContentAuthority *)[self.iocContainer buildObjectWithConfiguration:config
-                                                                                                     identifier:self.authorityName];
+    IFCMSContentAuthority *authority = [[IFCMSContentAuthority alloc] init];
+    [self.iocContainer configureObject:authority withConfiguration:config identifier:self.authorityName];
     
     // By default, the initial copy of the db file is stored in the main app bundle under the db name.
     IFCMSFileDB *fileDB = authority.fileDB;
     if (!fileDB.initialCopyPath) {
         NSString *filename = [fileDB.name stringByAppendingPathExtension:@"sqlite"];
-        fileDB.initialCopyPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:filename];
+        fileDB.initialCopyPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:filename];
     }
     
     // Ensure a path root exists for each fileset, and is associated with the fileset.
@@ -229,6 +229,7 @@
 #pragma mark - IFService
 
 - (void)startService {
+    [super startService];
     // Register command protocol with the scheduler, using the authority name as the command prefix.
     self.provider.commandScheduler.commands = @{ self.authorityName: _commandProtocol };
 }
