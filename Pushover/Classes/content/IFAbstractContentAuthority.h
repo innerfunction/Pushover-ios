@@ -57,5 +57,7 @@
 @property (nonatomic, readonly) NSString *appCachePath;
 /// A property for caching downloaded content.
 @property (nonatomic, readonly) NSString *contentCachePath;
+/// A path for CMS content that has been packaged with the app.
+@property (nonatomic, readonly) NSString *packagedContentPath;
 
 @end

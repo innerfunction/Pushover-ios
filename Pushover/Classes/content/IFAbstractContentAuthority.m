@@ -75,6 +75,10 @@
     return [self.provider.contentCachePath stringByAppendingString:_authorityName];
 }
 
+- (NSString *)packagedContentPath {
+    return [self.provider.packagedContentPath stringByAppendingString:_authorityName];
+}
+
 #pragma mark - IFContentAuthority
 
 - (void)handleURLProtocolRequest:(NSURLProtocol *)protocol {

@@ -27,6 +27,8 @@
 @property (nonatomic, weak) IFCMSContentAuthority *authority;
 /// The fileset categories defined for the database.
 @property (nonatomic, strong) NSDictionary *filesets;
+/// The name of the files table. Defaults to 'files'.
+@property (nonatomic, strong) NSString *filesTable;
 
 - (id)initWithContentAuthority:(IFCMSContentAuthority *)authority;
 
@@ -46,5 +48,10 @@
  * Returns nil if the file isn't locally cachable.
  */
 - (NSString *)cacheLocationForFile:(NSDictionary *)fileRecord;
+/**
+ * Return the absolute path for the cache location of the file with the specified path.
+ * Returns nil if the file isn't locally cachable.
+ */
+- (NSString *)cacheLocationForFileWithPath:(NSString *)path;
 
 @end

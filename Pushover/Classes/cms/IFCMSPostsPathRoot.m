@@ -35,26 +35,19 @@ static IFLogger *Logger;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *postType = postData[@"posts.type"];
     NSString *postHTML;
-    NSString *clientTemplatePath = nil;
-    NSString *templatePath = [self.fileDB cacheLocationForFileset:@"templates"];
-    if (templatePath) {
-        // Resolve the client template to use to render the post.
-        NSString *clientTemplateFilename = [NSString stringWithFormat:@"template-posts-%@.html", postType];
-        clientTemplatePath = [templatePath stringByAppendingPathComponent:clientTemplateFilename];
-        if (![fileManager fileExistsAtPath:clientTemplatePath]) {
-            clientTemplatePath = [templatePath stringByAppendingPathComponent:@"template-posts.html"];
-            if (![fileManager fileExistsAtPath:clientTemplatePath]) {
-                [Logger warn:@"Client template not found for post type %@", postType];
-                clientTemplatePath = nil;
-            }
+    // Resolve the client template to use to render the post.
+    NSString *templateFilename = [NSString stringWithFormat:@"_templates/post-%@.html", postType];
+    NSString *templatePath = [self.fileDB cacheLocationForFileWithPath:templateFilename];
+    if (![fileManager fileExistsAtPath:templatePath]) {
+        templatePath = [self.fileDB cacheLocationForFileWithPath:@"_templates/post.html"];
+        if (![fileManager fileExistsAtPath:templatePath]) {
+            [Logger warn:@"Client template not found for post type %@", postType];
+            templatePath = nil;
         }
     }
-    else {
-        [Logger warn:@"Templates fileset not found"];
-    }
-    if (clientTemplatePath) {
+    if (templatePath) {
         // Load the template and render the post.
-        NSString *template = [NSString stringWithContentsOfFile:clientTemplatePath encoding:NSUTF8StringEncoding error:nil];
+        NSString *template = [NSString stringWithContentsOfFile:templatePath encoding:NSUTF8StringEncoding error:nil];
         NSError *error;
         // TODO: Investigate using template repositories to load templates
         // https://github.com/groue/GRMustache/blob/master/Guides/template_repositories.md
@@ -63,7 +56,7 @@ static IFLogger *Logger;
         // a template from a string (i.e. for post content only).
         postHTML = [GRMustacheTemplate renderObject:postData fromString:template error:&error];
         if (error) {
-            [Logger error:@"Rendering %@: %@", clientTemplatePath, error];
+            [Logger error:@"Rendering %@: %@", templatePath, error];
         }
     }
     if (!postHTML) {

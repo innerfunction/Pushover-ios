@@ -59,6 +59,7 @@
         dirName = [NSString stringWithFormat:@"%@.content", PushoverNamePrefix];
         _contentCachePath = [cachePath stringByAppendingPathComponent:dirName];
 
+        _packagedContentPath = [[NSBundle mainBundle] resourcePath];
     }
     return self;
 }

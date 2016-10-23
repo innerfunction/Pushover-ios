@@ -25,6 +25,7 @@
     self = [super init];
     if (self) {
         _authority = authority;
+        _filesTable = @"files";
     }
     return self;
 }
@@ -71,16 +72,34 @@
     }
     return path;
 }
-    
+
+// TODO: Consider breaking the following method into two; strictly speaking, the cache location
+// should be writeable, but if content is packaged then its cache location isn't writeable.
 - (NSString *)cacheLocationForFile:(NSDictionary *)fileRecord {
     NSString *path = nil;
+    NSString *status = fileRecord[@"status"];
     NSString *category = fileRecord[@"category"];
-    IFCMSFileset *fileset = _filesets[category];
-    if (fileset != nil && fileset.cachable) {
-        NSString *cachePath = [fileset cachePath:_authority];
-        path = [cachePath stringByAppendingPathComponent:fileRecord[@"path"]];
+    if ([@"packaged" isEqualToString:status]) {
+        // Packaged content is distributed with the app, under the path
+        // {content authority name}/~{fileset category name}/
+        path = _authority.packagedContentPath;
+        path = [path stringByAppendingPathComponent:[@"~" stringByAppendingString:category]];
+        path = [path stringByAppendingPathComponent:fileRecord[@"path"]];
+    }
+    else {
+        IFCMSFileset *fileset = _filesets[category];
+        if (fileset != nil && fileset.cachable) {
+            NSString *cachePath = [fileset cachePath:_authority];
+            path = [cachePath stringByAppendingPathComponent:fileRecord[@"path"]];
+        }
     }
     return path;
+}
+
+- (NSString *)cacheLocationForFileWithPath:(NSString *)path {
+    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE path=?", _filesTable];
+    NSArray *rs = [self performQuery:sql withParams:@[ path ]];
+    return [rs count] > 0 ? [self cacheLocationForFile:rs[0]] : nil;
 }
 
 #pragma mark - IFIOCTypeInspectable

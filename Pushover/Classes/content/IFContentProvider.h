@@ -40,8 +40,10 @@
 @property (nonatomic, strong) NSString *stagingPath;
 /// A path for caching app content.
 @property (nonatomic, strong) NSString *appCachePath;
-/// A property for caching downloaded content.
+/// A path for caching downloaded content.
 @property (nonatomic, strong) NSString *contentCachePath;
+/// A path for app packaged content.
+@property (nonatomic, strong) NSString *packagedContentPath;
 
 /// Find a content authority by name, or return nil of no match found.
 - (id<IFContentAuthority>)contentAuthorityForName:(NSString *)name;
