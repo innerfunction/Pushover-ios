@@ -80,10 +80,8 @@
     NSString *status = fileRecord[@"status"];
     NSString *category = fileRecord[@"category"];
     if ([@"packaged" isEqualToString:status]) {
-        // Packaged content is distributed with the app, under the path
-        // {content authority name}/~{fileset category name}/
+        // Packaged content is distributed with the app, under a folder with the content authority name.
         path = _authority.packagedContentPath;
-        path = [path stringByAppendingPathComponent:[@"~" stringByAppendingString:category]];
         path = [path stringByAppendingPathComponent:fileRecord[@"path"]];
     }
     else {
