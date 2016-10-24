@@ -210,8 +210,9 @@
     NSString *root = [path root];
     if (![root hasPrefix:@"~"]) {
         // Lookup file entry by path.
+        NSString *filePath = [path fullPath];
         NSArray *result = [_fileDB performQuery:@"SELECT id, category FROM files WHERE path=?"
-                                     withParams:@[ [path fullPath] ]];
+                                     withParams:@[ filePath ]];
         if ([result count] > 0) {
             // File entry found in database; rewrite content path to a direct resource reference.
             NSDictionary *row = result[0];

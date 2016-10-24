@@ -19,6 +19,7 @@
 #import "IFContentProvider.h"
 #import "IFContentAuthority.h"
 #import "IFCMSContentAuthority.h"
+#import "IFContentURLProtocol.h"
 
 #define PushoverNamePrefix (@"po")
 
@@ -93,6 +94,12 @@
         return [IFCMSContentAuthority class];
     }
     return nil;
+}
+
+#pragma mark - IFService
+
+- (void)startService {
+    [NSURLProtocol registerClass:[IFContentURLProtocol class]];
 }
 
 #pragma mark - IFIOCSingleton

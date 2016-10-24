@@ -34,18 +34,20 @@
 }
 
 - (void)startLoading {
-    id<IFContentAuthority> contentContainer = [IFContentURLProtocol findContentAuthorityForName:self.request.URL.host];
-    if (contentContainer) {
-        [contentContainer handleURLProtocolRequest:self];
+    NSString *authorityName = self.request.URL.host;
+    id<IFContentAuthority> contentAuthority = [IFContentURLProtocol findContentAuthorityForName:authorityName];
+    if (contentAuthority) {
+        [contentAuthority handleURLProtocolRequest:self];
     }
     else {
-        NSString *description = [NSString stringWithFormat:@"Content authority %@ not found", self.request.URL.host];
+        NSString *description = [NSString stringWithFormat:@"Content authority %@ not found", authorityName];
         // See http://nshipster.com/nserror/
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                              code:NSURLErrorCannotFindHost
                                          userInfo:@{ NSLocalizedDescriptionKey: description }];
         [self.client URLProtocol:self didFailWithError:error];
     }
+    // TODO Allow content URLs to qualify the authority name with the app bundle ID.
     //NSString *appID = [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleIdentifier"];
     
 }

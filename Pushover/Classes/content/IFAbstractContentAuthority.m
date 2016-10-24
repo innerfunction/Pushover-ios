@@ -215,6 +215,11 @@
 
 @implementation IFSchemeHandlerResponse
 
+- (NSURL *)externalURL {
+    NSString *uri = [NSString stringWithFormat:@"%@:%@", self.uri.scheme, self.uri.name];
+    return [NSURL URLWithString:uri];
+}
+
 - (void)respondWithData:(NSData *)data mimeType:(NSString *)mimeType cachePolicy:(NSURLCacheStoragePolicy)policy {
     // TODO: Allow IFResource to report MIME types?
     self.data = data;
