@@ -74,7 +74,7 @@
     if ([rs count] > 0) {
         // File DB contains previous commits, read latest commit ID and add as request parameter.
         NSDictionary *record = rs[0];
-        commit = record[@"id"];
+        commit = [record[@"id"] description];
         params = @{ @"since": URLEncode(commit) };
     }
     // Otherwise simply omit the 'since' parameter; the feed will return all records in the file DB.
