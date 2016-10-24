@@ -18,6 +18,7 @@
 #import "IFCMSSettings.h"
 
 #define PushoverAPIVersion (@"0.1")
+#define PushoverAPIRoot    (@"semop")
 
 @interface IFCMSSettings()
 
@@ -43,7 +44,7 @@
 #pragma mark - Private methods
 
 - (NSString *)pathForResource:(NSString *)resourceName trailing:(NSString *)trailing {
-    NSString *path = [PushoverAPIVersion stringByAppendingPathComponent:resourceName];
+    NSString *path = [PushoverAPIRoot stringByAppendingPathComponent:PushoverAPIVersion];
     path = [path stringByAppendingPathComponent:resourceName];
     path = [path stringByAppendingPathComponent:_account];
     path = [path stringByAppendingPathComponent:_repo];

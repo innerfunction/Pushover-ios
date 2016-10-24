@@ -123,7 +123,7 @@
                 @"@class":              @"IFCMSFilesetCategoryPathRoot"
             }
         }];
-        self.refreshInterval = 1.0f;
+        self.refreshInterval = 0.5f; // 1.0f
     }
     return self;
 }
@@ -133,6 +133,7 @@
     IFConfiguration *config = [[IFConfiguration alloc] initWithData:@{
         @"authorityName":   self.authorityName,
         @"fileDB":          _fileDB,
+        @"cms":             _cms,
         @"pathRoots":       self.pathRoots,
         @"refreshInterval": [NSNumber numberWithFloat:self.refreshInterval]
     }];
@@ -189,7 +190,6 @@
     self = [super init];
     if (self) {
         _fileDB = [[IFCMSFileDB alloc] initWithContentAuthority:self];
-        _commandProtocol = [[IFCMSCommandProtocol alloc] initWithAuthority:self];
         // TODO Record types (posts/pages): dbjson, html, webview
         // TODO Query types: dbjson, tableview
     }
@@ -242,6 +242,7 @@
 
 - (void)startService {
     [super startService];
+    _commandProtocol = [[IFCMSCommandProtocol alloc] initWithAuthority:self];
     // Register command protocol with the scheduler, using the authority name as the command prefix.
     self.provider.commandScheduler.commands = @{ self.authorityName: _commandProtocol };
 }

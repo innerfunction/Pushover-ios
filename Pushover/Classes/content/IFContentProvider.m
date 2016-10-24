@@ -100,6 +100,7 @@
 
 - (void)startService {
     [NSURLProtocol registerClass:[IFContentURLProtocol class]];
+    [_commandScheduler startService];
 }
 
 #pragma mark - IFIOCSingleton

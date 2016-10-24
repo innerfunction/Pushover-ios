@@ -87,7 +87,7 @@
     [super startService];
     // Schedule content refreshes.
     if (_refreshInterval > 0) {
-        [NSTimer scheduledTimerWithTimeInterval:_refreshInterval
+        [NSTimer scheduledTimerWithTimeInterval:(_refreshInterval * 60.0f)
                                          target:self
                                        selector:@selector(refreshContent)
                                        userInfo:nil

@@ -27,8 +27,6 @@ static IFLogger *Logger;
 
 @interface IFDB ()
 
-/** Instantiate a new copy of an existing database. */
-- (id)initWithDB:(IFDB *)db;
 /** Read a record from the specified table. */
 - (NSDictionary *)readRecordWithID:(NSString *)identifier fromTable:(NSString *)table db:(id<PLDatabase>)db;
 /** Read a record from the specified table. */

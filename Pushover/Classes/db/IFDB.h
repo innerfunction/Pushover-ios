@@ -48,6 +48,8 @@
  */
 @property (nonatomic, strong) NSString *initialCopyPath;
 
+/** Instantiate a new copy of an existing database. */
+- (id)initWithDB:(IFDB *)db;
 /** Begin a DB transaction. */
 - (BOOL)beginTransaction;
 /** Commit a DB transaction. */

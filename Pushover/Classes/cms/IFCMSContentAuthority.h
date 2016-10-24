@@ -36,7 +36,7 @@
 /// The file database settings.
 @property (nonatomic, strong) IFJSONObject *fileDB;
 /// The CMS settings (host / account / repo).
-@property (nonatomic, strong) IFCMSSettings *cms;
+@property (nonatomic, strong) NSDictionary *cms;
 /// The content refresh interval, in minutes.
 @property (nonatomic, assign) CGFloat refreshInterval;
 

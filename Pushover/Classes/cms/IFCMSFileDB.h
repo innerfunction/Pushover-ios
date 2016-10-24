@@ -31,6 +31,7 @@
 @property (nonatomic, strong) NSString *filesTable;
 
 - (id)initWithContentAuthority:(IFCMSContentAuthority *)authority;
+- (id)initWithCMSFileDB:(IFCMSFileDB *)cmsFileDB;
 
 /**
  * Prune ORM related values after applying updates to the database.
@@ -53,5 +54,8 @@
  * Returns nil if the file isn't locally cachable.
  */
 - (NSString *)cacheLocationForFileWithPath:(NSString *)path;
+
+/// Return a new instance of this database.
+- (IFCMSFileDB *)newInstance;
 
 @end

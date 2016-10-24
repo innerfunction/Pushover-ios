@@ -30,6 +30,16 @@
     return self;
 }
 
+- (id)initWithCMSFileDB:(IFCMSFileDB *)cmsFileDB {
+    self = [super initWithDB:cmsFileDB];
+    if (self) {
+        _authority = cmsFileDB.authority;
+        _filesTable = cmsFileDB.filesTable;
+        _filesets= cmsFileDB.filesets;
+    }
+    return self;
+}
+
 - (BOOL)pruneRelatedValues {
     BOOL ok = YES;
     // Read column names on source table.
@@ -47,7 +57,7 @@
             if (midColumn && mverColumn) {
                 // Construct where clause of delete query - select all records on mapped table where
                 // the version value doesn't match the version value on the source table.
-                NSString *where = [NSString stringWithFormat:@"%@ IN (SELECT %@.%@ FROM %@ OUTER JOIN %@ ON %@.%@ = %@.%@ AND %@.%@ != %@.%@)",
+                NSString *where = [NSString stringWithFormat:@"%@ IN (SELECT %@.%@ FROM %@ INNER JOIN %@ ON %@.%@ = %@.%@ AND %@.%@ != %@.%@)",
                     midColumn,
                     mapping.table, midColumn,
                     source, mapping.table,
@@ -98,6 +108,12 @@
     NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE path=?", _filesTable];
     NSArray *rs = [self performQuery:sql withParams:@[ path ]];
     return [rs count] > 0 ? [self cacheLocationForFile:rs[0]] : nil;
+}
+
+- (IFCMSFileDB *)newInstance {
+    IFCMSFileDB *db = [[IFCMSFileDB alloc] initWithCMSFileDB:self];
+    [db startService];
+    return db;
 }
 
 #pragma mark - IFIOCTypeInspectable

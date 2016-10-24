@@ -41,7 +41,8 @@
     self = [super init];
     if (self) {
         self.cms = authority.cms;
-        self.fileDB = authority.fileDB;
+        // Use a copy of the file DB to avoid problems with multi-thread access.
+        self.fileDB = [authority.fileDB newInstance];
         self.httpClient = authority.provider.httpClient;
         // Register command handlers.
         __block id this = self;
@@ -69,11 +70,11 @@
     // Query the file DB for the latest commit ID.
     NSString *commit = nil;
     NSDictionary *params = @{};
-    NSArray *rs = [_fileDB performQuery:@"SELECT commit, max(date) FROM commits GROUP BY commit" withParams:@[]];
+    NSArray *rs = [_fileDB performQuery:@"SELECT id, max(date) FROM commits GROUP BY id" withParams:@[]];
     if ([rs count] > 0) {
         // File DB contains previous commits, read latest commit ID and add as request parameter.
         NSDictionary *record = rs[0];
-        commit = record[@"commit"];
+        commit = record[@"id"];
         params = @{ @"since": URLEncode(commit) };
     }
     // Otherwise simply omit the 'since' parameter; the feed will return all records in the file DB.
@@ -85,10 +86,10 @@
         NSMutableArray *commands = [NSMutableArray new];
         // Read the updates data.
         id updateData = [response parseData];
+        /*
         // Check file DB schema version.
         id version = [updateData valueForKeyPath:@"db.version"];
         if (![version isEqual:_fileDB.version]) {
-            /*
             // Update the file DB schema and then schedule a new refresh.
             id updateSchema = @{
                 @"name": [self qualifyName:@"update-schema"],
@@ -100,25 +101,32 @@
             };
             [commands addObject:updateSchema];
             [commands addObject:refresh];
-            */
             NSLog(@"Database version mismatch error");
         }
         else {
+        */
             // Write updates to database.
-            NSDictionary *updates = [updateData valueForKeyPath:@"updates"];
+            NSDictionary *updates = [updateData valueForKeyPath:@"db"];
             NSMutableSet *updatedCategories = [NSMutableSet new];
             [_fileDB beginTransaction];
             for (NSString *tableName in updates) {
+                BOOL isFilesTable = [@"files" isEqualToString:tableName];
                 NSArray *table = updates[tableName];
                 for (NSDictionary *values in table) {
                     [_fileDB upsertValues:values intoTable:tableName];
-                    // Record the updated category name.
-                    [updatedCategories addObject:[values valueForKey:@"category"]];
+                    // If processing the files table then record the updated file category name.
+                    if (isFilesTable) {
+                        NSString *category = values[@"category"];
+                        NSString *status = values[@"status"];
+                        if (category != nil && ![@"deleted" isEqualToString:status]) {
+                            [updatedCategories addObject:category];
+                        }
+                    }
                 }
             }
             // Check for trashed files.
             NSFileManager *fileManager = [NSFileManager defaultManager];
-            NSArray *trashed = [_fileDB performQuery:@"SELECT id, path FROM files WHERE status='trashed'" withParams:@[]];
+            NSArray *trashed = [_fileDB performQuery:@"SELECT id, path FROM files WHERE status='deleted'" withParams:@[]];
             NSMutableArray *trashedIDs = [NSMutableArray new];
             for (NSDictionary *record in trashed) {
                 [trashedIDs addObject:record[@"id"]];
@@ -162,7 +170,9 @@
                     [commands addObject:@{ @"name": name, @"args": args }];
                 }
             }
+        /* -- end of else after db version check
         }
+        */
         [_promise resolve:commands];
         return nil;
     })
