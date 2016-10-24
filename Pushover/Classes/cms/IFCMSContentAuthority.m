@@ -123,7 +123,7 @@
                 @"@class":              @"IFCMSFilesetCategoryPathRoot"
             }
         }];
-        self.refreshInterval = 0.5f; // 1.0f
+        self.refreshInterval = 1.0f; // Refresh once per minute.
     }
     return self;
 }
