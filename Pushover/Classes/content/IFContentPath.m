@@ -60,7 +60,7 @@
 }
 
 - (NSArray *)components {
-    return [_path subarrayWithRange:NSMakeRange(_rootIdx, [_path count] - _rootIdx - 1)];
+    return [_path subarrayWithRange:NSMakeRange(_rootIdx, [_path count] - _rootIdx)];
 }
 
 - (BOOL)isEmpty {
@@ -68,7 +68,11 @@
 }
 
 - (NSString *)fullPath {
-    return [_path componentsJoinedByString:@"/"];
+    NSString *path = [_path componentsJoinedByString:@"/"];
+    if (_ext) {
+        path = [path stringByAppendingPathExtension:_ext];
+    }
+    return path;
 }
 
 - (NSString *)relativePath {

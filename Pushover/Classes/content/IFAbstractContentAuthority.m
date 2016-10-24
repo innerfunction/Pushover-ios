@@ -64,19 +64,19 @@
 }
 
 - (NSString *)stagingPath {
-    return [self.provider.stagingPath stringByAppendingString:_authorityName];
+    return [self.provider.stagingPath stringByAppendingPathComponent:_authorityName];
 }
 
 - (NSString *)appCachePath {
-    return [self.provider.appCachePath stringByAppendingString:_authorityName];
+    return [self.provider.appCachePath stringByAppendingPathComponent:_authorityName];
 }
 
 - (NSString *)contentCachePath {
-    return [self.provider.contentCachePath stringByAppendingString:_authorityName];
+    return [self.provider.contentCachePath stringByAppendingPathComponent:_authorityName];
 }
 
 - (NSString *)packagedContentPath {
-    return [self.provider.packagedContentPath stringByAppendingString:_authorityName];
+    return [self.provider.packagedContentPath stringByAppendingPathComponent:_authorityName];
 }
 
 #pragma mark - IFContentAuthority

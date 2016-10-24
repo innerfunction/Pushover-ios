@@ -107,7 +107,7 @@
                 NSString *cachePath = [_fileDB cacheLocationForFile:content];
                 BOOL cachable = [self.fileset cachable];
                 // Check if a local copy of the file exists in the cache.
-                if (cachable && [[NSFileManager defaultManager] fileExistsAtPath:path]) {
+                if (cachable && [[NSFileManager defaultManager] fileExistsAtPath:cachePath]) {
                     // Local copy found, respond with contents.
                     [response respondWithFileData:cachePath
                                          mimeType:mimeType

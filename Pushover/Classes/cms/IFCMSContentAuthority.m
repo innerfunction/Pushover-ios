@@ -218,6 +218,10 @@
             NSString *fileID = row[@"id"];
             NSString *category = row[@"category"];
             NSString *resourcePath = [NSString stringWithFormat:@"~%@/$%@", category, fileID];
+            NSString *ext = [path ext];
+            if (ext) {
+                resourcePath = [resourcePath stringByAppendingPathExtension:ext];
+            }
             path = [[IFContentPath alloc] initWithPath:resourcePath];
         }
     }
