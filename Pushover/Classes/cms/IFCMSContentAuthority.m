@@ -123,6 +123,7 @@
                 @"@class":              @"IFCMSFilesetCategoryPathRoot"
             }
         }];
+        self.refreshInterval = 1.0f;
     }
     return self;
 }
@@ -132,7 +133,8 @@
     IFConfiguration *config = [[IFConfiguration alloc] initWithData:@{
         @"authorityName":   self.authorityName,
         @"fileDB":          _fileDB,
-        @"pathRoots":       self.pathRoots
+        @"pathRoots":       self.pathRoots,
+        @"refreshInterval": [NSNumber numberWithFloat:self.refreshInterval]
     }];
     config = [config extendWithParameters:@{
         @"authorityName":   self.authorityName,
@@ -198,7 +200,13 @@
     return _fileDB.filesets;
 }
 
-#pragma mark - IFAbstractContentAuthority override
+#pragma mark - IFAbstractContentAuthority overrides
+
+- (void)refreshContent {
+    NSString *cmd = [NSString stringWithFormat:@"%@.refresh", self.authorityName];
+    [self.provider.commandScheduler appendCommand:cmd];
+    [self.provider.commandScheduler executeQueue];
+}
 
 - (void)writeResponse:(id<IFContentAuthorityResponse>)response
               forPath:(IFContentPath *)path

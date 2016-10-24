@@ -31,14 +31,14 @@
 
 // TODO Rename class group - and change class name prefix - to po / PO?
 
-// TODO Consider having a config proxy for this class, to separate its configurable properties from its runtime properties?
-// (Note that the config template & properties would then belong to the proxy)
 @interface IFCMSContentAuthorityConfigurationProxy : IFCMSAbstractContentAuthorityConfigurationProxy <IFIOCContainerAware>
 
 /// The file database settings.
 @property (nonatomic, strong) IFJSONObject *fileDB;
 /// The CMS settings (host / account / repo).
 @property (nonatomic, strong) IFCMSSettings *cms;
+/// The content refresh interval, in minutes.
+@property (nonatomic, assign) CGFloat refreshInterval;
 
 @end
 

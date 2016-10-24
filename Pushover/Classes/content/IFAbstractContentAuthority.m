@@ -79,6 +79,22 @@
     return [self.provider.packagedContentPath stringByAppendingPathComponent:_authorityName];
 }
 
+- (void)refreshContent {}
+
+#pragma mark - IFService
+
+- (void)startService {
+    [super startService];
+    // Schedule content refreshes.
+    if (_refreshInterval > 0) {
+        [NSTimer scheduledTimerWithTimeInterval:_refreshInterval
+                                         target:self
+                                       selector:@selector(refreshContent)
+                                       userInfo:nil
+                                        repeats:YES];
+    }
+}
+
 #pragma mark - IFContentAuthority
 
 - (void)handleURLProtocolRequest:(NSURLProtocol *)protocol {

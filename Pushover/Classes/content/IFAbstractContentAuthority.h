@@ -59,5 +59,13 @@
 @property (nonatomic, readonly) NSString *contentCachePath;
 /// A path for CMS content that has been packaged with the app.
 @property (nonatomic, readonly) NSString *packagedContentPath;
+/// Interval between content refreshes; in minutes.
+@property (nonatomic, assign) CGFloat refreshInterval;
+
+/**
+ * Refreshed content, e.g. by checking a server for downloadable updates.
+ * Subclasses should provide an implementation of this class.
+ */
+- (void)refreshContent;
 
 @end
