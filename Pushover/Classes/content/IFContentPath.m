@@ -31,17 +31,27 @@
 }
 
 - (id)initWithPath:(NSString *)path {
+/*
+    NSString *ext = [path pathExtension];
+    path = [path stringByDeletingPathExtension];
+*/
     NSString *ext = nil;
     NSRange range = [path rangeOfString:@"."];
     if (range.location != NSNotFound) {
+    /*
         ext = [path substringFromIndex:range.location + 1];
         path = [path substringToIndex:range.location];
+    */
+        ext = [path pathExtension];
+        path = [path stringByDeletingPathExtension];
     }
     return [self initWithPath:[path componentsSeparatedByString:@"/"] rootIndex:0 ext:ext];
 }
 
 - (id)initWithURL:(NSURL *)url {
-    return [self initWithPath:url.path];
+    // Strip the leading / from the URLs path.
+    NSString *path = [url.path substringFromIndex:1];
+    return [self initWithPath:path];
 }
 
 - (NSString *)root {

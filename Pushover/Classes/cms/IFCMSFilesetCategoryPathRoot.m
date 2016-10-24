@@ -101,7 +101,8 @@
             // No specific type converter found. Check if the content file type is compatible
             // with the requested type and that fileset info is available.
             NSString *path = content[@"path"];
-            if (_fileset && [type isEqualToString:[path pathExtension]]) {
+            NSString *ext = [path pathExtension];
+            if (_fileset && [type isEqualToString:ext]) {
                 NSString *mimeType = [IFMIMETypes mimeTypeForType:type];
                 NSString *url = [_authority.cms urlForFile:path];
                 NSString *cachePath = [_fileDB cacheLocationForFile:content];
