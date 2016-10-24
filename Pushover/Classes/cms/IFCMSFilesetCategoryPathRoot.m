@@ -36,8 +36,9 @@
     return self;
 }
 
-- (void)setAuthority:(IFCMSContentAuthority *)container {
-    _fileDB = container.fileDB;
+- (void)setAuthority:(IFCMSContentAuthority *)authority {
+    _authority = authority;
+    _fileDB = authority.fileDB;
 }
 
 - (NSArray *)queryWithParameters:(NSDictionary *)parameters {
@@ -116,16 +117,25 @@
                 }
                 else {
                     // No local copy found, download from server.
-                    IFHTTPClient *httpClient = self.authority.provider.httpClient;
+                    IFHTTPClient *httpClient = _authority.provider.httpClient;
                     [httpClient getFile:url]
                     .then((id)^(IFHTTPClientResponse *httpResponse) {
                         NSString *downloadPath = [httpResponse.downloadLocation path];
                         NSError *error = nil;
                         // If cachable then move file to cache.
                         if (cachable) {
-                            [[NSFileManager defaultManager] moveItemAtPath:downloadPath
-                                                                    toPath:cachePath
-                                                                     error:&error];
+                            NSFileManager *fileManager = [NSFileManager defaultManager];
+                            // Ensure that the target directory exists.
+                            NSString *cacheDir = [cachePath stringByDeletingLastPathComponent];
+                            [fileManager createDirectoryAtPath:cacheDir
+                                   withIntermediateDirectories:YES
+                                                    attributes:nil
+                                                         error:&error];
+                            if (!error) {
+                                [fileManager moveItemAtPath:downloadPath
+                                                     toPath:cachePath
+                                                      error:&error];
+                            }
                         }
                         if (error) {
                             [response respondWithError:error];
