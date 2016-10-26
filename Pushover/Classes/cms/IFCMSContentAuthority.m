@@ -245,6 +245,8 @@
     _commandProtocol = [[IFCMSCommandProtocol alloc] initWithAuthority:self];
     // Register command protocol with the scheduler, using the authority name as the command prefix.
     self.provider.commandScheduler.commands = @{ self.authorityName: _commandProtocol };
+    // Refresh the app content on start.
+    [self refreshContent];
 }
 
 @end
