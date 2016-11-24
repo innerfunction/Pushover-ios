@@ -22,6 +22,7 @@
 #import "IFCMSFilesetCategoryPathRoot.h"
 #import "IFCMSCommandProtocol.h"
 #import "IFCMSSettings.h"
+#import "IFContentAuthManager.h"
 #import "IFIOCObjectAware.h"
 #import "IFIOCContainerAware.h"
 #import "IFIOCConfigurationAware.h"
@@ -61,5 +62,7 @@
 @property (nonatomic, strong) NSDictionary *queryTypes;
 /// The authority's scheduled command protocol.
 @property (nonatomic, strong) IFCMSCommandProtocol *commandProtocol;
+/// The authority's authentication manager.
+@property (nonatomic, strong) IFContentAuthManager *authManager;
 
 @end

@@ -200,6 +200,13 @@
     return _fileDB.filesets;
 }
 
+- (void)setCms:(IFCMSSettings *)cms {
+    _cms = cms;
+    // TODO Read CMS base URL, and possibly realm, from CMS settings
+    // TODO Does startService need to check for _cms + _authManager?
+    _authManager = [[IFContentAuthManager alloc] initWithURL:@"" realm:nil];
+}
+
 #pragma mark - IFAbstractContentAuthority overrides
 
 - (void)refreshContent {

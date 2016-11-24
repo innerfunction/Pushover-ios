@@ -11,7 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-////  Created by Julian Goacher on 20/10/2016.
+//
+//  Created by Julian Goacher on 20/10/2016.
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
@@ -43,6 +44,7 @@
 
 #pragma mark - Private methods
 
+// http://{host}/{apiroot}/{apiver}/path
 - (NSString *)pathForResource:(NSString *)resourceName trailing:(NSString *)trailing {
     NSString *path = [PushoverAPIRoot stringByAppendingPathComponent:PushoverAPIVersion];
     path = [path stringByAppendingPathComponent:resourceName];

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		072EFC221DE758F200FEDAD7 /* IFContentAuthManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 072EFC201DE758F200FEDAD7 /* IFContentAuthManager.h */; };
+		072EFC231DE758F200FEDAD7 /* IFContentAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 072EFC211DE758F200FEDAD7 /* IFContentAuthManager.m */; };
 		073DB3EF1DB8D29F002504FB /* IFCMSSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */; };
 		073DB3F01DB8D29F002504FB /* IFCMSSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */; };
 		07FA6FB51DA5292600E35C36 /* IFCMSCommandProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F281DA5292600E35C36 /* IFCMSCommandProtocol.h */; };
@@ -144,6 +146,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		072EFC201DE758F200FEDAD7 /* IFContentAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentAuthManager.h; sourceTree = "<group>"; };
+		072EFC211DE758F200FEDAD7 /* IFContentAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContentAuthManager.m; sourceTree = "<group>"; };
 		073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSSettings.h; sourceTree = "<group>"; };
 		073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSSettings.m; sourceTree = "<group>"; };
 		077AEDDB1D7F1D2500C5A2D9 /* Pushover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pushover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -383,6 +387,8 @@
 			children = (
 				07FA6F491DA5292600E35C36 /* IFAbstractContentAuthority.h */,
 				07FA6F4A1DA5292600E35C36 /* IFAbstractContentAuthority.m */,
+				072EFC201DE758F200FEDAD7 /* IFContentAuthManager.h */,
+				072EFC211DE758F200FEDAD7 /* IFContentAuthManager.m */,
 				07FA6F4B1DA5292600E35C36 /* IFContentAuthority.h */,
 				07FA6F4C1DA5292600E35C36 /* IFContentAuthority.m */,
 				07FA6F4D1DA5292600E35C36 /* IFContentPath.h */,
@@ -598,6 +604,7 @@
 				07FA70201DA5292600E35C36 /* IFDataFormatter.h in Headers */,
 				07FA701E1DA5292600E35C36 /* IFContentTableViewController.h in Headers */,
 				07FA6FE71DA5292600E35C36 /* IFPlainContentTypeConverter.h in Headers */,
+				072EFC221DE758F200FEDAD7 /* IFContentAuthManager.h in Headers */,
 				07FA6FE11DA5292600E35C36 /* IFDataTableFormatter.h in Headers */,
 				07FA702B1DA5292600E35C36 /* IFWPContentAuthority.h in Headers */,
 				07FA6FDC1DA5292600E35C36 /* IFContentSchemeHandler.h in Headers */,
@@ -756,6 +763,7 @@
 				07FA70361DA5292600E35C36 /* IFWPPostsPathRoot.m in Sources */,
 				07FA6FCF1DA5292600E35C36 /* IFMvFileCommand.m in Sources */,
 				07FA70131DA5292600E35C36 /* PLSqliteMigrationVersionManager.m in Sources */,
+				072EFC231DE758F200FEDAD7 /* IFContentAuthManager.m in Sources */,
 				07FA6FE81DA5292600E35C36 /* IFPlainContentTypeConverter.m in Sources */,
 				07FA6FF01DA5292600E35C36 /* IFDBORM.m in Sources */,
 				07FA70341DA5292600E35C36 /* IFWPPostDBAdapter.m in Sources */,
