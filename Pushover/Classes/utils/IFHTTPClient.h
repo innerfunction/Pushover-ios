@@ -24,6 +24,9 @@
 
 @end
 
+// TODO: Authentication delegate and related methods can be removed once the new NSURLCredential based
+// methods are fully implemented.
+
 // Protocol to be implemented by class providing authentication related functionality.
 @protocol IFHTTPClientAuthenticationDelegate <NSObject>
 

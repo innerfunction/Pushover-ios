@@ -202,9 +202,47 @@
 
 - (void)setCms:(IFCMSSettings *)cms {
     _cms = cms;
-    // TODO Read CMS base URL, and possibly realm, from CMS settings
-    // TODO Does startService need to check for _cms + _authManager?
-    _authManager = [[IFContentAuthManager alloc] initWithURL:@"" realm:nil];
+    _authManager = [[IFContentAuthManager alloc] initWithURL:[cms apiBaseURL] realm:cms.authRealm];
+}
+
+- (QPromise *)loginWithCredentials:(NSDictionary *)credentials {
+    // Check for username & password.
+    NSString *username = credentials[@"username"];
+    if (username == nil) {
+        return [Q reject:@"Missing username"];
+    }
+    NSString *password = credentials[@"password"];
+    if (password == nil) {
+        return [Q reject:@"Missing password"];
+    }
+    // Register with the auth manager.
+    [_authManager loginWithUsername:username password:password];
+    // Authenticate against the backend.
+    NSString *authURL = [_cms urlForAuthentication];
+    return [self.provider.httpClient post:authURL data:nil]
+    .then( (id)^(IFHTTPClientResponse *response) {
+        NSDictionary *data = [response parseData];
+        NSNumber *authenticated = data[@"authenticated"];
+        if ([authenticated boolValue]) {
+            // Request a refresh
+            NSString *cmd = [NSString stringWithFormat:@"%@.refresh", self.authorityName];
+            return [self.provider.commandScheduler execCommand:cmd withArgs:@[]];
+        }
+        else {
+            // Authentication failure.
+            return [Q reject:@"Authentication failure"];
+        }
+    })
+    .fail( ^(id err) {
+        // Authentication failed, remove the stored credentials.
+        // TODO Need to also handle credential failures at other points also - e.g. at app startup;
+        // or after each request to server (credentials could be changed at any time); when credentials
+        // are rejected, then the app should auto-logout.
+        // TODO To do the above, need to fully understand how the NSURLCredential system handles credential
+        // rejection - i.e. it submits a request, gets an auth challenge, sends the credentials - but then
+        // gets a 401 / authentication challenge back; is this then reported as an error to the caller?
+        [_authManager logout];
+    });
 }
 
 #pragma mark - IFAbstractContentAuthority overrides

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		072EFC221DE758F200FEDAD7 /* IFContentAuthManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 072EFC201DE758F200FEDAD7 /* IFContentAuthManager.h */; };
 		072EFC231DE758F200FEDAD7 /* IFContentAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 072EFC211DE758F200FEDAD7 /* IFContentAuthManager.m */; };
+		072EFC261DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 072EFC241DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h */; };
+		072EFC271DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 072EFC251DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m */; };
 		073DB3EF1DB8D29F002504FB /* IFCMSSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */; };
 		073DB3F01DB8D29F002504FB /* IFCMSSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */; };
 		07FA6FB51DA5292600E35C36 /* IFCMSCommandProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F281DA5292600E35C36 /* IFCMSCommandProtocol.h */; };
@@ -148,6 +150,8 @@
 /* Begin PBXFileReference section */
 		072EFC201DE758F200FEDAD7 /* IFContentAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentAuthManager.h; sourceTree = "<group>"; };
 		072EFC211DE758F200FEDAD7 /* IFContentAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContentAuthManager.m; sourceTree = "<group>"; };
+		072EFC241DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSLoginFormViewController.h; sourceTree = "<group>"; };
+		072EFC251DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSLoginFormViewController.m; sourceTree = "<group>"; };
 		073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSSettings.h; sourceTree = "<group>"; };
 		073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSSettings.m; sourceTree = "<group>"; };
 		077AEDDB1D7F1D2500C5A2D9 /* Pushover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pushover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -348,6 +352,8 @@
 				07FA6F2F1DA5292600E35C36 /* IFCMSFileset.m */,
 				07FA6F301DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.h */,
 				07FA6F311DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.m */,
+				072EFC241DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h */,
+				072EFC251DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m */,
 				07FA6F321DA5292600E35C36 /* IFCMSPostsPathRoot.h */,
 				07FA6F331DA5292600E35C36 /* IFCMSPostsPathRoot.m */,
 				073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */,
@@ -603,6 +609,7 @@
 				07FA70271DA5292600E35C36 /* IFWPChildPostRendering.h in Headers */,
 				07FA70201DA5292600E35C36 /* IFDataFormatter.h in Headers */,
 				07FA701E1DA5292600E35C36 /* IFContentTableViewController.h in Headers */,
+				072EFC261DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h in Headers */,
 				07FA6FE71DA5292600E35C36 /* IFPlainContentTypeConverter.h in Headers */,
 				072EFC221DE758F200FEDAD7 /* IFContentAuthManager.h in Headers */,
 				07FA6FE11DA5292600E35C36 /* IFDataTableFormatter.h in Headers */,
@@ -769,6 +776,7 @@
 				07FA70341DA5292600E35C36 /* IFWPPostDBAdapter.m in Sources */,
 				07FA700F1DA5292600E35C36 /* PLSqliteConnectionProvider.m in Sources */,
 				07FA6FEC1DA5292600E35C36 /* IFDBFilter.m in Sources */,
+				072EFC271DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m in Sources */,
 				07FA6FC91DA5292600E35C36 /* IFCommandScheduler.m in Sources */,
 				07FA6FDB1DA5292600E35C36 /* IFContentProvider.m in Sources */,
 				07FA6FBE1DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.m in Sources */,

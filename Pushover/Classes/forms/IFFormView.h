@@ -56,6 +56,7 @@ typedef void (^IFFormViewErrorEvent)(IFFormView *, NSError *);
 /** A HTTP client to use when submitting the form to a URL. */
 @property (nonatomic, strong) IFHTTPClient *httpClient;
 
+@property (nonatomic, copy) IFFormViewDataEvent onSubmit;
 @property (nonatomic, copy) IFFormViewErrorEvent onSubmitRequestError;
 @property (nonatomic, copy) IFFormViewDataEvent onSubmitError;
 @property (nonatomic, copy) IFFormViewDataEvent onSubmitOk;

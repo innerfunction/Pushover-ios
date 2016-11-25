@@ -20,7 +20,6 @@
 
 @interface IFContentAuthManager : NSObject {
     NSURLProtectionSpace *_protectionSpace;
-    NSString *_activeUsernameDefaultsKey;
 }
 
 /// Initialize an authorization manager for the specified URL and (optional) realm.
@@ -46,6 +45,12 @@
  * Return the active authentication credential.
  */
 - (NSURLCredential *)getActiveCredential;
+
+/**
+ * Get the credential associated with the specified username.
+ * Returns nil if no credential for the username is found.
+ */
+- (NSURLCredential *)getCredentialForUsername:(NSString *)username;
 
 /**
  * Logout the client.

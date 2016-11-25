@@ -27,6 +27,7 @@
 #import "IFIOCContainerAware.h"
 #import "IFIOCConfigurationAware.h"
 #import "IFJSONData.h"
+#import "Q.h"
 
 @class IFCMSPostsPathRoot;
 
@@ -64,5 +65,15 @@
 @property (nonatomic, strong) IFCMSCommandProtocol *commandProtocol;
 /// The authority's authentication manager.
 @property (nonatomic, strong) IFContentAuthManager *authManager;
+
+/**
+ * Do a CMS login using the specified credentials.
+ * The supplied dictionary should include username and password values.
+ * The method does the following:
+ * - Registers the credentials with the content authentication manager;
+ * - Validates the credentials by performing a POST request on the CMS's /authenticate URI.
+ * - Then performs a synchronous content refresh.
+ */
+- (QPromise *)loginWithCredentials:(NSDictionary *)credentials;
 
 @end

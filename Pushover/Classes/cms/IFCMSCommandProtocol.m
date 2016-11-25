@@ -22,7 +22,8 @@
 #import "IFCMSContentAuthority.h"
 #import "IFContentProvider.h"
 
-#define URLEncode(s) ([s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]])
+#define URLEncode(s)    ([s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]])
+#define IsSecure        ([_authManager isLoggedIn] ? @"true" : @"false")
 
 @interface IFCMSCommandProtocol ()
 
@@ -41,6 +42,7 @@
     self = [super init];
     if (self) {
         self.cms = authority.cms;
+        _authManager = authority.authManager;
         // Use a copy of the file DB to avoid problems with multi-thread access.
         self.fileDB = [authority.fileDB newInstance];
         self.httpClient = authority.provider.httpClient;
@@ -75,7 +77,10 @@
         // File DB contains previous commits, read latest commit ID and add as request parameter.
         NSDictionary *record = rs[0];
         commit = [record[@"id"] description];
-        params = @{ @"since": URLEncode(commit) };
+        params = @{
+            @"since":   URLEncode(commit),
+            @"secure":  IsSecure
+        };
     }
     // Otherwise simply omit the 'since' parameter; the feed will return all records in the file DB.
 
@@ -230,7 +235,10 @@
     NSDictionary *data = nil;
     if ([args count] > 2) {
         id commit = args[2];
-        data = @{ @"since": commit };
+        data = @{
+            @"since":   commit,
+            @"secure":  IsSecure
+        };
     }
     
     // Download the fileset.

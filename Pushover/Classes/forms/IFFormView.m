@@ -149,7 +149,10 @@
 - (BOOL)submit {
     BOOL ok = [self validate];
     if (ok) {
-        if (_submitURL) {
+        if (_onSubmit) {
+            _onSubmit(self, self.inputValues);
+        }
+        else if (_submitURL) {
             [self submitting:YES];
             [_httpClient submit:_method url:_submitURL data:self.inputValues]
             .then((id)^(IFHTTPClientResponse *response) {

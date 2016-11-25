@@ -28,12 +28,18 @@
 @property (nonatomic, strong) NSString *repo;
 /// The CMS branch name.
 @property (nonatomic, strong) NSString *branch;
+/// The CMS HTTP authentication realm.
+@property (nonatomic, strong) NSString *authRealm;
 
+/// Return the URL for login authentication.
+- (NSString *)urlForAuthentication;
 /// Return the URL for the updates feed.
 - (NSString *)urlForUpdates;
 /// Return the URL for downloading a fileset of the specified category.
 - (NSString *)urlForFileset:(NSString *)category;
 /// Return the URL for downloading a file at the specified path.
 - (NSString *)urlForFile:(NSString *)path;
+// Get the API's base URL. Used as the HTTP authentication protection space.
+- (NSString *)apiBaseURL;
 
 @end

@@ -19,6 +19,7 @@
 #import <Foundation/Foundation.h>
 #import "IFDB.h"
 #import "IFService.h"
+#import "Q.h"
 
 @interface IFCommandScheduler : NSObject <IFService> {
     // The queue database.
@@ -55,6 +56,13 @@
 - (void)appendCommand:(NSString *)name withArgs:(NSArray *)args;
 /** Append a new command to the queue. */
 - (void)appendCommand:(NSString *)command, ...;
+/**
+ * Execute a command ahead of anything currently on the queue.
+ * Places the specified command at the head of the execution queue. If a command is currently being executed
+ * then the command will only be executed once the other command has completed.
+ * Returns a promise which is resolved once the command has completed.
+ */
+- (QPromise *)execCommand:(NSString *)command withArgs:(NSArray *)args;
 /** Purge the current execution queue. */
 - (void)purgeQueue;
 /** Purge the current command batch. */

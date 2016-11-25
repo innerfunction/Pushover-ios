@@ -46,22 +46,52 @@ static dispatch_queue_t execQueue;
 
 @interface IFCommandItem : NSObject
 
+@property (nonatomic, strong) NSString *rowid;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSArray *args;
 @property (nonatomic, strong) NSNumber *priority;
+@property (nonatomic, assign) NSInteger batch;
+@property (nonatomic, strong) QPromise *promise;
+
+- (id)initFromRow:(NSDictionary *)row;
+- (id)initWithCommand:(NSString *)name args:(NSArray *)args;
 
 @end
 
 @implementation IFCommandItem
 
+- (id)initFromRow:(NSDictionary *)row {
+    self = [super init];
+    if (self) {
+        self.rowid = row[@"id"];
+        self.name = row[@"command"];
+        NSString *argsJSON = row[@"args"];
+        self.args = [argsJSON parseJSON:nil];
+        self.batch = [(NSNumber *)row [@"batch"] integerValue];
+    }
+    return self;
+}
+
+- (id)initWithCommand:(NSString *)name args:(NSArray *)args {
+    self = [super init];
+    if (self) {
+        self.name = name;
+        self.args = args;
+        self.batch = 0;
+    }
+    return self;
+}
+
 @end
 
 @interface IFCommandScheduler ()
 
+/** Refresh the exec queue by loading commands from the database. */
+- (void)refreshExecQueue;
 /** Execute the next command on the exec queue. */
 - (void)executeNextCommand;
 /** Continue queue processing after execution a command. */
-- (void)continueQueueProcessingAfterCommand:(NSString *)rowID;
+- (void)continueQueueProcessingAfterCommand:(IFCommandItem *)commandItem;
 /**
  * Parse a command item into a command descriptor.
  * The command item can be either:
@@ -163,10 +193,19 @@ static void *execQueueKey = "IFCommandScheduler.execQueue";
         return;
     }
     dispatch_async(execQueue, ^{
-        _execQueue = [_db performQuery:@"SELECT * FROM queue WHERE status='P' ORDER BY batch, id ASC" withParams:@[]];
-        _execIdx = 0;
+        [self refreshExecQueue];
         [self executeNextCommand];
     });
+}
+
+- (void)refreshExecQueue {
+    NSArray *rows = [_db performQuery:@"SELECT * FROM queue WHERE status='P' ORDER BY batch, id ASC" withParams:@[]];
+    NSMutableArray *queue = [NSMutableArray new];
+    for (NSDictionary *row in rows) {
+        [queue addObject:[[IFCommandItem alloc] initFromRow:row]];
+    }
+    _execQueue = queue;
+    _execIdx = 0;
 }
 
 - (void)executeNextCommand {
@@ -178,28 +217,23 @@ static void *execQueueKey = "IFCommandScheduler.execQueue";
         }
         if (_execIdx > [_execQueue count] - 1) {
             // If moved past the end of the queue then try reading a new list of commands from the db.
-            _execIdx = -1;
+            [self refreshExecQueue];
             [self executeQueue];
             return;
         }
-        NSDictionary *commandItem = [_execQueue objectAtIndex:_execIdx];
+        IFCommandItem *commandItem = [_execQueue objectAtIndex:_execIdx];
         // Iterate command pointer.
         _execIdx++;
-        // Read command fields from record.
-        NSString *rowid = commandItem[@"id"];
-        NSString *name = commandItem[@"command"];
-        NSString *argsJSON = commandItem[@"args"];
-        NSArray *args = [argsJSON parseJSON:nil];
-        _currentBatch = [(NSNumber *)commandItem [@"batch"] integerValue];
+        _currentBatch = commandItem.batch;
         // Find and execute the command.
-        [Logger debug:@"Executing %@ %@", name, [args componentsJoinedByString:@" "]];
-        id<IFCommand> command = _commands[name];
+        [Logger debug:@"Executing %@ %@", commandItem.name, [commandItem.args componentsJoinedByString:@" "]];
+        id<IFCommand> command = _commands[commandItem.name];
         if (!command) {
-            [Logger error:@"Command not found: %@", name];
+            [Logger error:@"Command not found: %@", commandItem.name];
             [self purgeQueue];
             return;
         }
-        [command execute:name withArgs:args]
+        [command execute:commandItem.name withArgs:commandItem.args]
         .then((id)^(NSArray *commands) {
             dispatch_async(execQueue, ^{
                 // Queue any new commands, delete current command from db.
@@ -237,33 +271,44 @@ static void *execQueueKey = "IFCommandScheduler.execQueue";
                     };
                     [_db insertValues:values intoTable:@"queue"];
                 }
-                [self continueQueueProcessingAfterCommand:rowid];
+                [self continueQueueProcessingAfterCommand:commandItem];
+                if (commandItem.promise) {
+                    [commandItem.promise resolve:nil];
+                }
             });
             return nil;
         })
         .fail(^(id error) {
-            [Logger error:@"Error executing command %@ %@: %@", name, args, error];
+            [Logger error:@"Error executing command %@ %@: %@", commandItem.name, commandItem.args, error];
             // TODO: Review whether queue should be purged or not. Removed for now - commands
             // should detect errors caused by previous command failures and deal with accordingly.
             // [self purgeQueue];
-            [self continueQueueProcessingAfterCommand:rowid];
+            [self continueQueueProcessingAfterCommand:commandItem];
+            if (commandItem.promise) {
+                [commandItem.promise reject:error];
+            }
         });
     });
 }
 
-- (void)continueQueueProcessingAfterCommand:(NSString *)rowID {
+- (void)continueQueueProcessingAfterCommand:(IFCommandItem *)commandItem {
     dispatch_async(execQueue, ^{
-        // Delete the command record from the queue.
-        if (_deleteExecutedQueueRecords) {
-            [_db deleteIDs:@[ rowID ] fromTable:@"queue"];
+        NSString *rowID = commandItem.rowid;
+        // Check if the command item has a row ID, indicating that it was read from the database.
+        if (rowID != nil) {
+            // Delete the command record from the queue.
+            if (_deleteExecutedQueueRecords) {
+                [_db deleteIDs:@[ rowID ] fromTable:@"queue"];
+            }
+            else {
+                NSDictionary *values = @{
+                    @"id":      rowID,
+                    @"status":  @"X"
+                };
+                [_db updateValues:values inTable:@"queue"];
+            }
         }
-        else {
-            NSDictionary *values = @{
-                @"id":      rowID,
-                @"status":  @"X"
-            };
-            [_db updateValues:values inTable:@"queue"];
-        }
+        // Commit the transaction opened in executeNextCommand:
         [_db commitTransaction];
         // Continue to next queued command.
         [self executeNextCommand];
@@ -340,6 +385,30 @@ static void *execQueueKey = "IFCommandScheduler.execQueue";
             [self appendCommand:commandItem.name withArgs:commandItem.args];
         }
     }
+}
+
+- (QPromise *)execCommand:(NSString *)command withArgs:(NSArray *)args {
+    __block IFCommandItem *commandItem = [[IFCommandItem alloc] initWithCommand:command args:args];
+    commandItem.promise = [QPromise new];
+    dispatch_async(execQueue, ^{
+        // Modify the exec queue to include the new command; note that this is done on the GCD queue, to
+        // ensure that it happens in sync with other queue operations (i.e. reading from database; incrementing
+        // after command executions).
+        if ([_execQueue count] == 0) {
+            // Nothing queue; create queue with new command and execute.
+            _execQueue = @[ commandItem ];
+            _execIdx = 0;
+            [self executeQueue];
+        }
+        else {
+            // Queue is being processed; create a new queue with the unprocessed items, and the new
+            // command at its head, and wait for execution.
+            NSArray *commands = [_execQueue subarrayWithRange:NSMakeRange(_execIdx, [_execQueue count] - _execIdx)];
+            _execQueue = [@[ commandItem ] arrayByAddingObjectsFromArray:commands];
+            _execIdx = 0;
+        }
+    });
+    return commandItem.promise;
 }
 
 - (void)purgeQueue {

@@ -19,6 +19,7 @@
 #import <Foundation/Foundation.h>
 #import <Q/Q.h>
 #import "IFCommandProtocol.h"
+#import "IFContentAuthManager.h"
 #import "IFCMSSettings.h"
 #import "IFCMSFileDB.h"
 #import "IFHTTPClient.h"
@@ -26,6 +27,7 @@
 @class IFCMSContentAuthority;
 
 @interface IFCMSCommandProtocol : IFCommandProtocol {
+    IFContentAuthManager *_authManager;
     QPromise *_promise;
 }
 

@@ -18,8 +18,11 @@
 
 #import "IFCMSSettings.h"
 
-#define PushoverAPIVersion (@"0.1")
-#define PushoverAPIRoot    (@"semop")
+#define PushoverAPIVersion  (@"0.1")
+#define PushoverAPIRoot     (@"semop")
+#define PushoverAuthRealm   (@"Pushover")
+
+// TODO Workings of this class have to be refactored to allow configuration of API version and root, and use of HTTPS.
 
 @interface IFCMSSettings()
 
@@ -29,6 +32,18 @@
 @end
 
 @implementation IFCMSSettings
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.authRealm = PushoverAuthRealm;
+    }
+    return self;
+}
+
+- (NSString *)urlForAuthentication {
+    return [self urlForPath:[self pathForResource:@"authenticate" trailing:nil]];
+}
 
 - (NSString *)urlForUpdates {
     return [self urlForPath:[self pathForResource:@"updates" trailing:nil]];
@@ -40,6 +55,10 @@
 
 - (NSString *)urlForFile:(NSString *)path {
     return [self urlForPath:[self pathForResource:@"files" trailing:path]];
+}
+
+- (NSString *)apiBaseURL {
+    return [self urlForPath:@""];
 }
 
 #pragma mark - Private methods

@@ -29,59 +29,52 @@
                                                              protocol:nsurl.scheme
                                                                 realm:realm
                                                  authenticationMethod:nil];
-        _activeUsernameDefaultsKey = [NSString stringWithFormat:@"IFContentAuthManager.activeUsername:%@:%@", url, realm != nil ? realm : @""];
     }
     return self;
 }
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password {
+    NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
+    // Check for an existing credential with the same username.
+    NSURLCredential *credential = [self getCredentialForUsername:username];
+    if (credential) {
+        // Existing credential found, delete it before continuing.
+        [storage removeCredential:credential forProtectionSpace:_protectionSpace];
+    }
     // Create the credential.
-    NSURLCredential *credential = [NSURLCredential credentialWithUser:username
-                                                             password:password
-                                                          persistence:NSURLCredentialPersistencePermanent];
-    // Store the credential.
-    [[NSURLCredentialStorage sharedCredentialStorage] setCredential:credential
-                                                 forProtectionSpace:_protectionSpace];
-    // Store the active username.
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:username forKey:_activeUsernameDefaultsKey];
+    credential = [NSURLCredential credentialWithUser:username
+                                            password:password
+                                         persistence:NSURLCredentialPersistencePermanent];
+    // Set the default credential.
+    [storage setDefaultCredential:credential forProtectionSpace:_protectionSpace];
 }
 
 - (BOOL)isLoggedIn {
-    // Test whether an active username is set.
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *activeUsername = [defaults stringForKey:_activeUsernameDefaultsKey];
-    return activeUsername != nil;
+    // Test whether there is an active credential.
+    return [self getActiveCredential] != nil;
 }
 
 - (NSURLCredential *)getActiveCredential {
-    NSURLCredential *credential = nil;
-    // Read the active username.
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *activeUsername = [defaults stringForKey:_activeUsernameDefaultsKey];
-    if (activeUsername) {
-        // Get the active user's credentials.
-        NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
-        NSDictionary *credentials = [storage credentialsForProtectionSpace:_protectionSpace];
-        credential = credentials[activeUsername];
-    }
+    // Get the default credential.
+    NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
+    NSURLCredential *credential = [storage defaultCredentialForProtectionSpace:_protectionSpace];
+    return credential;
+}
+
+- (NSURLCredential *)getCredentialForUsername:(NSString *)username {
+    NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
+    NSDictionary *credentials = [storage credentialsForProtectionSpace:_protectionSpace];
+    NSURLCredential *credential = credentials[username];
     return credential;
 }
 
 - (void)logout {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    // Read the active username.
-    NSString *activeUsername = [defaults stringForKey:_activeUsernameDefaultsKey];
-    if (activeUsername) {
-        // Get the active user's credentials.
-        NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
-        NSDictionary *credentials = [storage credentialsForProtectionSpace:_protectionSpace];
-        NSURLCredential *credential = credentials[activeUsername];
+    NSURLCredential *credential = [self getActiveCredential];
+    if (credential != nil) {
         // Remove the active user's credentials.
+        NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
         [storage removeCredential:credential forProtectionSpace:_protectionSpace];
     }
-    // Remove the active username.
-    [defaults removeObjectForKey:_activeUsernameDefaultsKey];
 }
 
 @end
