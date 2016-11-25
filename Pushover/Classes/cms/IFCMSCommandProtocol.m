@@ -65,22 +65,29 @@
 
 - (QPromise *)refresh:(NSArray *)args {
     
-    _promise = [[QPromise alloc] init];
+    _promise = [QPromise new];
     
     NSString *refreshURL = [_cms urlForUpdates];
     
     // Query the file DB for the latest commit ID.
-    NSString *commit = nil;
-    NSDictionary *params = @{};
+    NSString *commit = nil, *group = nil;
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    params[@"secure"] = IsSecure;
+    
+    // Read current group fingerprint.
+    NSDictionary *record = [_fileDB readRecordWithID:@"$group" fromTable:@"fingerprints"];
+    if (record) {
+        group = record[@"current"];
+        params[@"group"] = group;
+    }
+    
+    // Read latest commit ID.
     NSArray *rs = [_fileDB performQuery:@"SELECT id, max(date) FROM commits GROUP BY id" withParams:@[]];
     if ([rs count] > 0) {
         // File DB contains previous commits, read latest commit ID and add as request parameter.
         NSDictionary *record = rs[0];
         commit = [record[@"id"] description];
-        params = @{
-            @"since":   URLEncode(commit),
-            @"secure":  IsSecure
-        };
+        params[@"since"] = commit;
     }
     // Otherwise simply omit the 'since' parameter; the feed will return all records in the file DB.
 
@@ -91,11 +98,6 @@
         NSMutableArray *commands = [NSMutableArray new];
         // Read the updates data.
         id updateData = [response parseData];
-        
-        // Check the ACM group ID.
-        NSDictionary *record = [_fileDB readRecordWithID:@"$group" fromTable:@"fingerprints"];
-        NSString *group = record[@"current"];
-        BOOL migrate = ![group isEqualToString:[updateData valueForKey:@"repository.group"]];
         
         /*
         // Check file DB schema version.
@@ -124,6 +126,9 @@
             // Start a DB transaction.
             [_fileDB beginTransaction];
         
+        
+            // Check group fingerprint to see if a migration is needed.
+            BOOL migrate = ![group isEqualToString:[updateData valueForKey:@"repository.group"]];
             if (migrate) {
                 // Performing a migration due to an ACM group ID change; mark all files as
                 // provisionaly deleted.
@@ -264,20 +269,17 @@
 
 - (QPromise *)downloadFileset:(NSArray *)args {
     
-    _promise = [[QPromise alloc] init];
+    _promise = [QPromise new];
     
     id category = args[0];
     id cachePath = args[1];
     
-    // Build the fileset URL.
+    // Build the fileset URL and query parameters.
     NSString *filesetURL = [_cms urlForFileset:category];
-    NSDictionary *data = nil;
+    NSMutableDictionary *data = [NSMutableDictionary new];
+    data[@"secure"] = IsSecure;
     if ([args count] > 2) {
-        id commit = args[2];
-        data = @{
-            @"since":   commit,
-            @"secure":  IsSecure
-        };
+        data[@"since"] = args[2];
     }
     
     // Download the fileset.
