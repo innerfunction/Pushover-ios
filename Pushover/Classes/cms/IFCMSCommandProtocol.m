@@ -91,6 +91,12 @@
         NSMutableArray *commands = [NSMutableArray new];
         // Read the updates data.
         id updateData = [response parseData];
+        
+        // Check the ACM group ID.
+        NSDictionary *record = [_fileDB readRecordWithID:@"$group" fromTable:@"fingerprints"];
+        NSString *group = record[@"current"];
+        BOOL migrate = ![group isEqualToString:[updateData valueForKey:@"repository.group"]];
+        
         /*
         // Check file DB schema version.
         id version = [updateData valueForKeyPath:@"db.version"];
@@ -112,8 +118,22 @@
         */
             // Write updates to database.
             NSDictionary *updates = [updateData valueForKeyPath:@"db"];
-            NSMutableSet *updatedCategories = [NSMutableSet new];
+            // A map of fileset category names to a 'since' commit value (may be null).
+            NSMutableDictionary *updatedCategories = [NSMutableDictionary new];
+        
+            // Start a DB transaction.
             [_fileDB beginTransaction];
+        
+            if (migrate) {
+                // Performing a migration due to an ACM group ID change; mark all files as
+                // provisionaly deleted.
+                [_fileDB performUpdate:@"UPDATE files SET status='deleted'" withParams:@[]];
+            }
+        
+            // Shift current fileset fingerprints to previous.
+            [_fileDB performUpdate:@"UPDATE fingerprints SET previous=current" withParams:@[]];
+
+            // Apply all downloaded updates to the database.
             for (NSString *tableName in updates) {
                 BOOL isFilesTable = [@"files" isEqualToString:tableName];
                 NSArray *table = updates[tableName];
@@ -124,29 +144,64 @@
                         NSString *category = values[@"category"];
                         NSString *status = values[@"status"];
                         if (category != nil && ![@"deleted" isEqualToString:status]) {
-                            [updatedCategories addObject:category];
+                            if (commit) {
+                                updatedCategories[category] = commit;
+                            }
+                            else {
+                                updatedCategories[category] = [NSNull null];
+                            }
                         }
                     }
                 }
             }
-            // Check for trashed files.
+        
+            // Check for deleted files.
             NSFileManager *fileManager = [NSFileManager defaultManager];
-            NSArray *trashed = [_fileDB performQuery:@"SELECT id, path FROM files WHERE status='deleted'" withParams:@[]];
-            NSMutableArray *trashedIDs = [NSMutableArray new];
-            for (NSDictionary *record in trashed) {
-                [trashedIDs addObject:record[@"id"]];
+            NSArray *deleted = [_fileDB performQuery:@"SELECT id, path FROM files WHERE status='deleted'" withParams:@[]];
+            for (NSDictionary *record in deleted) {
                 // Delete cached file, if exists.
                 NSString *path = [_fileDB cacheLocationForFile:record];
                 if (path && [fileManager fileExistsAtPath:path]) {
                     [fileManager removeItemAtPath:path error:nil];
                 }
             }
-            // Delete trashed records.
-            if ([trashedIDs count]) {
-                [_fileDB deleteIDs:trashedIDs fromTable:@"files"];
-            }
-            // Prune related records.
+        
+            // Delete obsolete records.
+            [_fileDB performUpdate:@"DELETE FROM files WHERE status='deleted'" withParams:@[]];
+
+            // Prune ORM related records.
             [_fileDB pruneRelatedValues];
+        
+            // Read list of fileset names with modified fingerprints.
+            NSArray *rows = [_fileDB performQuery:@"SELECT category FROM fingerprints WHERE current != previous" withParams:@[]];
+            for (NSDictionary *row in rows) {
+                NSString *category = row[@"category"];
+                if ([@"$group" isEqualToString:category]) {
+                    // The ACM group fingerprint entry - skip.
+                    continue;
+                }
+                // Map the category name to null - this indicates that the category is updated,
+                // but there is no 'since' parameter, so download a full update.
+                updatedCategories[category] = [NSNull null];
+            }
+        
+            // Queue downloads of updated category filesets.
+            NSString *command = [self qualifyName:@"download-fileset"];
+            for (id category in [updatedCategories keyEnumerator]) {
+                id since = updatedCategories[category];
+                // Get cache location for fileset; if nil then don't download the fileset.
+                NSString *cacheLocation = [_fileDB cacheLocationForFileset:category];
+                if (cacheLocation) {
+                    NSMutableArray *args = [NSMutableArray new];
+                    [args addObject:category];
+                    [args addObject:cacheLocation]; // Where to put the downloaded files.
+                    if (since != [NSNull null]) {
+                        [args addObject:since];
+                    }
+                    [commands addObject:@{ @"name": command, @"args": args }];
+                }
+            }
+
             // Commit the transaction.
             [_fileDB commitTransaction];
             
@@ -154,27 +209,11 @@
             // 1. How does the code perform if the procedure above is interrupted before completion?
             // 2. How is app performance affected if the procedure above is continually interrupted?
             //    (e.g. due to repeated short-duration app starts).
-            // 3. How does the code perform if the procedure above completes, but the following code is interrupted?
-            // 4. Are there ways (on iOS and Android) to run tasks like this with completion guarantees?
+            // 3. Are there ways (on iOS and Android) to run tasks like this with completion guarantees?
             //    e.g. the scheduler could register as a background task when app is put into the background;
             //    the task compeletes when the currently executing command completes.
             //    See https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/BackgroundExecution/BackgroundExecution.html
             
-            // Queue downloads of updated category filesets.
-            NSString *name = [self qualifyName:@"download-fileset"];
-            for (id category in updatedCategories) {
-                // Get cache location for fileset; if nil then don't download the fileset.
-                NSString *cacheLocation = [_fileDB cacheLocationForFileset:category];
-                if (cacheLocation) {
-                    NSMutableArray *args = [NSMutableArray new];
-                    [args addObject:category];
-                    [args addObject:cacheLocation]; // Where to put the downloaded files.
-                    if (commit) {
-                        [args addObject:commit];
-                    }
-                    [commands addObject:@{ @"name": name, @"args": args }];
-                }
-            }
         /* -- end of else after db version check
         }
         */

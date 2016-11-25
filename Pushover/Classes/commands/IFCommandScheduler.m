@@ -391,22 +391,17 @@ static void *execQueueKey = "IFCommandScheduler.execQueue";
     __block IFCommandItem *commandItem = [[IFCommandItem alloc] initWithCommand:command args:args];
     commandItem.promise = [QPromise new];
     dispatch_async(execQueue, ^{
-        // Modify the exec queue to include the new command; note that this is done on the GCD queue, to
-        // ensure that it happens in sync with other queue operations (i.e. reading from database; incrementing
-        // after command executions).
-        if ([_execQueue count] == 0) {
-            // Nothing queue; create queue with new command and execute.
-            _execQueue = @[ commandItem ];
-            _execIdx = 0;
-            [self executeQueue];
-        }
-        else {
-            // Queue is being processed; create a new queue with the unprocessed items, and the new
-            // command at its head, and wait for execution.
-            NSArray *commands = [_execQueue subarrayWithRange:NSMakeRange(_execIdx, [_execQueue count] - _execIdx)];
-            _execQueue = [@[ commandItem ] arrayByAddingObjectsFromArray:commands];
-            _execIdx = 0;
-        }
+        // Replace the exec queue with a new queue containing just the new command; any other queued commands
+        // will be reloaded from the database afterwards (although note that this means that two or more calls
+        // to this method can't be used reliably, asynchronously, as they may result in one call removing another
+        // queued call; this shouldn't be a problem in practice).
+        // Note that this part of the code is run on the GCD queue, to avoid race conditions on the queue.
+        _execQueue = @[ commandItem ];
+        _execIdx = 0;
+        // Execute the queue - this is safe to do even if something is already on the queue ahead of this block;
+        // in that case, the previous block will trigger this block's execution, and the following call will
+        // encounter an empty queue. (TODO: Confirm in detail that multiple execQueue calls are idempotent).
+        [self executeQueue];
     });
     return commandItem.promise;
 }
