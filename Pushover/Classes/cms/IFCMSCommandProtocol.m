@@ -288,6 +288,8 @@
         // Unzip downloaded file to content location.
         NSString *downloadPath = [response.downloadLocation path];
         [IFFileIO unzipFileAtPath:downloadPath toPath:cachePath overwrite:YES];
+        // Update the fileset's fingerprint.
+        [_fileDB performUpdate:@"UPDATE fingerprints SET previous=current WHERE category=?" withParams:@[ category ]];
         // Resolve empty list - no follow-on commands.
         [_promise resolve:@[]];
         return nil;
