@@ -83,4 +83,7 @@
 /// The name of the version column.
 @property (nonatomic, strong) NSString *verColumn;
 
+/// Test whether the mapping represents a shared object or property mapping.
+- (BOOL)isSharedObjectMapping;
+
 @end

@@ -134,7 +134,8 @@
         
         
             // Check group fingerprint to see if a migration is needed.
-            BOOL migrate = ![group isEqualToString:[updateData valueForKey:@"repository.group"]];
+            NSString *updateGroup = [updateData valueForKeyPath:@"repository.group"];
+            BOOL migrate = ![group isEqualToString:updateGroup];
             if (migrate) {
                 // Performing a migration due to an ACM group ID change; mark all files as
                 // provisionaly deleted.

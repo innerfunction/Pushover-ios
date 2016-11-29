@@ -53,10 +53,42 @@
             // Read column names on mapped table.
             IFDBORMMapping *mapping = mappings[mappingName];
             NSString *midColumn = [self getColumnWithTag:@"id" fromTable:mapping.table];
-            NSString *mverColumn = [self.orm columnWithName:mapping.verColumn orWithTag:@"version" onTable:mapping.table];
+            NSString *mverColumn = [self getColumnWithTag:@"version" fromTable:mapping.table];
+            if ([mapping isSharedObjectMapping]) {
+                // Delete shared records which don't have any corresponding source records.
+                NSString *where = [NSString stringWithFormat:@"%@ IN (SELECT %@.%@ FROM %@ LEFT JOIN %@ ON %@.%@ = %@.%@ WHERE %@.%@ IS NULL)",
+                    midColumn,
+                    mapping.table, midColumn,
+                    mapping.table, source,
+                    source, mappingName, mapping.table, midColumn,
+                    source, mappingName
+                ];
+                // Execute the delete and continue if ok.
+                ok = [self deleteFromTable:mapping.table where:where];
+                if (!ok) {
+                    break;
+                }
+
+            }
+            else if (midColumn) {
+                // Delete records which don't have a corresponding source record (i.e. the parent source record
+                // has been deleted).
+                NSString *where = [NSString stringWithFormat:@"%@ IN (SELECT %@.%@ FROM %@ LEFT JOIN %@ ON %@.%@ = %@.%@ WHERE %@.%@ IS NULL)",
+                    midColumn,
+                    mapping.table, midColumn,
+                    mapping.table, source,
+                    source, idColumn, mapping.table, midColumn,
+                    source, idColumn
+                ];
+                // Execute the delete and continue if ok.
+                ok = [self deleteFromTable:mapping.table where:where];
+                if (!ok) {
+                    break;
+                }
+            }
             if (midColumn && mverColumn) {
-                // Construct where clause of delete query - select all records on mapped table where
-                // the version value doesn't match the version value on the source table.
+                // Delete remaining records where the version field doesn't match the version on the source record
+                // (i.e. the records no longer belong to the updated relation value).
                 NSString *where = [NSString stringWithFormat:@"%@ IN (SELECT %@.%@ FROM %@ INNER JOIN %@ ON %@.%@ = %@.%@ AND %@.%@ != %@.%@)",
                     midColumn,
                     mapping.table, midColumn,

@@ -19,6 +19,7 @@
 #import "IFCMSLoginFormViewController.h"
 #import "IFContentProvider.h"
 #import "IFCMSContentAuthority.h"
+#import "UIViewController+Toast.h"
 
 @interface IFCMSLoginFormViewController ()
 
@@ -45,7 +46,7 @@
                 })
                 .fail( ^(id err) {
                     [form submitting:NO];
-                    // Show toast message.
+                    [self showToastMessage:err];
                 });
             }
         };
@@ -56,11 +57,17 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     // Check whether the user is already logged in.
-    IFContentAuthManager *authManager = [self getContentAuthority].authManager;
-    if ([authManager isLoggedIn]) {
+    IFCMSContentAuthority *authority = [self getContentAuthority];
+    if ([authority isLoggedIn]) {
         if (_logout) {
             // Logout the current user.
-            [authManager logout];
+            [authority logout]
+            .then( (id)^(id arg) {
+                if (_logoutMessage) {
+                    [self showToastMessage:_logoutMessage];
+                }
+                return nil;
+            });
         }
         else {
             // Perform the login action.

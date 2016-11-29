@@ -29,5 +29,7 @@
  * This is used as part of the UI logout functionality.
  */
 @property (nonatomic, assign) BOOL logout;
+/// A message to be displayed after logout.
+@property (nonatomic, strong) NSString *logoutMessage;
 
 @end

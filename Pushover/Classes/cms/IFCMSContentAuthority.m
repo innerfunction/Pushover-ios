@@ -22,6 +22,13 @@
 #import "IFCMSPostsPathRoot.h"
 #import "IFContentProvider.h"
 
+@interface IFCMSContentAuthority()
+
+/// Force a content refresh.
+- (QPromise *)forceRefresh;
+
+@end
+
 @implementation IFCMSContentAuthorityConfigurationProxy
 
 @synthesize iocContainer;
@@ -226,15 +233,22 @@
             NSDictionary *data = [response parseData];
             NSNumber *authenticated = data[@"authenticated"];
             if ([authenticated boolValue]) {
-                // Request a refresh
-                NSString *cmd = [NSString stringWithFormat:@"%@.refresh", self.authorityName];
-                return [self.provider.commandScheduler execCommand:cmd withArgs:@[]];
+                return [self forceRefresh];
             }
         }
         // Authentication failure.
         [_authManager logout];
         return [Q reject:@"Authentication failure"];
     });
+}
+
+- (BOOL)isLoggedIn {
+    return [_authManager isLoggedIn];
+}
+
+- (QPromise *)logout {
+    [_authManager logout];
+    return [self forceRefresh];
 }
 
 #pragma mark - IFAbstractContentAuthority overrides
@@ -273,6 +287,16 @@
     }
     // Continue with standard response behaviour.
     [super writeResponse:response forPath:path parameters:parameters];
+}
+
+#pragma mark - Private
+
+- (QPromise *)forceRefresh {
+    // Refresh content.
+    IFCommandScheduler *scheduler = self.provider.commandScheduler;
+    [scheduler purgeQueue];
+    NSString *cmd = [NSString stringWithFormat:@"%@.refresh", self.authorityName];
+    return [scheduler execCommand:cmd withArgs:@[]];
 }
 
 #pragma mark - IFMessageReceiver

@@ -77,4 +77,10 @@
  */
 - (QPromise *)loginWithCredentials:(NSDictionary *)credentials;
 
+/// Test whether there is an active user login for this content authority.
+- (BOOL)isLoggedIn;
+
+/// Logout the active user.
+- (QPromise *)logout;
+
 @end

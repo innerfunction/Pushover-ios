@@ -274,4 +274,8 @@
 
 @implementation IFDBORMMapping
 
+- (BOOL)isSharedObjectMapping {
+    return [@"shared-object" isEqualToString:_relation] || [@"shared-property" isEqualToString:_relation];
+}
+
 @end
