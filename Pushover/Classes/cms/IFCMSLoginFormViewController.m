@@ -56,8 +56,16 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     // Check whether the user is already logged in.
-    if ([[self getContentAuthority].authManager isLoggedIn]) {
-        [self postMessage:self.onlogin];
+    IFContentAuthManager *authManager = [self getContentAuthority].authManager;
+    if ([authManager isLoggedIn]) {
+        if (_logout) {
+            // Logout the current user.
+            [authManager logout];
+        }
+        else {
+            // Perform the login action.
+            [self postMessage:self.onlogin];
+        }
     }
 }
 

@@ -24,5 +24,10 @@
 @property (nonatomic, strong) NSString *authority;
 /// An action to be posted after a successful login.
 @property (nonatomic, strong) NSString *onlogin;
+/**
+ * A flag indicating that the current user should be logged out when the form is displayed.
+ * This is used as part of the UI logout functionality.
+ */
+@property (nonatomic, assign) BOOL logout;
 
 @end
