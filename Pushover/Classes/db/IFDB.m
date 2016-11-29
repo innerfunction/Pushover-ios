@@ -74,6 +74,7 @@ static IFLogger *Logger;
     self.name = db.name;
     self.version = db.version;
     self.tables = db.tables;
+    self.orm = db.orm;
     return self;
 }
 

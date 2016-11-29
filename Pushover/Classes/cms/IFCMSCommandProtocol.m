@@ -82,7 +82,7 @@
     }
     
     // Read latest commit ID.
-    NSArray *rs = [_fileDB performQuery:@"SELECT id, max(date) FROM commits GROUP BY id" withParams:@[]];
+    NSArray *rs = [_fileDB performQuery:@"SELECT id, max(date) FROM commits" withParams:@[]];
     if ([rs count] > 0) {
         // File DB contains previous commits, read latest commit ID and add as request parameter.
         NSDictionary *record = rs[0];
