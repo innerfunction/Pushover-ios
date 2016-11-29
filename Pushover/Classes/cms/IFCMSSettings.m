@@ -18,7 +18,7 @@
 
 #import "IFCMSSettings.h"
 
-#define PushoverAPIVersion  (@"0.1")
+#define PushoverAPIVersion  (@"0.2")
 #define PushoverAPIRoot     (@"semop")
 #define PushoverAuthRealm   (@"Pushover")
 
@@ -37,6 +37,7 @@
     self = [super init];
     if (self) {
         self.authRealm = PushoverAuthRealm;
+        self.pathRoot = [PushoverAPIRoot stringByAppendingPathComponent:PushoverAPIVersion];
     }
     return self;
 }
@@ -65,7 +66,7 @@
 
 // http://{host}/{apiroot}/{apiver}/path
 - (NSString *)pathForResource:(NSString *)resourceName trailing:(NSString *)trailing {
-    NSString *path = [PushoverAPIRoot stringByAppendingPathComponent:PushoverAPIVersion];
+    NSString *path = _pathRoot;
     path = [path stringByAppendingPathComponent:resourceName];
     path = [path stringByAppendingPathComponent:_account];
     path = [path stringByAppendingPathComponent:_repo];

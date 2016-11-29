@@ -98,7 +98,13 @@
         NSMutableArray *commands = [NSMutableArray new];
         // Read the updates data.
         id updateData = [response parseData];
-        
+        if ([updateData isKindOfClass:[NSString class]]) {
+            // Indicates a server error
+            NSLog(@"%@ %@", response.httpResponse.URL, updateData);
+            [_promise resolve:@[]];
+            return nil;
+        }
+
         /*
         // Check file DB schema version.
         id version = [updateData valueForKeyPath:@"db.version"];

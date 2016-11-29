@@ -64,7 +64,7 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
         }
         data = mdata;
     }
-    else if ([@"text/html" isEqualToString:contentType]) {
+    else if ([contentType hasPrefix:@"text/"]) {
         data = [[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding];
     }
     return data;

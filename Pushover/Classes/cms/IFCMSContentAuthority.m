@@ -221,27 +221,19 @@
     NSString *authURL = [_cms urlForAuthentication];
     return [self.provider.httpClient post:authURL data:nil]
     .then( (id)^(IFHTTPClientResponse *response) {
-        NSDictionary *data = [response parseData];
-        NSNumber *authenticated = data[@"authenticated"];
-        if ([authenticated boolValue]) {
-            // Request a refresh
-            NSString *cmd = [NSString stringWithFormat:@"%@.refresh", self.authorityName];
-            return [self.provider.commandScheduler execCommand:cmd withArgs:@[]];
+        NSInteger responseCode = response.httpResponse.statusCode;
+        if (responseCode == 200) {
+            NSDictionary *data = [response parseData];
+            NSNumber *authenticated = data[@"authenticated"];
+            if ([authenticated boolValue]) {
+                // Request a refresh
+                NSString *cmd = [NSString stringWithFormat:@"%@.refresh", self.authorityName];
+                return [self.provider.commandScheduler execCommand:cmd withArgs:@[]];
+            }
         }
-        else {
-            // Authentication failure.
-            return [Q reject:@"Authentication failure"];
-        }
-    })
-    .fail( ^(id err) {
-        // Authentication failed, remove the stored credentials.
-        // TODO Need to also handle credential failures at other points also - e.g. at app startup;
-        // or after each request to server (credentials could be changed at any time); when credentials
-        // are rejected, then the app should auto-logout.
-        // TODO To do the above, need to fully understand how the NSURLCredential system handles credential
-        // rejection - i.e. it submits a request, gets an auth challenge, sends the credentials - but then
-        // gets a 401 / authentication challenge back; is this then reported as an error to the caller?
+        // Authentication failure.
         [_authManager logout];
+        return [Q reject:@"Authentication failure"];
     });
 }
 
@@ -281,6 +273,16 @@
     }
     // Continue with standard response behaviour.
     [super writeResponse:response forPath:path parameters:parameters];
+}
+
+#pragma mark - IFMessageReceiver
+
+- (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
+    if ([message.name isEqualToString:@"logout"]) {
+        [self.authManager logout];
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - IFService

@@ -26,6 +26,7 @@
 #import "IFIOCObjectAware.h"
 #import "IFIOCContainerAware.h"
 #import "IFIOCConfigurationAware.h"
+#import "IFMessageReceiver.h"
 #import "IFJSONData.h"
 #import "Q.h"
 
@@ -33,7 +34,7 @@
 
 // TODO Rename class group - and change class name prefix - to po / PO?
 
-@interface IFCMSContentAuthorityConfigurationProxy : IFCMSAbstractContentAuthorityConfigurationProxy <IFIOCContainerAware>
+@interface IFCMSContentAuthorityConfigurationProxy : IFCMSAbstractContentAuthorityConfigurationProxy <IFIOCContainerAware, IFMessageReceiver>
 
 /// The file database settings.
 @property (nonatomic, strong) IFJSONObject *fileDB;

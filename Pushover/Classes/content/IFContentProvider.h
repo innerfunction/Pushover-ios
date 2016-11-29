@@ -23,13 +23,15 @@
 #import "IFIOCTypeInspectable.h"
 #import "IFIOCSingleton.h"
 #import "IFService.h"
+#import "IFMessageRouter.h"
+#import "IFMessageReceiver.h"
 
 /**
  * A provider of content to the content: URL protocol.
  * A content provider is a collection of content authorities, which encapsulate different
  * sources of content.
  */
-@interface IFContentProvider : NSObject <IFIOCSingleton, IFIOCTypeInspectable, IFService>
+@interface IFContentProvider : NSObject <IFIOCSingleton, IFIOCTypeInspectable, IFService, IFMessageRouter, IFMessageReceiver>
 
 /// A map of content authority instances keyed by authority name.
 @property (nonatomic, strong) NSDictionary *authorities;

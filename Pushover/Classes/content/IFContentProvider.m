@@ -86,6 +86,26 @@
     return instance;
 }
 
+#pragma mark - IFMessageRouter
+
+- (BOOL)routeMessage:(IFMessage *)message sender:(id)sender {
+    BOOL routed = NO;
+    NSString *authorityName = [message targetHead];
+    id authority = [self contentAuthorityForName:authorityName];
+    if (authority) {
+        if ([authority conformsToProtocol:@protocol(IFMessageReceiver)]) {
+            routed = [(id<IFMessageReceiver>)authority receiveMessage:message sender:sender];
+        }
+    }
+    return routed;
+}
+
+#pragma mark - IFMessageReceiver
+
+- (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
+    return NO;
+}
+
 #pragma mark - IFIOCTypeInspectable
 
 - (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {

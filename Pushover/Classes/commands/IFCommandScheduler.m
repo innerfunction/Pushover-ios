@@ -390,7 +390,7 @@ static void *execQueueKey = "IFCommandScheduler.execQueue";
 - (QPromise *)execCommand:(NSString *)command withArgs:(NSArray *)args {
     __block IFCommandItem *commandItem = [[IFCommandItem alloc] initWithCommand:command args:args];
     commandItem.promise = [QPromise new];
-    dispatch_async(execQueue, ^{
+    void (^execCommand)() = ^{
         // Replace the exec queue with a new queue containing just the new command; any other queued commands
         // will be reloaded from the database afterwards (although note that this means that two or more calls
         // to this method can't be used reliably, asynchronously, as they may result in one call removing another
@@ -398,11 +398,14 @@ static void *execQueueKey = "IFCommandScheduler.execQueue";
         // Note that this part of the code is run on the GCD queue, to avoid race conditions on the queue.
         _execQueue = @[ commandItem ];
         _execIdx = 0;
-        // Execute the queue - this is safe to do even if something is already on the queue ahead of this block;
-        // in that case, the previous block will trigger this block's execution, and the following call will
-        // encounter an empty queue. (TODO: Confirm in detail that multiple execQueue calls are idempotent).
-        [self executeQueue];
-    });
+        [self executeNextCommand];
+    };
+    if (RunningOnExecQueue) {
+        execCommand();
+    }
+    else {
+        dispatch_async(execQueue, execCommand);
+    }
     return commandItem.promise;
 }
 

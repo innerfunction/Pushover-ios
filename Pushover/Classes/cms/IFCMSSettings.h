@@ -30,6 +30,8 @@
 @property (nonatomic, strong) NSString *branch;
 /// The CMS HTTP authentication realm.
 @property (nonatomic, strong) NSString *authRealm;
+/// The CMS path root;
+@property (nonatomic, strong) NSString *pathRoot;
 
 /// Return the URL for login authentication.
 - (NSString *)urlForAuthentication;
