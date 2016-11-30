@@ -67,7 +67,7 @@
         if (range.location != NSNotFound) {
             pspaceDesc = [pspaceDesc substringFromIndex:range.location];
         }
-        _userDefaultsKey = [NSString stringWithFormat:@"IFContentAuthManager.isLoggedIn(%ld)", [pspaceDesc hash]];
+        _userDefaultsKey = [NSString stringWithFormat:@"IFContentAuthManager.isLoggedIn(%016lX)", (unsigned long)[pspaceDesc hash]];
     }
     return self;
 }
