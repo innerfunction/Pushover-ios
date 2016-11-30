@@ -152,6 +152,7 @@
     // Ask the container to build the authority object.
     IFCMSContentAuthority *authority = [[IFCMSContentAuthority alloc] init];
     [self.iocContainer configureObject:authority withConfiguration:config identifier:self.authorityName];
+    authority.logoutAction = self.logoutAction;
     
     // By default, the initial copy of the db file is stored in the main app bundle under the db name.
     IFCMSFileDB *fileDB = authority.fileDB;

@@ -42,6 +42,8 @@
 @property (nonatomic, strong) NSDictionary *cms;
 /// The content refresh interval, in minutes.
 @property (nonatomic, assign) CGFloat refreshInterval;
+/// An action to be performed after a logout. e.g. after the server returns a 401.
+@property (nonatomic, strong) NSString *logoutAction;
 
 @end
 
@@ -66,6 +68,8 @@
 @property (nonatomic, strong) IFCMSCommandProtocol *commandProtocol;
 /// The authority's authentication manager.
 @property (nonatomic, strong) IFContentAuthManager *authManager;
+/// An action to be performed after a logout. e.g. after the server returns a 401.
+@property (nonatomic, strong) NSString *logoutAction;
 
 /**
  * Do a CMS login using the specified credentials.
@@ -76,10 +80,8 @@
  * - Then performs a synchronous content refresh.
  */
 - (QPromise *)loginWithCredentials:(NSDictionary *)credentials;
-
 /// Test whether there is an active user login for this content authority.
 - (BOOL)isLoggedIn;
-
 /// Logout the active user.
 - (QPromise *)logout;
 

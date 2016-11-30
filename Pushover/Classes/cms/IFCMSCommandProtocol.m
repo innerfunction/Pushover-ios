@@ -21,6 +21,7 @@
 #import "IFCMSFileset.h"
 #import "IFCMSContentAuthority.h"
 #import "IFContentProvider.h"
+#import "IFAppContainer.h"
 
 #define URLEncode(s)    ([s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]])
 #define IsSecure        ([_authManager isLoggedIn] ? @"true" : @"false")
@@ -43,6 +44,7 @@
     if (self) {
         self.cms = authority.cms;
         _authManager = authority.authManager;
+        _logoutAction = authority.logoutAction;
         // Use a copy of the file DB to avoid problems with multi-thread access.
         self.fileDB = [authority.fileDB newInstance];
         self.httpClient = authority.provider.httpClient;
@@ -94,14 +96,29 @@
     // Fetch updates from the server.
     [_httpClient get:refreshURL data:params]
     .then((id)^(IFHTTPClientResponse *response) {
+    
         // Create list of follow up commands.
         NSMutableArray *commands = [NSMutableArray new];
+        
+        NSInteger responseCode = response.httpResponse.statusCode;
+        if (responseCode == 401) {
+            // Authentication failure.
+            if (_logoutAction) {
+                [[IFAppContainer getAppContainer] postMessage:_logoutAction sender:self];
+            }
+            else {
+                [_authManager logout];
+            }
+            [_promise resolve:commands];
+            return nil;
+        }
+        
         // Read the updates data.
         id updateData = [response parseData];
         if ([updateData isKindOfClass:[NSString class]]) {
             // Indicates a server error
             NSLog(@"%@ %@", response.httpResponse.URL, updateData);
-            [_promise resolve:@[]];
+            [_promise resolve:commands];
             return nil;
         }
 

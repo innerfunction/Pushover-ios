@@ -18,17 +18,56 @@
 
 #import "IFContentAuthManager.h"
 
+/* NOTE on credential storage:
+ * In testing, it was found that [NSURLCredentialStorage defaultCredentialForProtectionSpace:]
+ * would return the last used credential, even after that credential had been removed from the
+ * storage space. This behaviour was inconsisent, e.g. the credential would seem to eventually
+ * disappear from storage after some period of time. However this did cause problems; for
+ * example, (1) log in (2) log out (3) stop and restart app -> app displays main screen instead
+ * of login form. Because of this, the code below, as well as storing the active credential
+ * in the credential storage, also stores a flag in user defaults saying whether the app is
+ * logged in for the associated protection space (using a defaults key derived from the
+ * protection space description), and will only report an active login if there is both an
+ * active credential AND if the flag is set.
+ * This problem has only been identified on the iphone simulator, actual devices may actually
+ * not have this problem.
+ */
+
+@interface IFContentAuthManager()
+
+@end
+
 @implementation IFContentAuthManager
 
 - (id)initWithURL:(NSString *)url realm:(NSString *)realm {
     self = [super init];
     if (self) {
         NSURL *nsurl = [NSURL URLWithString:url];
+        NSInteger port = [nsurl.port integerValue];
+        if (port == 0) {
+            if ([@"http" isEqualToString:nsurl.scheme]) {
+                port = 80;
+            }
+            else if ([@"https" isEqualToString:nsurl.scheme]) {
+                port = 443;
+            }
+        }
         _protectionSpace = [[NSURLProtectionSpace alloc] initWithHost:nsurl.host
-                                                                 port:[nsurl.port integerValue]
+                                                                 port:port
                                                              protocol:nsurl.scheme
                                                                 realm:realm
                                                  authenticationMethod:nil];
+        
+        _userDefaults = [NSUserDefaults standardUserDefaults];
+        // Calculate a defaults key from the protection space description.
+        NSString *pspaceDesc = [_protectionSpace description];
+        // Example: <NSURLProtectionSpace: 0x7fc728c2fc30>: Host:127.0.0.1, Server:http ...
+        // Remove the address from the start of the string.
+        NSRange range = [pspaceDesc rangeOfString:@">: "]; // Find end of address
+        if (range.location != NSNotFound) {
+            pspaceDesc = [pspaceDesc substringFromIndex:range.location];
+        }
+        _userDefaultsKey = [NSString stringWithFormat:@"IFContentAuthManager.isLoggedIn(%ld)", [pspaceDesc hash]];
     }
     return self;
 }
@@ -47,11 +86,14 @@
                                          persistence:NSURLCredentialPersistencePermanent];
     // Set the default credential.
     [storage setDefaultCredential:credential forProtectionSpace:_protectionSpace];
+    // Store that we're logged in in the user defaults.
+    [_userDefaults setBool:YES forKey:_userDefaultsKey];
 }
 
 - (BOOL)isLoggedIn {
-    // Test whether there is an active credential.
-    return [self getActiveCredential] != nil;
+    // Test whether there is an active credential and a flag indicating that we're logged in.
+    BOOL loggedIn = [_userDefaults boolForKey:_userDefaultsKey];
+    return [self getActiveCredential] != nil && loggedIn;
 }
 
 - (NSURLCredential *)getActiveCredential {
@@ -75,6 +117,7 @@
         NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
         [storage removeCredential:credential forProtectionSpace:_protectionSpace];
     }
+    [_userDefaults setBool:NO forKey:_userDefaultsKey];
 }
 
 @end

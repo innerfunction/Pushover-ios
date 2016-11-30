@@ -28,6 +28,7 @@
 
 @interface IFCMSCommandProtocol : IFCommandProtocol {
     IFContentAuthManager *_authManager;
+    NSString *_logoutAction;
     QPromise *_promise;
 }
 

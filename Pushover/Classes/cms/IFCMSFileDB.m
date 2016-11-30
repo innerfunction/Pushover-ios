@@ -68,7 +68,6 @@
                 if (!ok) {
                     break;
                 }
-
             }
             else if (midColumn) {
                 // Delete records which don't have a corresponding source record (i.e. the parent source record

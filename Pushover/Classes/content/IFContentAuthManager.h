@@ -20,6 +20,8 @@
 
 @interface IFContentAuthManager : NSObject {
     NSURLProtectionSpace *_protectionSpace;
+    NSUserDefaults *_userDefaults;
+    NSString *_userDefaultsKey;
 }
 
 /// Initialize an authorization manager for the specified URL and (optional) realm.
