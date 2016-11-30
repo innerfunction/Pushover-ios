@@ -274,6 +274,10 @@
 
 @implementation IFDBORMMapping
 
+- (BOOL)isObjectMapping {
+    return [@"object" isEqualToString:_relation] || [@"property" isEqualToString:_relation];
+}
+
 - (BOOL)isSharedObjectMapping {
     return [@"shared-object" isEqualToString:_relation] || [@"shared-property" isEqualToString:_relation];
 }

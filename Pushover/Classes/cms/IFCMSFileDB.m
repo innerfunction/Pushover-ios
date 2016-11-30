@@ -53,6 +53,11 @@
             // Read column names on mapped table.
             IFDBORMMapping *mapping = mappings[mappingName];
             NSString *midColumn = [self getColumnWithTag:@"id" fromTable:mapping.table];
+            NSString *oidColumn = [self getColumnWithTag:@"ownerid" fromTable:mapping.table];
+            if (oidColumn == nil && [mapping isObjectMapping]) {
+                // The mapped record ID can be used as owner ID for own-object mappings.
+                oidColumn = midColumn;
+            }
             NSString *mverColumn = [self getColumnWithTag:@"version" fromTable:mapping.table];
             if ([mapping isSharedObjectMapping]) {
                 // Delete shared records which don't have any corresponding source records.
@@ -69,14 +74,14 @@
                     break;
                 }
             }
-            else if (midColumn) {
+            else if (midColumn && oidColumn) {
                 // Delete records which don't have a corresponding source record (i.e. the parent source record
                 // has been deleted).
                 NSString *where = [NSString stringWithFormat:@"%@ IN (SELECT %@.%@ FROM %@ LEFT JOIN %@ ON %@.%@ = %@.%@ WHERE %@.%@ IS NULL)",
                     midColumn,
                     mapping.table, midColumn,
                     mapping.table, source,
-                    source, idColumn, mapping.table, midColumn,
+                    source, idColumn, mapping.table, oidColumn,
                     source, idColumn
                 ];
                 // Execute the delete and continue if ok.
@@ -85,14 +90,14 @@
                     break;
                 }
             }
-            if (midColumn && mverColumn) {
+            if (midColumn && oidColumn && mverColumn) {
                 // Delete remaining records where the version field doesn't match the version on the source record
                 // (i.e. the records no longer belong to the updated relation value).
                 NSString *where = [NSString stringWithFormat:@"%@ IN (SELECT %@.%@ FROM %@ INNER JOIN %@ ON %@.%@ = %@.%@ AND %@.%@ != %@.%@)",
                     midColumn,
                     mapping.table, midColumn,
                     source, mapping.table,
-                    source, idColumn, mapping.table, midColumn,
+                    source, idColumn, mapping.table, oidColumn,
                     source, verColumn, mapping.table, mverColumn ];
                 // Execute the delete and continue if ok.
                 ok = [self deleteFromTable:mapping.table where:where];
