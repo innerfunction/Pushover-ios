@@ -22,7 +22,8 @@
 #import "IFCMSFilesetCategoryPathRoot.h"
 #import "IFCMSCommandProtocol.h"
 #import "IFCMSSettings.h"
-#import "IFContentAuthManager.h"
+#import "IFCMSAuthenticationManager.h"
+#import "IFHTTPClient.h"
 #import "IFIOCObjectAware.h"
 #import "IFIOCContainerAware.h"
 #import "IFIOCConfigurationAware.h"
@@ -54,6 +55,10 @@
 
 /// The file database.
 @property (nonatomic, strong) IFCMSFileDB *fileDB;
+/// The HTTP client used for server requests.
+@property (nonatomic, strong) IFHTTPClient *httpClient;
+/// The authentication manager.
+@property (nonatomic, strong) IFCMSAuthenticationManager *authManager;
 /// The path root for 'posts'.
 @property (nonatomic, strong) IFCMSPostsPathRoot *postsPathRoot;
 /// The filesets defined for this authority.
@@ -66,8 +71,6 @@
 @property (nonatomic, strong) NSDictionary *queryTypes;
 /// The authority's scheduled command protocol.
 @property (nonatomic, strong) IFCMSCommandProtocol *commandProtocol;
-/// The authority's authentication manager.
-@property (nonatomic, strong) IFContentAuthManager *authManager;
 /// An action to be performed after a logout. e.g. after the server returns a 401.
 @property (nonatomic, strong) NSString *logoutAction;
 
@@ -86,3 +89,4 @@
 - (QPromise *)logout;
 
 @end
+

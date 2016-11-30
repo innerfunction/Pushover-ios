@@ -24,27 +24,11 @@
 
 @end
 
-// TODO: Authentication delegate and related methods can be removed once the new NSURLCredential based
-// methods are fully implemented.
+@interface IFHTTPClient : NSObject {
+    __weak id<NSURLSessionTaskDelegate> _sessionTaskDelegate;
+}
 
-// Protocol to be implemented by class providing authentication related functionality.
-@protocol IFHTTPClientAuthenticationDelegate <NSObject>
-
-// Test whether a response represents an authentication error.
-- (BOOL)httpClient:(IFHTTPClient *)httpClient isAuthenticationErrorResponse:(IFHTTPClientResponse *)response;
-// Perform a reauthentication.
-- (QPromise *)reauthenticateUsingHttpClient:(IFHTTPClient *)httpClient;
-
-@end
-
-/*
-@interface IFHTTPClientAuthenticationHandler : NSObject <NSURLSessionTaskDelegate>
-
-@end
-*/
-@interface IFHTTPClient : NSObject //<NSURLSessionTaskDelegate>
-
-@property (nonatomic, weak) id<IFHTTPClientAuthenticationDelegate> authenticationDelegate;
+- (id)initWithNSURLSessionTaskDelegate:(id<NSURLSessionDataDelegate>)sessionTaskDelegate;
 
 - (QPromise *)get:(NSString *)url;
 - (QPromise *)get:(NSString *)url data:(NSDictionary *)data;

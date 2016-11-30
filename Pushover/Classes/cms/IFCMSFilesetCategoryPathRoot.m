@@ -117,7 +117,7 @@
                 }
                 else {
                     // No local copy found, download from server.
-                    IFHTTPClient *httpClient = _authority.provider.httpClient;
+                    IFHTTPClient *httpClient = _authority.httpClient;
                     [httpClient getFile:url]
                     .then((id)^(IFHTTPClientResponse *httpResponse) {
                         NSString *downloadPath = [httpResponse.downloadLocation path];

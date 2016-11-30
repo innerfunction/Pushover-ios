@@ -13,9 +13,8 @@ typedef QPromise *(^IFHTTPClientAction)();
 
 @interface IFHTTPClient()
 
-- (BOOL)isAuthenticationErrorResponse:(IFHTTPClientResponse *)response;
-- (QPromise *)reauthenticate;
 - (QPromise *)submitAction:(IFHTTPClientAction)action;
+- (NSURLSession *)makeSession;
 
 NSURL *makeURL(NSString *url, NSDictionary *params);
 
@@ -72,32 +71,15 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
 
 @end
 
-/*
-@implementation IFHTTPClientAuthenticationHandler
-
-#pragma mark - NSURLSessionTaskDelegate
-
-- (void)URLSession:(NSURLSession *)session
-              task:(NSURLSessionTask *)task
-didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
- completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
-    // Taken from https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/URLLoadingSystem/Articles/AuthenticationChallenges.html#//apple_ref/doc/uid/TP40009507-SW1
-    if (challenge.previousFailureCount == 0) {
-        NSString *account = [[NSUserDefaults standardUserDefaults] stringForKey:@"semo/username"];
-        NSString *password = [SSKeychain passwordForService:@"<service>" account:account];
-        NSURLCredential *credential = [NSURLCredential credentialWithUser:account password:password persistence:NSURLCredentialPersistenceNone];
-        [challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
-    }
-    else {
-        [challenge.sender cancelAuthenticationChallenge:challenge];
-        // Redisplay login screen, show toast
-    }
-}
-
-@end
-*/
-
 @implementation IFHTTPClient
+
+- (id)initWithNSURLSessionTaskDelegate:(id<NSURLSessionDataDelegate>)sessionTaskDelegate {
+    self = [super init];
+    if (self) {
+        _sessionTaskDelegate = sessionTaskDelegate;
+    }
+    return self;
+}
 
 - (QPromise *)get:(NSString *)url {
     return [self get:url data:nil];
@@ -108,7 +90,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
         QPromise *promise = [QPromise new];
         // Send request.
         NSURLRequest *request = [NSURLRequest requestWithURL:makeURL(url, data)];
-        NSURLSession *session = [NSURLSession sharedSession];
+        NSURLSession *session = [self makeSession];
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                                 completionHandler:
         ^(NSData * _Nullable responseData, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -136,7 +118,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
         NSURLRequest *request = [NSURLRequest requestWithURL:fileURL
                                                  cachePolicy:NSURLRequestReloadRevalidatingCacheData // NOTE
                                              timeoutInterval:60];
-        NSURLSession *session = [NSURLSession sharedSession];
+        NSURLSession *session = [self makeSession];
         NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request
                                                         completionHandler:
         ^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -172,14 +154,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
             NSString *body = [queryItems componentsJoinedByString:@"&"];
             request.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
         }
-        NSURLSession *session = [NSURLSession sharedSession];
-        /*
-        IFHTTPClientAuthenticationHandler *authHandler = [[IFHTTPClientAuthenticationHandler alloc] init];
-        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration
-                                                              delegate:authHandler
-                                                         delegateQueue:nil];
-        */
+        NSURLSession *session = [self makeSession];
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request
             completionHandler:^(NSData * _Nullable responseData, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                 if (error) {
@@ -203,43 +178,18 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 
 #pragma mark - Private methods
 
-- (BOOL)isAuthenticationErrorResponse:(IFHTTPClientResponse *)response {
-    if (_authenticationDelegate) {
-        return [_authenticationDelegate httpClient:self isAuthenticationErrorResponse:response];
-    }
-    return NO;
-}
-
-- (QPromise *)reauthenticate {
-    if (_authenticationDelegate) {
-        return [_authenticationDelegate reauthenticateUsingHttpClient:self];
-    }
-    return [Q reject:nil];
-}
-
 - (QPromise *)submitAction:(IFHTTPClientAction)action {
-    QPromise *promise = [QPromise new];
-    action()
-    .then((id)^(IFHTTPClientResponse *response) {
-        if ([self isAuthenticationErrorResponse:response]) {
-            [self reauthenticate]
-            .then((id)^(id response) {
-                [promise resolve:action()];
-                return nil;
-            })
-            .fail(^(id error) {
-                [promise reject:error];
-            });
-        }
-        else {
-            [promise resolve:response];
-        }
-        return nil;
-    })
-    .fail(^(id error) {
-        [promise reject:error];
-    });
-    return promise;
+    return action();
+}
+
+- (NSURLSession *)makeSession {
+    if (_sessionTaskDelegate) {
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        return [NSURLSession sessionWithConfiguration:configuration
+                                             delegate:_sessionTaskDelegate
+                                        delegateQueue:nil];
+    }
+    return [NSURLSession sharedSession];
 }
 
 NSURL *makeURL(NSString *url, NSDictionary *params) {

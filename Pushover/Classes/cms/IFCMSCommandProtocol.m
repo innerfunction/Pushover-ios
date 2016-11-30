@@ -24,7 +24,7 @@
 #import "IFAppContainer.h"
 
 #define URLEncode(s)    ([s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]])
-#define IsSecure        ([_authManager isLoggedIn] ? @"true" : @"false")
+#define IsSecure        ([_authManager hasCredentials] ? @"true" : @"false")
 
 @interface IFCMSCommandProtocol ()
 
@@ -47,7 +47,7 @@
         _logoutAction = authority.logoutAction;
         // Use a copy of the file DB to avoid problems with multi-thread access.
         self.fileDB = [authority.fileDB newInstance];
-        self.httpClient = authority.provider.httpClient;
+        self.httpClient = authority.httpClient;
         // Register command handlers.
         __block id this = self;
         [self addCommand:@"refresh" withBlock:^QPromise *(NSArray *args) {
@@ -107,7 +107,7 @@
                 [[IFAppContainer getAppContainer] postMessage:_logoutAction sender:self];
             }
             else {
-                [_authManager logout];
+                [_authManager removeCredentials];
             }
             [_promise resolve:commands];
             return nil;

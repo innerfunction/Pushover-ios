@@ -30,7 +30,6 @@
     if (self) {
         _commandScheduler = [IFCommandScheduler new];
         _commandScheduler.queueDBName = [NSString stringWithFormat:@"%@.commandqueue", PushoverNamePrefix];
-        _httpClient = [IFHTTPClient new];
         
         // NOTES on staging and cache paths:
         // * Freshly downloaded content is stored under the staging path until the download is complete,

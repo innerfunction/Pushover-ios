@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		072EFC221DE758F200FEDAD7 /* IFContentAuthManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 072EFC201DE758F200FEDAD7 /* IFContentAuthManager.h */; };
-		072EFC231DE758F200FEDAD7 /* IFContentAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 072EFC211DE758F200FEDAD7 /* IFContentAuthManager.m */; };
 		072EFC261DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 072EFC241DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h */; };
 		072EFC271DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 072EFC251DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m */; };
 		073DB3EF1DB8D29F002504FB /* IFCMSSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */; };
 		073DB3F01DB8D29F002504FB /* IFCMSSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */; };
+		077B08DD1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */; };
+		077B08DE1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */; };
 		07FA6FB51DA5292600E35C36 /* IFCMSCommandProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F281DA5292600E35C36 /* IFCMSCommandProtocol.h */; };
 		07FA6FB61DA5292600E35C36 /* IFCMSCommandProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F291DA5292600E35C36 /* IFCMSCommandProtocol.m */; };
 		07FA6FB71DA5292600E35C36 /* IFCMSContentAuthority.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F2A1DA5292600E35C36 /* IFCMSContentAuthority.h */; };
@@ -148,13 +148,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		072EFC201DE758F200FEDAD7 /* IFContentAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentAuthManager.h; sourceTree = "<group>"; };
-		072EFC211DE758F200FEDAD7 /* IFContentAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContentAuthManager.m; sourceTree = "<group>"; };
 		072EFC241DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSLoginFormViewController.h; sourceTree = "<group>"; };
 		072EFC251DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSLoginFormViewController.m; sourceTree = "<group>"; };
 		073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSSettings.h; sourceTree = "<group>"; };
 		073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSSettings.m; sourceTree = "<group>"; };
 		077AEDDB1D7F1D2500C5A2D9 /* Pushover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pushover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSAuthenticationManager.h; sourceTree = "<group>"; };
+		077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSAuthenticationManager.m; sourceTree = "<group>"; };
 		07FA6F281DA5292600E35C36 /* IFCMSCommandProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSCommandProtocol.h; sourceTree = "<group>"; };
 		07FA6F291DA5292600E35C36 /* IFCMSCommandProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSCommandProtocol.m; sourceTree = "<group>"; };
 		07FA6F2A1DA5292600E35C36 /* IFCMSContentAuthority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSContentAuthority.h; sourceTree = "<group>"; };
@@ -344,6 +344,8 @@
 			children = (
 				07FA6F281DA5292600E35C36 /* IFCMSCommandProtocol.h */,
 				07FA6F291DA5292600E35C36 /* IFCMSCommandProtocol.m */,
+				077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */,
+				077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */,
 				07FA6F2A1DA5292600E35C36 /* IFCMSContentAuthority.h */,
 				07FA6F2B1DA5292600E35C36 /* IFCMSContentAuthority.m */,
 				07FA6F2C1DA5292600E35C36 /* IFCMSFileDB.h */,
@@ -393,8 +395,6 @@
 			children = (
 				07FA6F491DA5292600E35C36 /* IFAbstractContentAuthority.h */,
 				07FA6F4A1DA5292600E35C36 /* IFAbstractContentAuthority.m */,
-				072EFC201DE758F200FEDAD7 /* IFContentAuthManager.h */,
-				072EFC211DE758F200FEDAD7 /* IFContentAuthManager.m */,
 				07FA6F4B1DA5292600E35C36 /* IFContentAuthority.h */,
 				07FA6F4C1DA5292600E35C36 /* IFContentAuthority.m */,
 				07FA6F4D1DA5292600E35C36 /* IFContentPath.h */,
@@ -582,6 +582,7 @@
 				07FA70311DA5292600E35C36 /* IFWPLicenceBehaviour.h in Headers */,
 				073DB3EF1DB8D29F002504FB /* IFCMSSettings.h in Headers */,
 				07FA70351DA5292600E35C36 /* IFWPPostsPathRoot.h in Headers */,
+				077B08DD1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h in Headers */,
 				07FA6FDE1DA5292600E35C36 /* IFContentTypeConverter.h in Headers */,
 				07FA70331DA5292600E35C36 /* IFWPPostDBAdapter.h in Headers */,
 				07FA6FDF1DA5292600E35C36 /* IFContentURLProtocol.h in Headers */,
@@ -611,7 +612,6 @@
 				07FA701E1DA5292600E35C36 /* IFContentTableViewController.h in Headers */,
 				072EFC261DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h in Headers */,
 				07FA6FE71DA5292600E35C36 /* IFPlainContentTypeConverter.h in Headers */,
-				072EFC221DE758F200FEDAD7 /* IFContentAuthManager.h in Headers */,
 				07FA6FE11DA5292600E35C36 /* IFDataTableFormatter.h in Headers */,
 				07FA702B1DA5292600E35C36 /* IFWPContentAuthority.h in Headers */,
 				07FA6FDC1DA5292600E35C36 /* IFContentSchemeHandler.h in Headers */,
@@ -770,7 +770,6 @@
 				07FA70361DA5292600E35C36 /* IFWPPostsPathRoot.m in Sources */,
 				07FA6FCF1DA5292600E35C36 /* IFMvFileCommand.m in Sources */,
 				07FA70131DA5292600E35C36 /* PLSqliteMigrationVersionManager.m in Sources */,
-				072EFC231DE758F200FEDAD7 /* IFContentAuthManager.m in Sources */,
 				07FA6FE81DA5292600E35C36 /* IFPlainContentTypeConverter.m in Sources */,
 				07FA6FF01DA5292600E35C36 /* IFDBORM.m in Sources */,
 				07FA70341DA5292600E35C36 /* IFWPPostDBAdapter.m in Sources */,
@@ -802,6 +801,7 @@
 				07FA701D1DA5292600E35C36 /* SSKeychainQuery.m in Sources */,
 				07FA70111DA5292600E35C36 /* PLSqliteDatabase.m in Sources */,
 				07FA6FFC1DA5292600E35C36 /* IFFormTextField.m in Sources */,
+				077B08DE1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m in Sources */,
 				07FA6FE41DA5292600E35C36 /* IFDataWebviewFormatter.m in Sources */,
 				07FA6FCD1DA5292600E35C36 /* IFGetURLCommand.m in Sources */,
 				07FA6FB61DA5292600E35C36 /* IFCMSCommandProtocol.m in Sources */,

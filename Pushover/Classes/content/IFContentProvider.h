@@ -19,7 +19,6 @@
 #import <Foundation/Foundation.h>
 #import "IFContentAuthority.h"
 #import "IFCommandScheduler.h"
-#import "IFHTTPClient.h"
 #import "IFIOCTypeInspectable.h"
 #import "IFIOCSingleton.h"
 #import "IFService.h"
@@ -37,8 +36,6 @@
 @property (nonatomic, strong) NSDictionary *authorities;
 /// A command scheduler to be used by the different content authorities.
 @property (nonatomic, strong) IFCommandScheduler *commandScheduler;
-/// An HTTP client to be used by the different content authorities.
-@property (nonatomic, strong) IFHTTPClient *httpClient;
 /// A path for temporarily staging downloaded content.
 @property (nonatomic, strong) NSString *stagingPath;
 /// A path for caching app content.

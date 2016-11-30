@@ -208,11 +208,6 @@
     return _fileDB.filesets;
 }
 
-- (void)setCms:(IFCMSSettings *)cms {
-    _cms = cms;
-    _authManager = [[IFContentAuthManager alloc] initWithURL:[cms apiBaseURL] realm:cms.authRealm];
-}
-
 - (QPromise *)loginWithCredentials:(NSDictionary *)credentials {
     // Check for username & password.
     NSString *username = credentials[@"username"];
@@ -224,10 +219,10 @@
         return [Q reject:@"Missing password"];
     }
     // Register with the auth manager.
-    [_authManager loginWithUsername:username password:password];
+    [_authManager registerCredentials:credentials];
     // Authenticate against the backend.
     NSString *authURL = [_cms urlForAuthentication];
-    return [self.provider.httpClient post:authURL data:nil]
+    return [self.httpClient post:authURL data:nil]
     .then( (id)^(IFHTTPClientResponse *response) {
         NSInteger responseCode = response.httpResponse.statusCode;
         if (responseCode == 200) {
@@ -238,17 +233,17 @@
             }
         }
         // Authentication failure.
-        [_authManager logout];
+        [_authManager removeCredentials];
         return [Q reject:@"Authentication failure"];
     });
 }
 
 - (BOOL)isLoggedIn {
-    return [_authManager isLoggedIn];
+    return [_authManager hasCredentials];
 }
 
 - (QPromise *)logout {
-    [_authManager logout];
+    [_authManager removeCredentials];
     return [self forceRefresh];
 }
 
@@ -304,7 +299,7 @@
 
 - (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     if ([message.name isEqualToString:@"logout"]) {
-        [self.authManager logout];
+        [self.authManager removeCredentials];
         return YES;
     }
     return NO;
@@ -314,6 +309,8 @@
 
 - (void)startService {
     [super startService];
+    _authManager = [[IFCMSAuthenticationManager alloc] initWithRealm:_cms.authRealm];
+    _httpClient = [[IFHTTPClient alloc] initWithNSURLSessionTaskDelegate:(id<NSURLSessionDataDelegate>)_authManager];
     _commandProtocol = [[IFCMSCommandProtocol alloc] initWithAuthority:self];
     // Register command protocol with the scheduler, using the authority name as the command prefix.
     self.provider.commandScheduler.commands = @{ self.authorityName: _commandProtocol };

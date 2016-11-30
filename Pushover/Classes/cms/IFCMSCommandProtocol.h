@@ -19,7 +19,7 @@
 #import <Foundation/Foundation.h>
 #import <Q/Q.h>
 #import "IFCommandProtocol.h"
-#import "IFContentAuthManager.h"
+#import "IFCMSAuthenticationManager.h"
 #import "IFCMSSettings.h"
 #import "IFCMSFileDB.h"
 #import "IFHTTPClient.h"
@@ -27,7 +27,7 @@
 @class IFCMSContentAuthority;
 
 @interface IFCMSCommandProtocol : IFCommandProtocol {
-    IFContentAuthManager *_authManager;
+    __weak IFCMSAuthenticationManager *_authManager;
     NSString *_logoutAction;
     QPromise *_promise;
 }
@@ -39,6 +39,6 @@
 /** The local file database. */
 @property (nonatomic, strong) IFCMSFileDB *fileDB;
 /** An HTTP client instance. */
-@property (nonatomic, strong) IFHTTPClient *httpClient;
+@property (nonatomic, weak) IFHTTPClient *httpClient;
 
 @end
