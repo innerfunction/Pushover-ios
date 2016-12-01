@@ -66,7 +66,6 @@
               task:(NSURLSessionTask *)task
 didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
  completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
-    // Taken from https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/URLLoadingSystem/Articles/AuthenticationChallenges.html#//apple_ref/doc/uid/TP40009507-SW1
     if (challenge.previousFailureCount == 0) {
         NSString *key = UserDefaultsKey(@"username");
         NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:key];
@@ -76,12 +75,12 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
                 NSURLCredential *credential = [NSURLCredential credentialWithUser:username
                                                                          password:password
                                                                       persistence:NSURLCredentialPersistenceNone];
-                [challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
+                completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
                 return;
             }
         }
     }
-    [challenge.sender cancelAuthenticationChallenge:challenge];
+    completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
 }
 
 @end

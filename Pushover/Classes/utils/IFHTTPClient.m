@@ -185,9 +185,10 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
 - (NSURLSession *)makeSession {
     if (_sessionTaskDelegate) {
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSOperationQueue *operationQueue = [NSOperationQueue mainQueue];
         return [NSURLSession sessionWithConfiguration:configuration
                                              delegate:_sessionTaskDelegate
-                                        delegateQueue:nil];
+                                        delegateQueue:operationQueue];
     }
     return [NSURLSession sharedSession];
 }

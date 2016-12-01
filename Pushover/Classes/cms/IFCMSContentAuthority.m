@@ -218,24 +218,32 @@
     if (password == nil) {
         return [Q reject:@"Missing password"];
     }
+    QPromise *promise = [QPromise new];
     // Register with the auth manager.
     [_authManager registerCredentials:credentials];
     // Authenticate against the backend.
     NSString *authURL = [_cms urlForAuthentication];
-    return [self.httpClient post:authURL data:nil]
+    [self.httpClient post:authURL data:nil]
     .then( (id)^(IFHTTPClientResponse *response) {
         NSInteger responseCode = response.httpResponse.statusCode;
         if (responseCode == 200) {
             NSDictionary *data = [response parseData];
             NSNumber *authenticated = data[@"authenticated"];
             if ([authenticated boolValue]) {
-                return [self forceRefresh];
+                [promise resolve:[self forceRefresh]];
             }
         }
         // Authentication failure.
         [_authManager removeCredentials];
-        return [Q reject:@"Authentication failure"];
+        [promise reject:@"Authentication failure"];
+        return nil;
+    })
+    .fail( ^(id err) {
+        // Authentication failure.
+        [_authManager removeCredentials];
+        [promise reject:@"Authentication failure"];
     });
+    return promise;
 }
 
 - (BOOL)isLoggedIn {
