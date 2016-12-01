@@ -17,10 +17,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IFHTTPClient.h"
 
 /// A class for managing HTTP authentication on CMS server requests.
-@interface IFCMSAuthenticationManager : NSObject <NSURLSessionTaskDelegate> {
+@interface IFCMSAuthenticationManager : NSObject <IFHTTPClientDelegate> {
     NSString *_realm;
+    NSString *_basicAuthHeader;
 }
 
 /// Initialize an authentication manager for the named authentication realm.

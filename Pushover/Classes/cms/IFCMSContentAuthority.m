@@ -231,6 +231,7 @@
             NSNumber *authenticated = data[@"authenticated"];
             if ([authenticated boolValue]) {
                 [promise resolve:[self forceRefresh]];
+                return nil;
             }
         }
         // Authentication failure.
@@ -318,7 +319,7 @@
 - (void)startService {
     [super startService];
     _authManager = [[IFCMSAuthenticationManager alloc] initWithRealm:_cms.authRealm];
-    _httpClient = [[IFHTTPClient alloc] initWithNSURLSessionTaskDelegate:(id<NSURLSessionDataDelegate>)_authManager];
+    _httpClient = [[IFHTTPClient alloc] initWithDelegate:_authManager];
     _commandProtocol = [[IFCMSCommandProtocol alloc] initWithAuthority:self];
     // Register command protocol with the scheduler, using the authority name as the command prefix.
     self.provider.commandScheduler.commands = @{ self.authorityName: _commandProtocol };

@@ -21,12 +21,19 @@
 
 #define UserDefaultsKey(k)  ([NSString stringWithFormat:@"IFCMSContentAuthenticationManager.%@.%@", _realm, k])
 
+@interface IFCMSAuthenticationManager()
+
+- (NSString *)basicAuthHeader;
+
+@end
+
 @implementation IFCMSAuthenticationManager
 
 - (id)initWithRealm:(NSString *)realm {
     self = [super init];
     if (self) {
         _realm = realm;
+        _basicAuthHeader = nil;
     }
     return self;
 }
@@ -58,29 +65,41 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
         [SSKeychain deletePasswordForService:_realm account:username];
     }
+    _basicAuthHeader = nil;
 }
 
-#pragma mark - NSURLSessionTaskDelegate
+#pragma mark - private
 
-- (void)URLSession:(NSURLSession *)session
-              task:(NSURLSessionTask *)task
-didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
- completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
-    if (challenge.previousFailureCount == 0) {
+- (NSString *)basicAuthHeader {
+    if (_basicAuthHeader == nil) {
         NSString *key = UserDefaultsKey(@"username");
         NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:key];
+        NSString *password = nil;
         if (username) {
-            NSString *password = [SSKeychain passwordForService:_realm account:username];
-            if (password) {
-                NSURLCredential *credential = [NSURLCredential credentialWithUser:username
-                                                                         password:password
-                                                                      persistence:NSURLCredentialPersistenceNone];
-                completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
-                return;
-            }
+            password = [SSKeychain passwordForService:_realm account:username];
+        }
+        if (username && password) {
+            // URI encode the username & password.
+            username = [username stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+            password = [password stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+            // Concatentate to make token.
+            NSString *token = [NSString stringWithFormat:@"%@:%@", username, password ];
+            // Base64 encode the token.
+            NSData *tokenData = [token dataUsingEncoding:NSUTF8StringEncoding];
+            _basicAuthHeader = [@"Basic " stringByAppendingString:[tokenData base64EncodedStringWithOptions:0]];
         }
     }
-    completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
+    return _basicAuthHeader;
+}
+
+#pragma mark - IFHTTPClientDelegate
+
+- (void)httpClient:(IFHTTPClient *)httpClient willSendRequest:(NSMutableURLRequest *)request {
+    NSString *basicAuthHeader = [self basicAuthHeader];
+    if (basicAuthHeader) {
+        NSLog(@"Authorization: %@", basicAuthHeader);
+        [request setValue:basicAuthHeader forHTTPHeaderField:@"Authorization"];
+    }
 }
 
 @end
