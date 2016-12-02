@@ -17,23 +17,46 @@
 //
 
 #import "IFCMSAuthenticationManager.h"
-#import "SSKeychain.h"
+#import "IFCMSSettings.h"
 
-#define UserDefaultsKey(k)  ([NSString stringWithFormat:@"IFCMSContentAuthenticationManager.%@.%@", _realm, k])
+#import "SSKeychain.h"
 
 @interface IFCMSAuthenticationManager()
 
-- (NSString *)basicAuthHeader;
+//- (NSString *)basicAuthHeader;
+- (NSURLCredential *)getCredentialForUsername:(NSString *)username;
+- (NSString *)getActiveUsername;
+- (void)unsetActiveUser;
+- (NSString *)getUserDefaultsKey:(NSString *)keyName;
 
 @end
 
 @implementation IFCMSAuthenticationManager
 
-- (id)initWithRealm:(NSString *)realm {
+- (id)initWithCMSSettings:(IFCMSSettings *)cms {
     self = [super init];
     if (self) {
-        _realm = realm;
-        _basicAuthHeader = nil;
+        _protectionSpace = [[NSURLProtectionSpace alloc] initWithHost:cms.host
+                                                                 port:cms.port
+                                                             protocol:cms.protocol
+                                                                realm:cms.authRealm
+                                                 authenticationMethod:NSURLAuthenticationMethodHTTPBasic];
+        
+        // Startup check - make sure the active user matches the default credential.
+        // (Credentials might be removed; or the logout process might be interrupted).
+        NSString *username = [self getActiveUsername];
+        if (username) {
+            NSURLCredential *credential = [self getCredentialForUsername:username];
+            if (!credential) {
+                // No credential found for user, so unset the active user.
+                [self unsetActiveUser];
+            }
+            else {
+                // Reset the default credential to ensure it matches the active user.
+                NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
+                [storage setDefaultCredential:credential forProtectionSpace:_protectionSpace];
+            }
+        }
     }
     return self;
 }
@@ -46,60 +69,108 @@
 
 - (void)registerUsername:(NSString *)username password:(NSString *)password {
     if (username && password) {
-        NSString *key = UserDefaultsKey(@"username");
+        NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
+        // Check for an existing credential with the same username.
+        NSURLCredential *credential = [self getCredentialForUsername:username];
+        if (credential) {
+            // Existing credential found, delete it before continuing.
+            [storage removeCredential:credential forProtectionSpace:_protectionSpace];
+        }
+        // Create the credential.
+        credential = [NSURLCredential credentialWithUser:username
+                                                password:password
+                                             persistence:NSURLCredentialPersistencePermanent];
+        // Set the default credential.
+        [storage setDefaultCredential:credential forProtectionSpace:_protectionSpace];
+        // Record that we have credentials
+        NSString *key = [self getUserDefaultsKey:@"activeUsername"];
         [[NSUserDefaults standardUserDefaults] setObject:username forKey:key];
-        [SSKeychain setPassword:password forService:_realm account:username];
     }
 }
 
 - (BOOL)hasCredentials {
-    NSString *key = UserDefaultsKey(@"username");
-    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:key];
-    return username != nil;
+    // Check if there is a currently active user.
+    return [self getActiveUsername] != nil;
 }
 
 - (void)removeCredentials {
-    NSString *key = UserDefaultsKey(@"username");
-    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:key];
+    NSURLCredential *credential = nil;
+    NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
+    // Check for an active user.
+    NSString *username = [self getActiveUsername];
+    if (username != nil) {
+        // Find the active user's credentials.
+        credential = [self getCredentialForUsername:username];
+    }
+    if (credential) {
+        // Remove the active user's credentials.
+        [storage removeCredential:credential forProtectionSpace:_protectionSpace];
+    }
+    // Reset the default credentials to empty username + password.
+    credential = [self getCredentialForUsername:@""];
+    if (!credential) {
+        credential = [NSURLCredential credentialWithUser:@""
+                                                password:@""
+                                             persistence:NSURLCredentialPersistencePermanent];
+    }
+    [storage setDefaultCredential:credential forProtectionSpace:_protectionSpace];
+    // Unset the active user.
     if (username) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
-        [SSKeychain deletePasswordForService:_realm account:username];
+        [self unsetActiveUser];
     }
-    _basicAuthHeader = nil;
 }
 
-#pragma mark - private
+- (NSURLCredential *)getCredentialForUsername:(NSString *)username {
+    NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
+    NSDictionary *credentials = [storage credentialsForProtectionSpace:_protectionSpace];
+    return credentials[username];
+}
 
-- (NSString *)basicAuthHeader {
-    if (_basicAuthHeader == nil) {
-        NSString *key = UserDefaultsKey(@"username");
-        NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:key];
-        NSString *password = nil;
+- (NSString *)getActiveUsername {
+    NSString *key = [self getUserDefaultsKey:@"activeUsername"];
+    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:key];
+    return username;
+}
+
+- (void)unsetActiveUser {
+    NSString *key = [self getUserDefaultsKey:@"activeUsername"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
+}
+
+- (NSString *)getUserDefaultsKey:(NSString *)keyName {
+    // Return a user defaults key by concatenating the following:
+    // 1. The class name;
+    // 2. The 16 digit hex encoded hash of a description of the associated protection space;
+    // 3. The named key.
+    NSString *prefix = [[self class] description];
+    NSString *pspace = [NSString stringWithFormat:@"%@:%@:%@:%ld/%@",
+                            [[self class] description],
+                            _protectionSpace.protocol,
+                            _protectionSpace.host,
+                            _protectionSpace.port,
+                            _protectionSpace.realm];
+    return [NSString stringWithFormat:@"%@.%016lX.%@", prefix, (unsigned long)[pspace hash], keyName];
+}
+
+#pragma mark - NSURLSessionTaskDelegate
+
+- (void)URLSession:(NSURLSession *)session
+              task:(NSURLSessionTask *)task
+didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
+
+    if (challenge.previousFailureCount == 0) {
+        NSString *username = [self getActiveUsername];
         if (username) {
-            password = [SSKeychain passwordForService:_realm account:username];
-        }
-        if (username && password) {
-            // URI encode the username & password.
-            username = [username stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
-            password = [password stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
-            // Concatentate to make token.
-            NSString *token = [NSString stringWithFormat:@"%@:%@", username, password ];
-            // Base64 encode the token.
-            NSData *tokenData = [token dataUsingEncoding:NSUTF8StringEncoding];
-            _basicAuthHeader = [@"Basic " stringByAppendingString:[tokenData base64EncodedStringWithOptions:0]];
+            NSURLCredential *credential = [self getCredentialForUsername:username];
+            if (credential) {
+                completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+                return;
+            }
         }
     }
-    return _basicAuthHeader;
+    completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
 }
 
-#pragma mark - IFHTTPClientDelegate
-
-- (void)httpClient:(IFHTTPClient *)httpClient willSendRequest:(NSMutableURLRequest *)request {
-    NSString *basicAuthHeader = [self basicAuthHeader];
-    if (basicAuthHeader) {
-        NSLog(@"Authorization: %@", basicAuthHeader);
-        [request setValue:basicAuthHeader forHTTPHeaderField:@"Authorization"];
-    }
-}
 
 @end

@@ -20,7 +20,7 @@
 
 #define PushoverAPIVersion  (@"0.2")
 #define PushoverAPIRoot     (@"semop")
-#define PushoverAuthRealm   (@"Pushover")
+#define PushoverAPIProtocol    (@"http")
 
 // TODO Workings of this class have to be refactored to allow configuration of API version and root, and use of HTTPS.
 
@@ -36,10 +36,19 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.authRealm = PushoverAuthRealm;
         self.pathRoot = [PushoverAPIRoot stringByAppendingPathComponent:PushoverAPIVersion];
+        self.protocol = PushoverAPIProtocol;
+        self.port = 0;
     }
     return self;
+}
+
+- (NSString *)authRealm {
+    if (!_authRealm) {
+        NSString *branch = _branch ? _branch : @"master";
+        _authRealm = [NSString stringWithFormat:@"Pushover/%@/%@/%@", _account, _repo, branch];
+    }
+    return _authRealm;
 }
 
 - (NSString *)urlForAuthentication {
@@ -80,7 +89,8 @@
 }
 
 - (NSString *)urlForPath:(NSString *)path {
-    return [NSString stringWithFormat:@"http://%@/%@", _host, path];
+    NSString *port = _port == 0 ? @"" : [NSString stringWithFormat:@":%ld", _port];
+    return [NSString stringWithFormat:@"http://%@%@/%@", _host, port, path];
 }
 
 @end

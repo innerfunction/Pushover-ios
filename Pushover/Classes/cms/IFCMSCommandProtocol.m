@@ -99,7 +99,6 @@
     
         // Create list of follow up commands.
         NSMutableArray *commands = [NSMutableArray new];
-        
         NSInteger responseCode = response.httpResponse.statusCode;
         if (responseCode == 401) {
             // Authentication failure.
@@ -309,11 +308,16 @@
     // Download the fileset.
     [_httpClient getFile:filesetURL data:data]
     .then((id)^(IFHTTPClientResponse *response) {
-        // Unzip downloaded file to content location.
-        NSString *downloadPath = [response.downloadLocation path];
-        [IFFileIO unzipFileAtPath:downloadPath toPath:cachePath overwrite:YES];
-        // Update the fileset's fingerprint.
-        [_fileDB performUpdate:@"UPDATE fingerprints SET previous=current WHERE category=?" withParams:@[ category ]];
+        NSInteger responseCode = response.httpResponse.statusCode;
+        if (responseCode == 200) {
+            // Unzip downloaded file to content location.
+            NSString *downloadPath = [response.downloadLocation path];
+            [IFFileIO unzipFileAtPath:downloadPath toPath:cachePath overwrite:YES];
+        }
+        if (responseCode == 200 || responseCode == 204) {
+            // Update the fileset's fingerprint.
+            [_fileDB performUpdate:@"UPDATE fingerprints SET previous=current WHERE category=?" withParams:@[ category ]];
+        }
         // Resolve empty list - no follow-on commands.
         [_promise resolve:@[]];
         return nil;

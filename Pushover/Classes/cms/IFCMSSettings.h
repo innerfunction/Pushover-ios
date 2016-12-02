@@ -22,6 +22,8 @@
 
 /// The CMS host name.
 @property (nonatomic, strong) NSString *host;
+/// The CMS port name.
+@property (nonatomic, assign) NSInteger port;
 /// The CMS account name.
 @property (nonatomic, strong) NSString *account;
 /// The CMS repo name.
@@ -32,6 +34,8 @@
 @property (nonatomic, strong) NSString *authRealm;
 /// The CMS path root;
 @property (nonatomic, strong) NSString *pathRoot;
+/// The CMS protocol, e.g. HTTP or HTTPS.
+@property (nonatomic, strong) NSString *protocol;
 
 /// Return the URL for login authentication.
 - (NSString *)urlForAuthentication;

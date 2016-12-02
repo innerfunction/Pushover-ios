@@ -17,16 +17,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IFCMSSettings.h"
 #import "IFHTTPClient.h"
 
 /// A class for managing HTTP authentication on CMS server requests.
-@interface IFCMSAuthenticationManager : NSObject <IFHTTPClientDelegate> {
-    NSString *_realm;
-    NSString *_basicAuthHeader;
+@interface IFCMSAuthenticationManager : NSObject <NSURLSessionTaskDelegate> {
+    NSURLProtectionSpace *_protectionSpace;
 }
 
 /// Initialize an authentication manager for the named authentication realm.
-- (id)initWithRealm:(NSString *)realm;
+- (id)initWithCMSSettings:(IFCMSSettings *)cms;
+
 /**
  * Register basic auth credentials to be used with subsequent requests.
  * The _credentials_ dictionary should have _username_ and _password_ values.

@@ -9,12 +9,13 @@
 #import "IFHTTPClient.h"
 #import "SSKeychain.h"
 
+#define LogJSONResponse (0)
+
 typedef QPromise *(^IFHTTPClientAction)();
 
 @interface IFHTTPClient()
 
 - (QPromise *)submitAction:(IFHTTPClientAction)action;
-- (void)willSendRequest:(NSMutableURLRequest *)request;
 - (NSURLSession *)makeSession;
 
 NSURL *makeURL(NSString *url, NSDictionary *params);
@@ -45,6 +46,9 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
     id data = nil;
     NSString *contentType = _httpResponse.MIMEType;
     if ([@"application/json" isEqualToString:contentType]) {
+#if LogJSONResponse
+        NSLog(@"%@", [[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding]);
+#endif
         data = [NSJSONSerialization JSONObjectWithData:_data
                                                options:0
                                                  error:nil];
@@ -74,14 +78,6 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
 
 @implementation IFHTTPClient
 
-- (id)initWithDelegate:(id<IFHTTPClientDelegate>)delegate {
-    self = [super init];
-    if (self) {
-        _delegate = delegate;
-    }
-    return self;
-}
-
 - (id)initWithNSURLSessionTaskDelegate:(id<NSURLSessionDataDelegate>)sessionTaskDelegate {
     self = [super init];
     if (self) {
@@ -98,8 +94,11 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
     return [self submitAction:^QPromise *{
         QPromise *promise = [QPromise new];
         // Send request.
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:makeURL(url, data)];
-        [self willSendRequest:request];
+        NSURL *nsurl = makeURL(url, data);
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:nsurl
+                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                           timeoutInterval:60];
+
         NSURLSession *session = [self makeSession];
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                                 completionHandler:
@@ -124,11 +123,9 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
     return [self submitAction:^QPromise *{
         QPromise *promise = [QPromise new];
         NSURL *fileURL = makeURL(url, data);
-        // See note here about NSURLConnection cacheing: http://blackpixel.com/blog/2012/05/caching-and-nsurlconnection.html
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:fileURL
-                                                               cachePolicy:NSURLRequestReloadRevalidatingCacheData // NOTE
+                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                            timeoutInterval:60];
-        [self willSendRequest:request];
         NSURLSession *session = [self makeSession];
         NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request
                                                         completionHandler:
@@ -151,7 +148,9 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
         // Build URL.
         NSURL *nsURL = [NSURL URLWithString:url];
         // Send request.
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:nsURL];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:nsURL
+                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                           timeoutInterval:60];
         request.HTTPMethod = @"POST";
         [request addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         if (data) {
@@ -165,7 +164,6 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
             NSString *body = [queryItems componentsJoinedByString:@"&"];
             request.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
         }
-        [self willSendRequest:request];
         NSURLSession *session = [self makeSession];
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request
             completionHandler:^(NSData * _Nullable responseData, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -203,12 +201,6 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
                                         delegateQueue:operationQueue];
     }
     return [NSURLSession sharedSession];
-}
-
-- (void)willSendRequest:(NSMutableURLRequest *)request {
-    if (_delegate) {
-        [_delegate httpClient:self willSendRequest:request];
-    }
 }
 
 NSURL *makeURL(NSString *url, NSDictionary *params) {
