@@ -18,7 +18,9 @@
 
 #import "IFFormViewController.h"
 
-@interface IFCMSLoginFormViewController : IFFormViewController
+@interface IFCMSLoginFormViewController : IFFormViewController {
+    UIImageView *_backgroundImageView;
+}
 
 /// The name of the content authority the form is being used to login to.
 @property (nonatomic, strong) NSString *authority;
@@ -31,5 +33,7 @@
 @property (nonatomic, assign) BOOL logout;
 /// A message to be displayed after logout.
 @property (nonatomic, strong) NSString *logoutMessage;
+/// A background image for the view controller.
+@property (nonatomic, strong) UIImage *backgroundImage;
 
 @end

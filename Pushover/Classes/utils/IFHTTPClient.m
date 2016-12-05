@@ -26,6 +26,7 @@ typedef QPromise *(^IFHTTPClientAction)();
 
 @interface IFHTTPClient()
 
+- (void)setOptions:(NSDictionary *)options onRequest:(NSMutableURLRequest *)request;
 - (QPromise *)submitAction:(IFHTTPClientAction)action;
 - (NSURLSession *)makeSession;
 
@@ -105,10 +106,14 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
 }
 
 - (QPromise *)get:(NSString *)url {
-    return [self get:url data:nil];
+    return [self get:url data:nil options:nil];
 }
 
 - (QPromise *)get:(NSString *)url data:(NSDictionary *)data {
+    return [self get:url data:data options:nil];
+}
+
+- (QPromise *)get:(NSString *)url data:(NSDictionary *)data options:(NSDictionary *)options {
     return [self submitAction:^QPromise *{
         QPromise *promise = [QPromise new];
         // Send request.
@@ -116,7 +121,7 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:nsurl
                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                            timeoutInterval:60];
-
+        [self setOptions:options onRequest:request];
         NSURLSession *session = [self makeSession];
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                                 completionHandler:
@@ -134,16 +139,21 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
 }
 
 - (QPromise *)getFile:(NSString *)url {
-    return [self getFile:url data:nil];
+    return [self getFile:url data:nil options:nil];
 }
 
 - (QPromise *)getFile:(NSString *)url data:(NSDictionary *)data {
+    return [self getFile:url data:data options:nil];
+}
+
+- (QPromise *)getFile:(NSString *)url data:(NSDictionary *)data options:(NSDictionary *)options {
     return [self submitAction:^QPromise *{
         QPromise *promise = [QPromise new];
         NSURL *fileURL = makeURL(url, data);
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:fileURL
                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                            timeoutInterval:60];
+        [self setOptions:options onRequest:request];
         NSURLSession *session = [self makeSession];
         NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request
                                                         completionHandler:
@@ -161,6 +171,10 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
 }
 
 - (QPromise *)post:(NSString *)url data:(NSDictionary *)data {
+    return [self post:url data:data options:nil];
+}
+
+- (QPromise *)post:(NSString *)url data:(NSDictionary *)data options:(NSDictionary *)options {
     return [self submitAction:^QPromise *{
         QPromise *promise = [QPromise new];
         // Build URL.
@@ -171,11 +185,13 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
                                                            timeoutInterval:60];
         request.HTTPMethod = @"POST";
         [request addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [self setOptions:options onRequest:request];
         if (data) {
             NSMutableArray *queryItems = [[NSMutableArray alloc] init];
             for (NSString *name in data) {
                 NSString *pname = [name stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
-                NSString *pvalue = [[[data objectForKey:name] description] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+                NSString *pvalue = [data[name] description];
+                pvalue = [pvalue stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
                 NSString *param = [NSString stringWithFormat:@"%@=%@", pname, pvalue];
                 [queryItems addObject:param];
             }
@@ -205,6 +221,15 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
 }
 
 #pragma mark - Private methods
+
+- (void)setOptions:(NSDictionary *)options onRequest:(NSMutableURLRequest *)request {
+    if (options) {
+        NSString *accept = options[IFHTTPClientRequestOptionAccept];
+        if (accept) {
+            [request setValue:accept forHTTPHeaderField:@"Accept"];
+        }
+    }
+}
 
 - (QPromise *)submitAction:(IFHTTPClientAction)action {
     return action();

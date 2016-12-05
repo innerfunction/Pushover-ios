@@ -50,8 +50,26 @@
                 });
             }
         };
+        
+        _backgroundImageView = [UIImageView new];
+        [self.view addSubview:_backgroundImageView];
     }
     return self;
+}
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage {
+    _backgroundImageView.image = backgroundImage;
+}
+
+- (UIImage *)backgroundImage {
+    return _backgroundImageView.image;
+}
+
+#pragma mark - Overrides
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    _backgroundImageView.frame = self.view.bounds;
 }
 
 - (void)viewDidAppear:(BOOL)animated {

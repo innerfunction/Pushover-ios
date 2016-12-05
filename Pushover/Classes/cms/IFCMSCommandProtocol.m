@@ -25,6 +25,7 @@
 
 #define URLEncode(s)    ([s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]])
 #define IsSecure        ([_authManager hasCredentials] ? @"true" : @"false")
+#define AcceptMIMETypes (@"application/msgpack, application/json;q=0.9, */*;q=0.8")
 
 @interface IFCMSCommandProtocol ()
 
@@ -93,8 +94,10 @@
     }
     // Otherwise simply omit the 'since' parameter; the feed will return all records in the file DB.
 
+    // Specify accepts options.
+    NSDictionary *options = @{ IFHTTPClientRequestOptionAccept: AcceptMIMETypes };
     // Fetch updates from the server.
-    [_httpClient get:refreshURL data:params]
+    [_httpClient get:refreshURL data:params options:options]
     .then((id)^(IFHTTPClientResponse *response) {
     
         // Create list of follow up commands.
