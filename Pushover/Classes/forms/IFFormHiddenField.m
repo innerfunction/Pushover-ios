@@ -29,4 +29,8 @@
     return self;
 }
 
+- (CGFloat)displayHeight {
+    return 0.0f;
+}
+
 @end

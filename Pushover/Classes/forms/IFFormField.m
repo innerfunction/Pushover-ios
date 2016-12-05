@@ -20,6 +20,19 @@
 #import "IFFormView.h"
 #import "IFAppContainer.h"
 
+@implementation IFFormFieldPadding
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        _horizontal = 0.0f;
+        _vertical = 0.0f;
+    }
+    return self;
+}
+
+@end
+
 @implementation IFFormField
 
 - (id)init {
@@ -37,6 +50,7 @@
     if (self) {
         self.isInput = NO;
         self.height = @45.0f;
+        self.padding = [IFFormFieldPadding new];
         self.backgroundColor = [UIColor clearColor];
     }
     return self;
@@ -88,11 +102,30 @@
     }
 }
 
+- (void)setHeight:(NSNumber *)height {
+    _height = height;
+    _displayHeight = ((_padding.vertical) * 2.0f) + [_height floatValue];
+}
+
+- (void)setPadding:(IFFormFieldPadding *)padding {
+    _padding = padding;
+    _displayHeight = ((_padding.vertical) * 2.0f) + [_height floatValue];
+}
+
+- (CGFloat)displayHeight {
+    return _displayHeight;
+}
+
 #pragma mark - Overrides
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
     // Configure the view for the selected state
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.contentView.bounds = CGRectInset(self.contentView.frame, _padding.horizontal, 0.0f);
 }
 
 @end

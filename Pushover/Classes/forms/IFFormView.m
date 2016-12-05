@@ -316,7 +316,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     IFFormField *field = [_fields objectAtIndex:indexPath.row];
-    return [field.height floatValue];
+    return [field displayHeight];
 }
 
 #pragma mark - IFIOCContainerAware

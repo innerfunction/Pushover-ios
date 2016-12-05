@@ -1,6 +1,16 @@
+// Copyright 2016 InnerFunction Ltd.
 //
-//  IFHTTPClient.m
-//  Pushover
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Julian Goacher on 24/02/2016.
 //  Copyright © 2016 InnerFunction. All rights reserved.
@@ -8,6 +18,7 @@
 
 #import "IFHTTPClient.h"
 #import "SSKeychain.h"
+#import <MPMessagePack/MPMessagePack.h>
 
 #define LogJSONResponse (0)
 
@@ -54,17 +65,24 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
                                                  error:nil];
         // TODO: Parse error handling.
     }
+    else if ([@"application/msgpack" isEqualToString:contentType]) {
+        NSError *error;
+        data = [MPMessagePackReader readData:_data error:&error];
+        if (error) {
+            NSLog(@"%@", error );
+        }
+    }
     else if ([@"application/x-www-form-urlencoded" isEqualToString:contentType]) {
         // Adapted from http://stackoverflow.com/questions/8756683/best-way-to-parse-url-string-to-get-values-for-keys
-        NSMutableDictionary *mdata = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *mdata = [NSMutableDictionary new];
         // TODO: Proper handling of response text encoding.
         NSString *paramString = [[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding];
         NSArray *params = [paramString componentsSeparatedByString:@"&"];
         for (NSString *param in params) {
             NSArray *pair = [param componentsSeparatedByString:@"="];
-            NSString *name = [(NSString *)[pair objectAtIndex:0] stringByRemovingPercentEncoding];
-            NSString *value = [(NSString *)[pair objectAtIndex:1] stringByRemovingPercentEncoding];
-            [mdata setObject:value forKey:name];
+            NSString *name = [(NSString *)pair[0] stringByRemovingPercentEncoding];
+            NSString *value = [(NSString *)pair[1] stringByRemovingPercentEncoding];
+            mdata[name] = value;
         }
         data = mdata;
     }

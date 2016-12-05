@@ -68,11 +68,11 @@
     // Work out which display width to use for the title and value labels.
     // The following is to ensure that labels center and/or align property with or without the presence of
     // accessory views (i.e. disclosure indicators OR invalid field indicators).
-    CGRect bounds = self.bounds; // By default, use the full available width.
+    CGRect bounds = self.contentView.bounds; // By default, use the full available width.
     if (self.accessoryView != nil && HasValue) {
         // If there is an accessory view and a value then subtract the accessory view's width from the display width.
         CGSize accessorySize = self.accessoryView.frame.size;
-        bounds = CGRectMake( bounds.origin.x, bounds.origin.y, bounds.size.width - accessorySize.width, bounds.size.height);
+        bounds = CGRectMake(bounds.origin.x, bounds.origin.y, bounds.size.width - accessorySize.width, bounds.size.height);
     }
     else if (self.accessoryType != UITableViewCellAccessoryNone && HasValue) {
         // Else if there is an accessory type and a value then just use the content view width.

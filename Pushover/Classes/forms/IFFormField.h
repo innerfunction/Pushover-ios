@@ -18,11 +18,20 @@
 
 #import <UIKit/UIKit.h>
 
+@interface IFFormFieldPadding : NSObject
+
+@property (nonatomic, assign) CGFloat horizontal;
+@property (nonatomic, assign) CGFloat vertical;
+
+@end
+
 @class IFFormView;
 
 #define IFFormFieldReuseID  (NSStringFromClass([self class]))
 
-@interface IFFormField : UITableViewCell
+@interface IFFormField : UITableViewCell {
+    CGFloat _displayHeight;
+}
 
 @property (nonatomic, weak) IFFormView *form;
 @property (nonatomic, assign) BOOL isInput;
@@ -31,6 +40,7 @@
 @property (nonatomic, strong) id value;
 @property (nonatomic, strong) NSString *selectAction;
 @property (nonatomic, strong) NSNumber *height;
+@property (nonatomic, strong) IFFormFieldPadding *padding;
 @property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) UIImage *backgroundImage;
 @property (nonatomic, strong) UIImage *focusedBackgroundImage;
@@ -42,5 +52,6 @@
 - (void)releaseFieldFocus;
 - (BOOL)validate;
 - (void)selectField;
+- (CGFloat)displayHeight;
 
 @end
