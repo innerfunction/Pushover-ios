@@ -1,27 +1,33 @@
 PODS:
+  - GHODictionary (1.1.0)
   - GRMustache (7.3.2):
     - JRSwizzle (~> 1.0)
   - JRSwizzle (1.0)
+  - MPMessagePack (1.3.12):
+    - GHODictionary
   - Q (0.0.4)
-  - SCFFLD (0.0.18):
-    - SCFFLD/noarc (= 0.0.18)
+  - SCFFLD (0.0.30):
+    - SCFFLD/noarc (= 0.0.30)
     - ZipArchive
-  - SCFFLD/noarc (0.0.18):
+  - SCFFLD/noarc (0.0.30):
     - ZipArchive
   - ZipArchive (1.4.0)
 
 DEPENDENCIES:
   - GRMustache (~> 7.3.2)
+  - MPMessagePack
   - Q
   - SCFFLD
 
 SPEC CHECKSUMS:
+  GHODictionary: 225e042596a4b3d5b66b2b24250086b2f95514af
   GRMustache: ebe6104fd30a6d22c1f36af131e19e2dbf7cd292
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
+  MPMessagePack: 078f8c3aed25079bac89003391fdb71f44bcf37a
   Q: 89cc7b938b1a3e035dc0ba50f70f3eb3801934ca
-  SCFFLD: 0a44271dc3a5c2859118b86babc38232d93f5e31
+  SCFFLD: 45e654652b3319194a2b7ee161c33cfa984e5d37
   ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
 
-PODFILE CHECKSUM: a59766a84d296d1e05dedd185c2c746af02e1779
+PODFILE CHECKSUM: 17c8e1fda3421054983f279cac7dad8d42382ba3
 
 COCOAPODS: 1.0.1

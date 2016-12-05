@@ -22,6 +22,8 @@
 
 #define LogJSONResponse (0)
 
+NSString const * _Nonnull IFHTTPClientRequestOptionAccept = @"IFHTTPClientRequestOptionAccept";
+
 typedef QPromise *(^IFHTTPClientAction)();
 
 @interface IFHTTPClient()

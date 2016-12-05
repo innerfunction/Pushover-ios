@@ -20,7 +20,7 @@
 #import <Q/Q.h>
 
 /// HTTP client request option; set the Accept header value.
-NSString const * _Nonnull IFHTTPClientRequestOptionAccept = @"IFHTTPClientRequestOptionAccept";
+extern NSString const * _Nonnull IFHTTPClientRequestOptionAccept;
 
 @class IFHTTPClient;
 
