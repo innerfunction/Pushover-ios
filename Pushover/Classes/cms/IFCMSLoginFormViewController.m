@@ -53,6 +53,7 @@
         
         _backgroundImageView = [UIImageView new];
         [self.view addSubview:_backgroundImageView];
+        [self.view sendSubviewToBack:_backgroundImageView];
     }
     return self;
 }
