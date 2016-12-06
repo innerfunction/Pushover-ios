@@ -21,6 +21,8 @@
 
 /// HTTP client request option; set the Accept header value.
 extern NSString const * _Nonnull IFHTTPClientRequestOptionAccept;
+/// HTTP client request option; set the Accept-Encoding header value.
+extern NSString const * _Nonnull IFHTTPClientRequestOptionAcceptEncoding;
 
 @class IFHTTPClient;
 

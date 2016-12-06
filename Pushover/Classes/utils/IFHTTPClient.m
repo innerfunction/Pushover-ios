@@ -22,7 +22,8 @@
 
 #define LogJSONResponse (0)
 
-NSString const * _Nonnull IFHTTPClientRequestOptionAccept = @"IFHTTPClientRequestOptionAccept";
+NSString const * _Nonnull IFHTTPClientRequestOptionAccept           = @"IFHTTPClientRequestOptionAccept";
+NSString const * _Nonnull IFHTTPClientRequestOptionAcceptEncoding   = @"IFHTTPClientRequestOptionAcceptEncoding";
 
 typedef QPromise *(^IFHTTPClientAction)();
 
@@ -229,6 +230,10 @@ NSURL *makeURL(NSString *url, NSDictionary *params);
         NSString *accept = options[IFHTTPClientRequestOptionAccept];
         if (accept) {
             [request setValue:accept forHTTPHeaderField:@"Accept"];
+        }
+        NSString *acceptEncoding = options[IFHTTPClientRequestOptionAcceptEncoding];
+        if (acceptEncoding) {
+            [request setValue:acceptEncoding forHTTPHeaderField:@"Accept-Encoding"];
         }
     }
 }
