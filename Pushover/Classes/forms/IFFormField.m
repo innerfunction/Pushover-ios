@@ -18,20 +18,8 @@
 
 #import "IFFormField.h"
 #import "IFFormView.h"
+#import "IFFormFieldBorder.h"
 #import "IFAppContainer.h"
-
-@implementation IFFormFieldPadding
-
-- (id)init {
-    self = [super init];
-    if (self) {
-        _horizontal = 0.0f;
-        _vertical = 0.0f;
-    }
-    return self;
-}
-
-@end
 
 @implementation IFFormField
 
@@ -41,6 +29,7 @@
         self.isInput = NO;
         self.height = @45.0f;
         self.backgroundColor = [UIColor clearColor];
+        self.border = [[IFFormFieldBorder alloc] initWithFormField:self];
     }
     return self;
 }
@@ -52,6 +41,7 @@
         self.height = @45.0f;
         self.padding = [IFFormFieldPadding new];
         self.backgroundColor = [UIColor clearColor];
+        self.border = [[IFFormFieldBorder alloc] initWithFormField:self];
     }
     return self;
 }
@@ -126,6 +116,12 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.contentView.bounds = CGRectInset(self.contentView.frame, _padding.horizontal, 0.0f);
+}
+
+- (void)layoutSublayersOfLayer:(CALayer *)layer {
+    if (layer == self.layer) {
+        [_border layoutBorder];
+    }
 }
 
 @end

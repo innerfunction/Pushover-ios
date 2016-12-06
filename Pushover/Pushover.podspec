@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name            = "Pushover"
-  s.version         = "0.0.26"
+  s.version         = "0.0.27"
   s.summary         = "Pushover CMS mobile SDK for iOS"
   s.description     = <<-DESC
     An iOS client SDK for the Pushover content and document management system.
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.platform        = :ios
   s.ios.deployment_target = '8.0'
 
-  s.source          = { :git => "git@github.com:innerfunction/Pushover-ios.git", :tag => "0.0.26" }
+  s.source          = { :git => "git@github.com:innerfunction/Pushover-ios.git", :tag => "0.0.27" }
   s.source_files    = "Pushover/Classes/Pushover.h", "Pushover/Classes/{cms,commands,content,db,forms,ui,utils}/*.{h,m}", "Pushover/Classes/SSKeychain/*.{h,m}"
   s.requires_arc    = true
 

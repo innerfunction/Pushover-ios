@@ -17,15 +17,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface IFFormFieldPadding : NSObject
-
-@property (nonatomic, assign) CGFloat horizontal;
-@property (nonatomic, assign) CGFloat vertical;
-
-@end
+#import "IFFormFieldPadding.h"
 
 @class IFFormView;
+@class IFFormFieldBorder;
 
 #define IFFormFieldReuseID  (NSStringFromClass([self class]))
 
@@ -47,6 +42,7 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, readonly) UILabel *titleLabel;
 @property (nonatomic, strong) NSArray *fieldGroup;
+@property (nonatomic, strong) IFFormFieldBorder *border;
 
 - (BOOL)takeFieldFocus;
 - (void)releaseFieldFocus;
