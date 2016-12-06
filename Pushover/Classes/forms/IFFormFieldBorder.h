@@ -36,6 +36,7 @@
 @property (nonatomic, assign) CGFloat left;
 @property (nonatomic, assign) CGFloat right;
 @property (nonatomic, assign) CGFloat radius;
+@property (nonatomic, assign) CGFloat margin;
 
 - (id)initWithFormField:(IFFormField *)formField;
 - (void)layoutBorder;

@@ -119,6 +119,7 @@
 }
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
+    [super layoutSublayersOfLayer:layer];
     if (layer == self.layer) {
         [_border layoutBorder];
     }
