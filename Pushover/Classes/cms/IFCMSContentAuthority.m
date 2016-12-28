@@ -37,7 +37,7 @@
     self = [super init];
     if (self) {
         self.fileDB = [[IFJSONObject alloc] initWithDictionary:@{
-            @"name":    @"$authorityName",
+            @"name":    @"$dbName",
             @"version": @1,
             @"tables": @{
                 @"files": @{
@@ -146,11 +146,12 @@
     }];
     config = [config extendWithParameters:@{
         @"authorityName":   self.authorityName,
+        @"dbName":          [NSString stringWithFormat:@"%@.%@", _cms[@"account"], _cms[@"repo"]],
         @"postsPathRoot":   [IFCMSPostsPathRoot new]
     }];
     
     // Ask the container to build the authority object.
-    IFCMSContentAuthority *authority = [[IFCMSContentAuthority alloc] init];
+    IFCMSContentAuthority *authority = [IFCMSContentAuthority new];
     [self.iocContainer configureObject:authority withConfiguration:config identifier:self.authorityName];
     authority.logoutAction = self.logoutAction;
     
@@ -181,6 +182,12 @@
     }
     
     return authority;
+}
+
+#pragma mark - IFMessageReceiver
+
+- (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
+    return NO;
 }
 
 #pragma mark - Class methods

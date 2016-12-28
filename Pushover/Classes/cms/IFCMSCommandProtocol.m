@@ -149,6 +149,11 @@
         */
             // Write updates to database.
             NSDictionary *updates = [updateData valueForKeyPath:@"db"];
+            if ([@0 isEqual:updates]) {
+                // This can happen no updates to report from the server; replace updates
+                // with an empty dictionary.
+                updates = @{};
+            }
             // A map of fileset category names to a 'since' commit value (may be null).
             NSMutableDictionary *updatedCategories = [NSMutableDictionary new];
         
