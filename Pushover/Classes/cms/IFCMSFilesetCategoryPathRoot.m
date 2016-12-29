@@ -147,6 +147,7 @@
                                                  mimeType:mimeType
                                               cachePolicy:NSURLCacheStorageNotAllowed];
                         }
+                        return nil;
                     })
                     .fail(^(id err) {
                         NSError *error;
