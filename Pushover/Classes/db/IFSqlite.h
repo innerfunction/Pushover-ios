@@ -64,6 +64,8 @@
 
 /// A query result set.
 @interface IFSqliteResultSet : NSObject {
+    /// The result set's parent statement.
+    IFSqlitePreparedStatement *_parent;
     /// The statement that generated this result set.
     sqlite3_stmt *_statement;
 }
@@ -72,7 +74,7 @@
 @property (nonatomic, assign) NSInteger columnCount;
 
 /// Initialize the result set with the source statement.
-- (id)initWithStatement:(sqlite3_stmt *)statement;
+- (id)initWithParent:(IFSqlitePreparedStatement *)parent statement:(sqlite3_stmt *)statement;
 /// Step to the next result set row.
 - (BOOL)next;
 /// Get a column name.
@@ -101,7 +103,7 @@
 /// The number of parameters the statement accepts.
 @property (nonatomic, assign) NSInteger parameterCount;
 /// The statement's SQL.
-@property (nonatomic, assign) NSString *sql;
+@property (nonatomic, strong) NSString *sql;
 /// The statement's parameter values.
 @property (nonatomic, strong) NSArray *parameters;
 
@@ -117,6 +119,8 @@
 - (BOOL)executeUpdate;
 /// Execute an update.
 - (BOOL)executeUpdate:(NSError **)error;
+/// Reset the statement after use.
+- (void)reset;
 /// Close the statement.
 - (void)close;
 

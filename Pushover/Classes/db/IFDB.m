@@ -28,15 +28,15 @@ static IFLogger *Logger;
 @interface IFDB ()
 
 /** Read a record from the specified table. */
-- (NSDictionary *)readRecordWithID:(NSString *)identifier fromTable:(NSString *)table db:(id<PLDatabase>)db;
+- (NSDictionary *)readRecordWithID:(NSString *)identifier fromTable:(NSString *)table db:(IFSqliteDB *)db;
 /** Read a record from the specified table. */
-- (NSDictionary *)readRecordWithID:(NSString *)identifier idColumn:(NSString *)idColumn fromTable:(NSString *)table db:(id<PLDatabase>)db;
+- (NSDictionary *)readRecordWithID:(NSString *)identifier idColumn:(NSString *)idColumn fromTable:(NSString *)table db:(IFSqliteDB *)db;
 /** Read a single row from a query result set. */
-- (NSDictionary *)readRowFromResultSet:(id<PLResultSet>)rs;
+- (NSDictionary *)readRowFromResultSet:(IFSqliteResultSet *)rs;
 /** Update multiple record with the specified values in a table. */
-- (BOOL)updateValues:(NSDictionary *)values inTable:(NSString *)table db:(id<PLDatabase>)db;
+- (BOOL)updateValues:(NSDictionary *)values inTable:(NSString *)table db:(IFSqliteDB *)db;
 /** Update multiple record with the specified values in a table. */
-- (BOOL)updateValues:(NSDictionary *)values idColumn:(NSString *)idColumn inTable:(NSString *)table db:(id<PLDatabase>)db;
+- (BOOL)updateValues:(NSDictionary *)values idColumn:(NSString *)idColumn inTable:(NSString *)table db:(IFSqliteDB *)db;
 /** Delete records with the specified IDs from the a table. */
 - (BOOL)deleteIDs:(NSArray *)identifiers idColumn:(NSString *)idColumn fromTable:(NSString *)table;
 
@@ -45,8 +45,8 @@ static IFLogger *Logger;
 @interface IFDB (IFDBHelperDelegate)
 
 - (NSString *)getCreateTableSQLForTable:(NSString *)tableName schema:(NSDictionary *)tableSchema;
-- (NSArray *)getAlterTableSQLForTable:(NSString *)tableName schema:(NSDictionary *)tableSchema from:(int)oldVersion to:(int)newVersion;
-- (void)dbInitialize:(id<PLDatabase>)db;
+- (NSArray *)getAlterTableSQLForTable:(NSString *)tableName schema:(NSDictionary *)tableSchema from:(NSInteger)oldVersion to:(NSInteger)newVersion;
+- (void)dbInitialize:(IFSqliteDB *)db error:(NSError **)error;
 - (void)addInitialDataForTable:(NSString *)tableName schema:(NSDictionary *)tableSchema;
 
 @end
@@ -122,31 +122,37 @@ static IFLogger *Logger;
 #pragma mark - Public/private methods
 
 - (BOOL)beginTransaction {
+    BOOL ok = YES;
     NSError *error = nil;
-    id<PLDatabase> db = [_dbHelper getDatabase];
-    BOOL ok = [db beginTransactionAndReturnError:&error];
+    IFSqliteDB *db = [_dbHelper getDatabase];
+    [db beginTransaction:&error];
     if (error) {
         [Logger error:@"beginTranslation failed %@", error];
+        ok = NO;
     }
     return ok;
 }
 
 - (BOOL)commitTransaction {
+    BOOL ok = YES;
     NSError *error = nil;
-    id<PLDatabase> db = [_dbHelper getDatabase];
-    BOOL ok = [db commitTransactionAndReturnError:&error];
+    IFSqliteDB *db = [_dbHelper getDatabase];
+    [db commitTransaction:&error];
     if (error) {
         [Logger error:@"commitTransaction failed %@", error];
+        ok = NO;
     }
     return ok;
 }
 
 - (BOOL)rollbackTransaction {
+    BOOL ok = YES;
     NSError *error = nil;
-    id<PLDatabase> db = [_dbHelper getDatabase];
-    BOOL ok = [db rollbackTransactionAndReturnError:&error];
+    IFSqliteDB *db = [_dbHelper getDatabase];
+    [db rollbackTransaction:&error];
     if (error) {
         [Logger error:@"rollbackTransaction failed %@", error];
+        ok = NO;
     }
     return ok;
 }
@@ -157,11 +163,11 @@ static IFLogger *Logger;
 }
 
 - (NSDictionary *)readRecordWithID:(NSString *)identifier fromTable:(NSString *)table {
-    id<PLDatabase> db = [_dbHelper getDatabase];
+    IFSqliteDB *db = [_dbHelper getDatabase];
     return [self readRecordWithID:identifier fromTable:table db:db];
 }
 
-- (NSDictionary *)readRecordWithID:(NSString *)identifier fromTable:(NSString *)table db:(id<PLDatabase>)db {
+- (NSDictionary *)readRecordWithID:(NSString *)identifier fromTable:(NSString *)table db:(IFSqliteDB *)db {
     NSDictionary *result = nil;
     NSString *idColumn = [self getColumnWithTag:@"id" fromTable:table];
     if (idColumn) {
@@ -173,19 +179,20 @@ static IFLogger *Logger;
     return result;
 }
 
-- (NSDictionary *)readRecordWithID:(NSString *)identifier idColumn:(NSString *)idColumn fromTable:(NSString *)table db:(id<PLDatabase>)db {
+- (NSDictionary *)readRecordWithID:(NSString *)identifier idColumn:(NSString *)idColumn fromTable:(NSString *)table db:(IFSqliteDB *)db {
     NSDictionary *result = nil;
     if (identifier) {
         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@=?", table, idColumn];
         NSArray *params = @[ identifier ];
-        id<PLPreparedStatement> statement = [db prepareStatement:sql];
-        [statement bindParameters:params];
-        id<PLResultSet> rs = [statement executeQuery];
-        if ([rs next]) {
+        NSError *error = nil;
+        IFSqliteResultSet *rs = [db executeQuery:sql parameters:params error:&error];
+        if (error) {
+            [Logger error:@"Error reading record: %@", [error localizedDescription]];
+        }
+        else if ([rs next]) {
             result = [self readRowFromResultSet:rs];
         }
         [rs close];
-        [statement close];
     }
     else {
         [Logger warn:@"No identifier passed to readRecordWithID:"];
@@ -194,26 +201,29 @@ static IFLogger *Logger;
 }
 
 - (NSArray *)performQuery:(NSString *)sql withParams:(NSArray *)params {
-    NSMutableArray *result = [[NSMutableArray alloc] init];
-    id<PLDatabase> db = [_dbHelper getDatabase];
-    id<PLPreparedStatement> statement = [db prepareStatement:sql];
-    [statement bindParameters:params];
-    id<PLResultSet> rs = [statement executeQuery];
-    while ([rs next]) {
+    NSMutableArray *result = [NSMutableArray new];
+    IFSqliteDB *db = [_dbHelper getDatabase];
+    NSError *error = nil;
+    IFSqliteResultSet *rs = [db executeQuery:sql parameters:params error:&error];
+    if (error) {
+        [Logger error:@"Error performing query: %@", [error localizedDescription]];
+    }
+    else while ([rs next]) {
         [result addObject:[self readRowFromResultSet:rs]];
     }
     [rs close];
-    [statement close];
     return result;
 }
 
 - (BOOL)performUpdate:(NSString *)sql withParams:(NSArray *)params {
-    id<PLDatabase> db = [_dbHelper getDatabase];
-    id<PLPreparedStatement> statement = [db prepareStatement:sql];
-    [statement bindParameters:params];
-    BOOL result = [statement executeUpdate];
-    [statement close];
-    return result;
+    IFSqliteDB *db = [_dbHelper getDatabase];
+    NSError *error = nil;
+    [db executeUpdate:sql parameters:params error:&error];
+    if (!error) {
+        return YES;
+    }
+    [Logger error:@"Executing update: %@", [error localizedDescription]];
+    return NO;
 }
 
 - (NSInteger)countInTable:(NSString *)table where:(NSString *)where {
@@ -231,13 +241,13 @@ static IFLogger *Logger;
     return count;
 }
 
-- (NSDictionary *)readRowFromResultSet:(id<PLResultSet>)rs {
-    NSMutableDictionary *result = [[NSMutableDictionary alloc] init];
-    int colCount = [rs getColumnCount];
-    for (int i = 0; i < colCount; i++) {
-        if (![rs isNullForColumnIndex:i]) {
-            NSString *name = [rs nameForColumnIndex:i];
-            id value = [rs objectForColumnIndex:i];
+- (NSDictionary *)readRowFromResultSet:(IFSqliteResultSet *)rs {
+    NSMutableDictionary *result = [NSMutableDictionary new];
+    NSInteger colCount = rs.columnCount;
+    for (NSInteger idx = 0; idx < colCount; idx++) {
+        if (![rs isColumnValueNull:idx]) {
+            NSString *name = [rs columnName:idx];
+            id value = [rs columnValue:idx];
             [result setObject:value forKey:name];
         }
     }
@@ -245,7 +255,7 @@ static IFLogger *Logger;
 }
 
 - (BOOL)insertValueList:(NSArray *)valueList intoTable:(NSString *)table {
-    id<PLDatabase> db = [_dbHelper getDatabase];
+    IFSqliteDB *db = [_dbHelper getDatabase];
     BOOL result = YES;
     [self willChangeValueForKey:table];
     for (NSDictionary *values in valueList) {
@@ -256,30 +266,34 @@ static IFLogger *Logger;
 }
 
 - (BOOL)insertValues:(NSDictionary *)values intoTable:(NSString *)table {
-    id<PLDatabase> db = [_dbHelper getDatabase];
+    IFSqliteDB *db = [_dbHelper getDatabase];
     [self willChangeValueForKey:table];
     BOOL result = [self insertValues:values intoTable:table db:db];
     [self didChangeValueForKey:table];
     return result;
 }
 
-- (BOOL)insertValues:(NSDictionary *)values intoTable:(NSString *)table db:(id<PLDatabase>)db {
-    BOOL result = YES;
+- (BOOL)insertValues:(NSDictionary *)values intoTable:(NSString *)table db:(IFSqliteDB *)db {
+    BOOL ok = YES;
     values = [self filterValues:values forTable:table];
     NSArray *keys = [NSArray arrayWithDictionaryKeys:values];
     if ([keys count] > 0) {
-        NSArray *params = [NSArray arrayWithItem:@"?" repeated:[keys count]];
-        NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", table, [keys componentsJoinedByString:@","], [params componentsJoinedByString:@","]];
-        id<PLPreparedStatement> statement = [db prepareStatement:sql];
-        [statement bindParameters:[NSArray arrayWithDictionaryValues:values forKeys:keys]];
-        result = [statement executeUpdate];
-        [statement close];
+        NSString *fields = [keys componentsJoinedByString:@","];
+        NSString *placeholders = [[NSArray arrayWithItem:@"?" repeated:[keys count]] componentsJoinedByString:@","];
+        NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", table, fields, placeholders];
+        NSArray *params = [NSArray arrayWithDictionaryValues:values forKeys:keys];
+        NSError *error = nil;
+        [db executeUpdate:sql parameters:params error:&error];
+        if (error) {
+            [Logger error:@"Error inserting values: %@", [error localizedDescription]];
+            ok = NO;
+        }
     }
-    return result;
+    return ok;
 }
 
 - (BOOL)upsertValueList:(NSArray *)valueList intoTable:(NSString *)table {
-    id<PLDatabase> db = [_dbHelper getDatabase];
+    IFSqliteDB *db = [_dbHelper getDatabase];
     BOOL result = YES;
     [self willChangeValueForKey:table];
     for (NSDictionary *values in valueList) {
@@ -290,14 +304,14 @@ static IFLogger *Logger;
 }
 
 - (BOOL)upsertValues:(NSDictionary *)values intoTable:(NSString *)table {
-    id<PLDatabase> db = [_dbHelper getDatabase];
+    IFSqliteDB *db = [_dbHelper getDatabase];
     [self willChangeValueForKey:table];
     BOOL result = [self upsertValues:values intoTable:table db:db];
     [self didChangeValueForKey:table];
     return result;
 }
 
-- (BOOL)upsertValues:(NSDictionary *)values intoTable:(NSString *)table db:(id<PLDatabase>)db {
+- (BOOL)upsertValues:(NSDictionary *)values intoTable:(NSString *)table db:(IFSqliteDB *)db {
     BOOL update = NO;
     NSString *idColumn = [self getColumnWithTag:@"id" fromTable:table];
     if (idColumn) {
@@ -318,7 +332,7 @@ static IFLogger *Logger;
 }
 
 - (BOOL)updateValues:(NSDictionary *)values inTable:(NSString *)table {
-    id<PLDatabase> db = [_dbHelper getDatabase];
+    IFSqliteDB *db = [_dbHelper getDatabase];
     [self willChangeValueForKey:table];
     BOOL result = [self updateValues:values inTable:table db:db];
     if (result) {
@@ -332,7 +346,7 @@ static IFLogger *Logger;
     return result;
 }
 
-- (BOOL)updateValues:(NSDictionary *)values inTable:(NSString *)table db:(id<PLDatabase>)db {
+- (BOOL)updateValues:(NSDictionary *)values inTable:(NSString *)table db:(IFSqliteDB *)db {
     BOOL result = NO;
     NSString *idColumn = [self getColumnWithTag:@"id" fromTable:table];
     if (idColumn) {
@@ -344,7 +358,7 @@ static IFLogger *Logger;
     return result;
 }
 
-- (BOOL)updateValues:(NSDictionary *)values idColumn:(NSString *)idColumn inTable:(NSString *)table db:(id<PLDatabase>)db {
+- (BOOL)updateValues:(NSDictionary *)values idColumn:(NSString *)idColumn inTable:(NSString *)table db:(IFSqliteDB *)db {
     values = [self filterValues:values forTable:table];
     NSArray *keys = [NSArray arrayWithDictionaryKeys:values];
     NSMutableArray *fields = [[NSMutableArray alloc] initWithCapacity:[keys count]];
@@ -359,18 +373,21 @@ static IFLogger *Logger;
     id identifier = [values valueForKey:idColumn];
     [params addObject:identifier];
     NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@=?", table, [fields componentsJoinedByString:@","], idColumn ];
-    id<PLPreparedStatement> statement = [db prepareStatement:sql];
-    [statement bindParameters:params];
-    BOOL result = [statement executeUpdate];
-    [statement close];
-    return result;
+    NSError *error = nil;
+    BOOL ok = YES;
+    [db executeUpdate:sql parameters:params error:&error];
+    if (error) {
+        [Logger error:@"Error updating values: %@", [error localizedDescription]];
+        ok = NO;
+    }
+    return ok;
 }
 
 - (BOOL)mergeValueList:(NSArray *)valueList intoTable:(NSString *)table {
     BOOL result = YES;
     NSString *idColumn = [self getColumnWithTag:@"id" fromTable:table];
     if (idColumn) {
-        id<PLDatabase> db = [_dbHelper getDatabase];
+        IFSqliteDB *db = [_dbHelper getDatabase];
         [self willChangeValueForKey:table];
         for (NSDictionary *values in valueList) {
             id identifier = [values valueForKey:idColumn];
@@ -404,38 +421,51 @@ static IFLogger *Logger;
 }
 
 - (BOOL)deleteIDs:(NSArray *)identifiers idColumn:(NSString *)idColumn fromTable:(NSString *)table {
-    BOOL result = NO;
+    BOOL result = YES;
     if ([identifiers count]) {
-        id<PLDatabase> db = [_dbHelper getDatabase];
+        IFSqliteDB *db = [_dbHelper getDatabase];
         [self willChangeValueForKey:table];
         NSArray *params = [NSArray arrayWithItem:@"?" repeated:[identifiers count]];
         NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ IN (%@)", table, idColumn, [params componentsJoinedByString:@","]];
-        id<PLPreparedStatement> statement = [db prepareStatement:sql];
-        [statement bindParameters:identifiers];
-        result = [statement executeUpdate];
-        [statement close];
+        NSError *error = nil;
+        [db executeUpdate:sql parameters:params error:&error];
+        if (error) {
+            [Logger error:@"Error deleting records: %@", [error localizedDescription]];
+            result = NO;
+        }
         [self didChangeValueForKey:table];
     }
     return result;
 }
 
 - (BOOL)deleteID:(NSString *)recordID fromTable:(NSString *)table {
-    BOOL result = NO;
+    BOOL result = YES;
     NSString *idColumn = [self getColumnWithTag:@"id" fromTable:table];
     if (idColumn) {
-        id<PLDatabase> db = [_dbHelper getDatabase];
+        IFSqliteDB *db = [_dbHelper getDatabase];
         NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@=?", table, idColumn];
-        id<PLPreparedStatement> statement = [db prepareStatement:sql];
-        [statement bindParameters:@[ recordID ]];
-        result = [statement executeUpdate];
+        NSArray *params = @[ recordID ];
+        NSError *error = nil;
+        [db executeUpdate:sql parameters:params error:&error];
+        if (error) {
+            [Logger error:@"Error deleting records: %@", [error localizedDescription]];
+            result = NO;
+        }
     }
     return result;
 }
 
 - (BOOL)deleteFromTable:(NSString *)table where:(NSString *)where {
-    id<PLDatabase> db = [_dbHelper getDatabase];
+    IFSqliteDB *db = [_dbHelper getDatabase];
     NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", table, where];
-    return [db executeUpdate:sql];
+    BOOL ok = YES;
+    NSError *error = nil;
+    [db executeUpdate:sql parameters:nil error:&error];
+    if (error) {
+        [Logger error:@"Error deleting from table: %@", [error localizedDescription]];
+        ok = NO;
+    }
+    return ok;
 }
 
 - (NSDictionary *)filterValues:(NSDictionary *)values forTable:(NSString *)table {
@@ -459,19 +489,22 @@ static IFLogger *Logger;
 
 #pragma mark - IFDBHelperDelegate
 
-- (void)onCreate:(id<PLDatabase>)db {
+- (void)onCreate:(IFSqliteDB *)db error:(NSError *__autoreleasing *)error {
     for (NSString *tableName in [_tables allKeys]) {
         NSDictionary *tableSchema = [_tables objectForKey:tableName];
         NSString *sql = [self getCreateTableSQLForTable:tableName schema:tableSchema];
-        [db executeUpdate:sql];
+        [db executeUpdate:sql parameters:nil error:error];
+        if (error) {
+            return;
+        }
         [self addInitialDataForTable:tableName schema:tableSchema];
     }
-    [self dbInitialize:db];
+    [self dbInitialize:db error:error];
 }
 
-- (void)onUpgrade:(id<PLDatabase>)db from:(int)oldVersion to:(int)newVersion {
+- (void)onUpgrade:(IFSqliteDB *)database from:(NSInteger)oldVersion to:(NSInteger)newVersion error:(NSError *__autoreleasing *)error {
     [Logger info:@"Migrating DB from version %d to version %d", oldVersion, newVersion];
-    NSNumber *_newVersion = [NSNumber numberWithInt:newVersion];
+    NSNumber *_newVersion = [NSNumber numberWithInteger:newVersion];
     for (NSString *tableName in [_tables allKeys]) {
         NSDictionary *tableSchema = [_tables objectForKey:tableName];
         NSInteger since = [[tableSchema getValueAsNumber:@"since" defaultValue:@0] integerValue];
@@ -492,7 +525,7 @@ static IFLogger *Logger;
         else {
             // => since > oldVersion
             // Table shouldn't exist in the current database.
-            if (until < (NSInteger)newVersion) {
+            if (until < newVersion) {
                 // Table not required in version being migrated to, so no action required.
                 continue;
             }
@@ -503,30 +536,34 @@ static IFLogger *Logger;
             }
         }
         for (NSString *sql in sqls) {
-            if (![db executeUpdate:sql]) {
-                [Logger warn:@"Failed to execute update %@", sql];
+            [database executeUpdate:sql parameters:nil error:error];
+            if (error) {
+                return;
             }
         }
     }
-    [self dbInitialize:db];
+    [self dbInitialize:database error:error];
 }
 
 #pragma mark - IFDB (IFDBHelperDelegate)
 
-- (void)dbInitialize:(id<PLDatabase>)db {
+- (void)dbInitialize:(IFSqliteDB *)db error:(NSError *__autoreleasing *)error {
     [Logger info:@"Initializing database..."];
     for (NSString *tableName in [_initialData allKeys]) {
         NSArray *data = [_initialData objectForKey:tableName];
         for (NSDictionary *values in data) {
             [self insertValues:values intoTable:tableName db:db];
         }
-        id<PLResultSet> rs = [db executeQuery:[NSString stringWithFormat:@"select count() from %@", tableName]];
-        int32_t count = 0;
+        NSString *sql = [NSString stringWithFormat:@"select count() from %@", tableName];
+        IFSqliteResultSet *rs = [db executeQuery:sql error:error];
+        if (error) {
+            return;
+        }
         if ([rs next]) {
-            count = [rs intForColumnIndex:0];
+            NSInteger count = [rs columnValueAsInteger:0];
+            [Logger info:@"Initializing %@, inserted %d rows", tableName, count];
         }
         [rs close];
-        [Logger info:@"Initializing %@, inserted %d rows", tableName, count];
     }
     // Remove initial data from memory.
     _initialData = nil;
@@ -555,8 +592,8 @@ static IFLogger *Logger;
     return sql;
 }
 
-- (NSArray *)getAlterTableSQLForTable:(NSString *)tableName schema:(NSDictionary *)tableSchema from:(int)oldVersion to:(int)newVersion {
-    NSNumber *_newVersion = [NSNumber numberWithInt:newVersion];
+- (NSArray *)getAlterTableSQLForTable:(NSString *)tableName schema:(NSDictionary *)tableSchema from:(NSInteger)oldVersion to:(NSInteger)newVersion {
+    NSNumber *_newVersion = [NSNumber numberWithInteger:newVersion];
     NSMutableArray *sqls = [[NSMutableArray alloc] init];
     NSDictionary *columns = [tableSchema valueForKey:@"columns"];
     for (NSString *colName in [columns allKeys]) {

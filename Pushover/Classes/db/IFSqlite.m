@@ -18,7 +18,7 @@
 
 #import "IFSqlite.h"
 
-#define IFSqliteBusyTimeout (30 * 1000)
+#define IFSqliteBusyTimeout (30 * 1000)             // 30 seconds
 #define IFSqliteException   (@"IFSqliteException")
 #define IFSqliteError       (@"IFSqliteError")
 #define IFSqliteErrorCode   (0)
@@ -119,9 +119,10 @@
 
 @implementation IFSqliteResultSet
 
-- (id)initWithStatement:(sqlite3_stmt *)statement {
+- (id)initWithParent:(IFSqlitePreparedStatement *)parent statement:(sqlite3_stmt *)statement {
     self = [super init];
     if (self) {
+        _parent = parent;
         _statement = statement;
         self.columnCount = sqlite3_column_count(_statement);
     }
@@ -172,6 +173,7 @@
 
 - (void)close {
     _statement = NULL;
+    [_parent close];
 }
 
 @end
@@ -247,7 +249,7 @@
         *error = _compilationError;
     }
     else if (_statement != NULL) {
-        rs = [[IFSqliteResultSet alloc] initWithStatement:_statement];
+        rs = [[IFSqliteResultSet alloc] initWithParent:self statement:_statement];
     }
     return rs;
 }
@@ -266,6 +268,10 @@
         [rs close];
     }
     return ok;
+}
+
+- (void)reset {
+    self.sql = _sql;
 }
 
 - (void)close {

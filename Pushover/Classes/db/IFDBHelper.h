@@ -17,34 +17,32 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PlausibleDatabase.h"
+#import "IFSqlite.h"
 
 /// A protocol used to delegate certain database lifecyle events.
 @protocol IFDBHelperDelegate <NSObject>
 
 /// Handle database creation; used to setup the initial database schema.
-- (void)onCreate:(id<PLDatabase>)database;
+- (void)onCreate:(IFSqliteDB *)database error:(NSError **)error;
 /// Handle a database schema upgrade.
-- (void)onUpgrade:(id<PLDatabase>)database from:(int)oldVersion to:(int)newVersion;
+- (void)onUpgrade:(IFSqliteDB *)database from:(NSInteger)oldVersion to:(NSInteger)newVersion error:(NSError **)error;
 
 @optional
 
 /// Handle a database open.
-- (void)onOpen:(id<PLDatabase>)database;
+- (void)onOpen:(IFSqliteDB *)database;
 
 @end
 
-@interface IFDBHelper : NSObject <PLDatabaseMigrationDelegate> {
+@interface IFDBHelper : NSObject {
     /// The database name.
     NSString *_databaseName;
     /// The database schema version.
     int _databaseVersion;
     /// The path to the database file.
     NSString *_databasePath;
-    /// A connection provider.
-    id<PLDatabaseConnectionProvider> _connectionProvider;
     /// The database.
-    id<PLDatabase> _database;
+    IFSqliteDB *_database;
 }
 
 /// Delegate for handling database creation / upgrade.
@@ -61,7 +59,7 @@
 /// Delete the database.
 - (BOOL)deleteDatabase;
 /// Get a connection to the database.
-- (id<PLDatabase>)getDatabase;
+- (IFSqliteDB *)getDatabase;
 /// Close the database.
 - (void)close;
 

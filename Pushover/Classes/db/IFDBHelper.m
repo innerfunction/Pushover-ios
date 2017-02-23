@@ -56,7 +56,7 @@ static IFLogger *Logger;
     return ok;
 }
 
-- (id<PLDatabase>)getDatabase {
+- (IFSqliteDB *)getDatabase {
     // First check whether to deploy the initial database copy.
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (![fileManager fileExistsAtPath:_databasePath] && _initialCopyPath) {
@@ -67,56 +67,60 @@ static IFLogger *Logger;
             [Logger warn:@"Error copying initial database: %@", error];
         }
     }
-    // Check that a connection provider is initialized.
-    if (!_connectionProvider) {
-        [Logger debug:@"Connecting to database %@...", _databasePath];
-        _connectionProvider = [[PLSqliteConnectionProvider alloc] initWithPath:_databasePath];
-    }
     // Connect to database.
-    id<PLDatabase> result;
-    if (_database && [_database goodConnection]) {
-        result = _database;
-    }
-    else {
-        PLSqliteMigrationVersionManager *migrationVersionManager = [[PLSqliteMigrationVersionManager alloc] init];
-        PLDatabaseMigrationManager *migrationManager
-        = [[PLDatabaseMigrationManager alloc] initWithConnectionProvider:_connectionProvider
-                                                      transactionManager:migrationVersionManager
-                                                          versionManager:migrationVersionManager
-                                                                delegate:self];
+    if (!_database.open) {
         NSError *error = nil;
-        if ([migrationManager migrateAndReturnError:&error]) {
-            // TODO: Will previous method close its db connection on exit?
-            result = [_connectionProvider getConnectionAndReturnError:&error];
-            if (error) {
-                [Logger error:@"getDatabase failed to open connection %@", [error localizedDescription]];
-            }
+        _database = [[IFSqliteDB alloc] initWithDBPath:_databasePath error:&error];
+        if (error) {
+            [Logger error:@"Database open failure: %@", [error localizedDescription]];
         }
-        else {
+        else if (_database.open) {
+            // Read the database's current version.
+            IFSqliteResultSet *rs = [_database executeQuery:@"PRAGMA user_version" error:&error];
             if (error) {
-                // TODO
-                [Logger error:@"getDatabase failed to migrate connection %@", [error localizedDescription]];
+                [Logger error:@"Error reading database version: %@", [error localizedDescription]];
+            }
+            else if ([rs next]) {
+                NSInteger currentVersion = [rs columnValueAsInteger:0];
+                [rs close];
+                // Begin migration, if needed.
+                if (currentVersion != _databaseVersion) {
+                    // Open a new transaction for the migration.
+                    [_database executeUpdate:@"BEGIN EXCLUSIVE TRANSACTION" error:&error];
+                    if (!error) {
+                        // Perform the migration.
+                        if (currentVersion == 0) {
+                            [_delegate onCreate:_database error:&error];
+                        }
+                        else if (currentVersion < _databaseVersion) {
+                            [_delegate onUpgrade:_database from:currentVersion to:_databaseVersion error:&error];
+                        }
+                    }
+                    if (!error) {
+                        // Update the database version.
+                        NSString *sql = [NSString stringWithFormat:@"PRAGMA user_version = %d", _databaseVersion];
+                        [_database executeUpdate:sql error:&error];
+                    }
+                    if (!error) {
+                        // Commit the migration.
+                        [_database commitTransaction:&error];
+                    }
+                    else {
+                        [Logger error:@"Error migrating database: %@", [error localizedDescription]];
+                    }
+                }
+            }
+            else {
+                [Logger error:@"Unable to read database version"];
             }
         }
     }
-    _database = result;
-    return result;
+    return _database.open ? _database : nil;
 }
 
 - (void)close {
     [_database close];
     _database = nil;
-}
-
-- (BOOL)migrateDatabase:(id<PLDatabase>)db currentVersion:(int)currentVersion newVersion:(int *)newVersion error:(NSError *__autoreleasing *)outError {
-    if (currentVersion == 0) {
-        [self.delegate onCreate:db];
-    }
-    else if (currentVersion < _databaseVersion) {
-        [self.delegate onUpgrade:db from:currentVersion to:_databaseVersion];
-    }
-    *newVersion = _databaseVersion;
-    return YES;
 }
 
 @end

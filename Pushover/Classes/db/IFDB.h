@@ -73,13 +73,13 @@
 /** Insert values into the named table. Returns true if the record is inserted. */
 - (BOOL)insertValues:(NSDictionary *)values intoTable:(NSString *)table;
 /** Insert values into the named table. Returns true if the record is inserted. */
-- (BOOL)insertValues:(NSDictionary *)values intoTable:(NSString *)table db:(id<PLDatabase>)db;
+- (BOOL)insertValues:(NSDictionary *)values intoTable:(NSString *)table db:(IFSqliteDB *)db;
 /** Insert or update a list of values into the named table. Each item of the list is inserted as a new record. Returns true if all records are inserted. */
 - (BOOL)upsertValueList:(NSArray *)valueList intoTable:(NSString *)table;
 /** Insert or update values into the named table. Returns true if the record is inserted. */
 - (BOOL)upsertValues:(NSDictionary *)values intoTable:(NSString *)table;
 /** Insert or update values into the named table. Returns true if the record is inserted. */
-- (BOOL)upsertValues:(NSDictionary *)values intoTable:(NSString *)table db:(id<PLDatabase>)db;
+- (BOOL)upsertValues:(NSDictionary *)values intoTable:(NSString *)table db:(IFSqliteDB *)db;
 /** Update values in the table. Values must include a value for the ID column for the named table. Returns true if the record updated. */
 - (BOOL)updateValues:(NSDictionary *)values inTable:(NSString *)table;
 /** Merge a list of values into the named table. Records are inserted or updated as necessary. Returns true if all records were updated/inserted. */
