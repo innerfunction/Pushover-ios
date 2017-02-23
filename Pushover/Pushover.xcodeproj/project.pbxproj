@@ -13,6 +13,8 @@
 		073DB3F01DB8D29F002504FB /* IFCMSSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */; };
 		077B08DD1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */; };
 		077B08DE1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */; };
+		07F199701E5F0C60004580C2 /* IFSqlite.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F1996E1E5F0C60004580C2 /* IFSqlite.h */; };
+		07F199711E5F0C60004580C2 /* IFSqlite.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F1996F1E5F0C60004580C2 /* IFSqlite.m */; };
 		07FA4E781DF6F1DA00EC2353 /* IFFormFieldPadding.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA4E761DF6F1DA00EC2353 /* IFFormFieldPadding.h */; };
 		07FA4E791DF6F1DA00EC2353 /* IFFormFieldPadding.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA4E771DF6F1DA00EC2353 /* IFFormFieldPadding.m */; };
 		07FA4E7C1DF6F23000EC2353 /* IFFormFieldBorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA4E7A1DF6F23000EC2353 /* IFFormFieldBorder.h */; };
@@ -159,6 +161,8 @@
 		077AEDDB1D7F1D2500C5A2D9 /* Pushover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pushover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSAuthenticationManager.h; sourceTree = "<group>"; };
 		077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSAuthenticationManager.m; sourceTree = "<group>"; };
+		07F1996E1E5F0C60004580C2 /* IFSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFSqlite.h; sourceTree = "<group>"; };
+		07F1996F1E5F0C60004580C2 /* IFSqlite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFSqlite.m; sourceTree = "<group>"; };
 		07FA4E761DF6F1DA00EC2353 /* IFFormFieldPadding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormFieldPadding.h; sourceTree = "<group>"; };
 		07FA4E771DF6F1DA00EC2353 /* IFFormFieldPadding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormFieldPadding.m; sourceTree = "<group>"; };
 		07FA4E7A1DF6F23000EC2353 /* IFFormFieldBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormFieldBorder.h; sourceTree = "<group>"; };
@@ -437,6 +441,8 @@
 				07FA6F641DA5292600E35C36 /* IFDBHelper.m */,
 				07FA6F651DA5292600E35C36 /* IFDBORM.h */,
 				07FA6F661DA5292600E35C36 /* IFDBORM.m */,
+				07F1996E1E5F0C60004580C2 /* IFSqlite.h */,
+				07F1996F1E5F0C60004580C2 /* IFSqlite.m */,
 			);
 			path = db;
 			sourceTree = "<group>";
@@ -631,6 +637,7 @@
 				07FA6FB51DA5292600E35C36 /* IFCMSCommandProtocol.h in Headers */,
 				07FA6FC81DA5292600E35C36 /* IFCommandScheduler.h in Headers */,
 				07FA70291DA5292600E35C36 /* IFWPClientTemplateContext.h in Headers */,
+				07F199701E5F0C60004580C2 /* IFSqlite.h in Headers */,
 				07FA70231DA5292600E35C36 /* IFHTTPClient.h in Headers */,
 				07FA6FC11DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.h in Headers */,
 				07FA6FEB1DA5292600E35C36 /* IFDBFilter.h in Headers */,
@@ -800,6 +807,7 @@
 				07FA6FE01DA5292600E35C36 /* IFContentURLProtocol.m in Sources */,
 				07FA70151DA5292600E35C36 /* PLSqlitePreparedStatement.m in Sources */,
 				07FA6FD31DA5292600E35C36 /* IFUnzipCommand.m in Sources */,
+				07F199711E5F0C60004580C2 /* IFSqlite.m in Sources */,
 				07FA70001DA5292600E35C36 /* IFFormViewController.m in Sources */,
 				07FA702C1DA5292600E35C36 /* IFWPContentAuthority.m in Sources */,
 				07FA70021DA5292600E35C36 /* IFSubmitField.m in Sources */,
