@@ -18,21 +18,11 @@ Pod::Spec.new do |s|
   s.source_files    = "Pushover/Classes/Pushover.h", "Pushover/Classes/{cms,commands,content,db,forms,ui,utils}/*.{h,m}", "Pushover/Classes/SSKeychain/*.{h,m}"
   s.requires_arc    = true
 
-  s.subspec 'plausedb' do |sp|
-    sp.source_files         = 'Pushover/Classes/PlausibleDatabase/*.{h,m}'
-    sp.compiler_flags       = '-DPL_DB_PRIVATE=1'
-    sp.requires_arc         = false
-  end
-
-  # s.public_header_files = "Classes/**/*.h"
-
   s.frameworks      = "UIKit", "Foundation"
 
   s.libraries       = 'sqlite3'
 
   s.xcconfig        = { 'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES' }
-  #s.xcconfig        = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
-  #s.pod_target_xcconfig = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
 
   s.dependency 'Q'
   s.dependency 'SCFFLD'

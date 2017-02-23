@@ -97,27 +97,6 @@
 		07FA70001DA5292600E35C36 /* IFFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F771DA5292600E35C36 /* IFFormViewController.m */; };
 		07FA70011DA5292600E35C36 /* IFSubmitField.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F781DA5292600E35C36 /* IFSubmitField.h */; };
 		07FA70021DA5292600E35C36 /* IFSubmitField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F791DA5292600E35C36 /* IFSubmitField.m */; };
-		07FA70031DA5292600E35C36 /* PlausibleDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F7B1DA5292600E35C36 /* PlausibleDatabase.h */; };
-		07FA70041DA5292600E35C36 /* PlausibleDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F7C1DA5292600E35C36 /* PlausibleDatabase.m */; };
-		07FA70051DA5292600E35C36 /* PLDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F7D1DA5292600E35C36 /* PLDatabase.h */; };
-		07FA70061DA5292600E35C36 /* PLDatabaseConnectionProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F7E1DA5292600E35C36 /* PLDatabaseConnectionProvider.h */; };
-		07FA70071DA5292600E35C36 /* PLDatabaseMigrationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F7F1DA5292600E35C36 /* PLDatabaseMigrationDelegate.h */; };
-		07FA70081DA5292600E35C36 /* PLDatabaseMigrationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F801DA5292600E35C36 /* PLDatabaseMigrationManager.h */; };
-		07FA70091DA5292600E35C36 /* PLDatabaseMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F811DA5292600E35C36 /* PLDatabaseMigrationManager.m */; };
-		07FA700A1DA5292600E35C36 /* PLDatabaseMigrationTransactionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F821DA5292600E35C36 /* PLDatabaseMigrationTransactionManager.h */; };
-		07FA700B1DA5292600E35C36 /* PLDatabaseMigrationVersionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F831DA5292600E35C36 /* PLDatabaseMigrationVersionManager.h */; };
-		07FA700C1DA5292600E35C36 /* PLPreparedStatement.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F841DA5292600E35C36 /* PLPreparedStatement.h */; };
-		07FA700D1DA5292600E35C36 /* PLResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F851DA5292600E35C36 /* PLResultSet.h */; };
-		07FA700E1DA5292600E35C36 /* PLSqliteConnectionProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F861DA5292600E35C36 /* PLSqliteConnectionProvider.h */; };
-		07FA700F1DA5292600E35C36 /* PLSqliteConnectionProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F871DA5292600E35C36 /* PLSqliteConnectionProvider.m */; };
-		07FA70101DA5292600E35C36 /* PLSqliteDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F881DA5292600E35C36 /* PLSqliteDatabase.h */; };
-		07FA70111DA5292600E35C36 /* PLSqliteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F891DA5292600E35C36 /* PLSqliteDatabase.m */; };
-		07FA70121DA5292600E35C36 /* PLSqliteMigrationVersionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F8A1DA5292600E35C36 /* PLSqliteMigrationVersionManager.h */; };
-		07FA70131DA5292600E35C36 /* PLSqliteMigrationVersionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F8B1DA5292600E35C36 /* PLSqliteMigrationVersionManager.m */; };
-		07FA70141DA5292600E35C36 /* PLSqlitePreparedStatement.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F8C1DA5292600E35C36 /* PLSqlitePreparedStatement.h */; };
-		07FA70151DA5292600E35C36 /* PLSqlitePreparedStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F8D1DA5292600E35C36 /* PLSqlitePreparedStatement.m */; };
-		07FA70161DA5292600E35C36 /* PLSqliteResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F8E1DA5292600E35C36 /* PLSqliteResultSet.h */; };
-		07FA70171DA5292600E35C36 /* PLSqliteResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F8F1DA5292600E35C36 /* PLSqliteResultSet.m */; };
 		07FA70191DA5292600E35C36 /* Pushover.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F911DA5292600E35C36 /* Pushover.h */; };
 		07FA701A1DA5292600E35C36 /* SSKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F931DA5292600E35C36 /* SSKeychain.h */; };
 		07FA701B1DA5292600E35C36 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F941DA5292600E35C36 /* SSKeychain.m */; };
@@ -245,27 +224,6 @@
 		07FA6F771DA5292600E35C36 /* IFFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormViewController.m; sourceTree = "<group>"; };
 		07FA6F781DA5292600E35C36 /* IFSubmitField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFSubmitField.h; sourceTree = "<group>"; };
 		07FA6F791DA5292600E35C36 /* IFSubmitField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFSubmitField.m; sourceTree = "<group>"; };
-		07FA6F7B1DA5292600E35C36 /* PlausibleDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlausibleDatabase.h; sourceTree = "<group>"; };
-		07FA6F7C1DA5292600E35C36 /* PlausibleDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlausibleDatabase.m; sourceTree = "<group>"; };
-		07FA6F7D1DA5292600E35C36 /* PLDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLDatabase.h; sourceTree = "<group>"; };
-		07FA6F7E1DA5292600E35C36 /* PLDatabaseConnectionProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLDatabaseConnectionProvider.h; sourceTree = "<group>"; };
-		07FA6F7F1DA5292600E35C36 /* PLDatabaseMigrationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLDatabaseMigrationDelegate.h; sourceTree = "<group>"; };
-		07FA6F801DA5292600E35C36 /* PLDatabaseMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLDatabaseMigrationManager.h; sourceTree = "<group>"; };
-		07FA6F811DA5292600E35C36 /* PLDatabaseMigrationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLDatabaseMigrationManager.m; sourceTree = "<group>"; };
-		07FA6F821DA5292600E35C36 /* PLDatabaseMigrationTransactionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLDatabaseMigrationTransactionManager.h; sourceTree = "<group>"; };
-		07FA6F831DA5292600E35C36 /* PLDatabaseMigrationVersionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLDatabaseMigrationVersionManager.h; sourceTree = "<group>"; };
-		07FA6F841DA5292600E35C36 /* PLPreparedStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLPreparedStatement.h; sourceTree = "<group>"; };
-		07FA6F851DA5292600E35C36 /* PLResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLResultSet.h; sourceTree = "<group>"; };
-		07FA6F861DA5292600E35C36 /* PLSqliteConnectionProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLSqliteConnectionProvider.h; sourceTree = "<group>"; };
-		07FA6F871DA5292600E35C36 /* PLSqliteConnectionProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLSqliteConnectionProvider.m; sourceTree = "<group>"; };
-		07FA6F881DA5292600E35C36 /* PLSqliteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLSqliteDatabase.h; sourceTree = "<group>"; };
-		07FA6F891DA5292600E35C36 /* PLSqliteDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLSqliteDatabase.m; sourceTree = "<group>"; };
-		07FA6F8A1DA5292600E35C36 /* PLSqliteMigrationVersionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLSqliteMigrationVersionManager.h; sourceTree = "<group>"; };
-		07FA6F8B1DA5292600E35C36 /* PLSqliteMigrationVersionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLSqliteMigrationVersionManager.m; sourceTree = "<group>"; };
-		07FA6F8C1DA5292600E35C36 /* PLSqlitePreparedStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLSqlitePreparedStatement.h; sourceTree = "<group>"; };
-		07FA6F8D1DA5292600E35C36 /* PLSqlitePreparedStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLSqlitePreparedStatement.m; sourceTree = "<group>"; };
-		07FA6F8E1DA5292600E35C36 /* PLSqliteResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLSqliteResultSet.h; sourceTree = "<group>"; };
-		07FA6F8F1DA5292600E35C36 /* PLSqliteResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLSqliteResultSet.m; sourceTree = "<group>"; };
 		07FA6F911DA5292600E35C36 /* Pushover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pushover.h; sourceTree = "<group>"; };
 		07FA6F931DA5292600E35C36 /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
 		07FA6F941DA5292600E35C36 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
@@ -345,7 +303,6 @@
 				07FA6F971DA5292600E35C36 /* ui */,
 				07FA6F9A1DA5292600E35C36 /* utils */,
 				07FA6FA01DA5292600E35C36 /* wp */,
-				07FA6F7A1DA5292600E35C36 /* PlausibleDatabase */,
 				07FA6F921DA5292600E35C36 /* SSKeychain */,
 			);
 			path = Classes;
@@ -476,34 +433,6 @@
 			path = forms;
 			sourceTree = "<group>";
 		};
-		07FA6F7A1DA5292600E35C36 /* PlausibleDatabase */ = {
-			isa = PBXGroup;
-			children = (
-				07FA6F7B1DA5292600E35C36 /* PlausibleDatabase.h */,
-				07FA6F7C1DA5292600E35C36 /* PlausibleDatabase.m */,
-				07FA6F7D1DA5292600E35C36 /* PLDatabase.h */,
-				07FA6F7E1DA5292600E35C36 /* PLDatabaseConnectionProvider.h */,
-				07FA6F7F1DA5292600E35C36 /* PLDatabaseMigrationDelegate.h */,
-				07FA6F801DA5292600E35C36 /* PLDatabaseMigrationManager.h */,
-				07FA6F811DA5292600E35C36 /* PLDatabaseMigrationManager.m */,
-				07FA6F821DA5292600E35C36 /* PLDatabaseMigrationTransactionManager.h */,
-				07FA6F831DA5292600E35C36 /* PLDatabaseMigrationVersionManager.h */,
-				07FA6F841DA5292600E35C36 /* PLPreparedStatement.h */,
-				07FA6F851DA5292600E35C36 /* PLResultSet.h */,
-				07FA6F861DA5292600E35C36 /* PLSqliteConnectionProvider.h */,
-				07FA6F871DA5292600E35C36 /* PLSqliteConnectionProvider.m */,
-				07FA6F881DA5292600E35C36 /* PLSqliteDatabase.h */,
-				07FA6F891DA5292600E35C36 /* PLSqliteDatabase.m */,
-				07FA6F8A1DA5292600E35C36 /* PLSqliteMigrationVersionManager.h */,
-				07FA6F8B1DA5292600E35C36 /* PLSqliteMigrationVersionManager.m */,
-				07FA6F8C1DA5292600E35C36 /* PLSqlitePreparedStatement.h */,
-				07FA6F8D1DA5292600E35C36 /* PLSqlitePreparedStatement.m */,
-				07FA6F8E1DA5292600E35C36 /* PLSqliteResultSet.h */,
-				07FA6F8F1DA5292600E35C36 /* PLSqliteResultSet.m */,
-			);
-			path = PlausibleDatabase;
-			sourceTree = "<group>";
-		};
 		07FA6F921DA5292600E35C36 /* SSKeychain */ = {
 			isa = PBXGroup;
 			children = (
@@ -594,9 +523,6 @@
 				07FA6FF91DA5292600E35C36 /* IFFormSelectField.h in Headers */,
 				07FA6FC31DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.h in Headers */,
 				07FA6FE31DA5292600E35C36 /* IFDataWebviewFormatter.h in Headers */,
-				07FA700A1DA5292600E35C36 /* PLDatabaseMigrationTransactionManager.h in Headers */,
-				07FA70051DA5292600E35C36 /* PLDatabase.h in Headers */,
-				07FA700E1DA5292600E35C36 /* PLSqliteConnectionProvider.h in Headers */,
 				07FA70311DA5292600E35C36 /* IFWPLicenceBehaviour.h in Headers */,
 				073DB3EF1DB8D29F002504FB /* IFCMSSettings.h in Headers */,
 				07FA70351DA5292600E35C36 /* IFWPPostsPathRoot.h in Headers */,
@@ -606,24 +532,18 @@
 				07FA6FDF1DA5292600E35C36 /* IFContentURLProtocol.h in Headers */,
 				07FA6FCA1DA5292600E35C36 /* IFDownloadZipCommand.h in Headers */,
 				07FA702F1DA5292600E35C36 /* IFWPContentCommandProtocol.h in Headers */,
-				07FA70101DA5292600E35C36 /* PLSqliteDatabase.h in Headers */,
-				07FA70031DA5292600E35C36 /* PlausibleDatabase.h in Headers */,
 				07FA6FBF1DA5292600E35C36 /* IFCMSPostsPathRoot.h in Headers */,
 				07FA701C1DA5292600E35C36 /* SSKeychainQuery.h in Headers */,
 				07FA70191DA5292600E35C36 /* Pushover.h in Headers */,
 				07FA6FEF1DA5292600E35C36 /* IFDBORM.h in Headers */,
 				07FA70011DA5292600E35C36 /* IFSubmitField.h in Headers */,
-				07FA70161DA5292600E35C36 /* PLSqliteResultSet.h in Headers */,
 				07FA701A1DA5292600E35C36 /* SSKeychain.h in Headers */,
 				07FA70251DA5292600E35C36 /* IFWPAuthManager.h in Headers */,
 				07FA6FFB1DA5292600E35C36 /* IFFormTextField.h in Headers */,
 				07FA70371DA5292600E35C36 /* IFWPSearchPathRoot.h in Headers */,
 				07FA6FF11DA5292600E35C36 /* IFFormField.h in Headers */,
-				07FA70141DA5292600E35C36 /* PLSqlitePreparedStatement.h in Headers */,
-				07FA70081DA5292600E35C36 /* PLDatabaseMigrationManager.h in Headers */,
 				07FA6FE91DA5292600E35C36 /* IFDB.h in Headers */,
 				07FA70211DA5292600E35C36 /* IFHTMLString.h in Headers */,
-				07FA700D1DA5292600E35C36 /* PLResultSet.h in Headers */,
 				07FA6FB91DA5292600E35C36 /* IFCMSFileDB.h in Headers */,
 				07FA70271DA5292600E35C36 /* IFWPChildPostRendering.h in Headers */,
 				07FA70201DA5292600E35C36 /* IFDataFormatter.h in Headers */,
@@ -641,9 +561,6 @@
 				07FA70231DA5292600E35C36 /* IFHTTPClient.h in Headers */,
 				07FA6FC11DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.h in Headers */,
 				07FA6FEB1DA5292600E35C36 /* IFDBFilter.h in Headers */,
-				07FA700B1DA5292600E35C36 /* PLDatabaseMigrationVersionManager.h in Headers */,
-				07FA70121DA5292600E35C36 /* PLSqliteMigrationVersionManager.h in Headers */,
-				07FA70061DA5292600E35C36 /* PLDatabaseConnectionProvider.h in Headers */,
 				07FA6FD01DA5292600E35C36 /* IFRmFileCommand.h in Headers */,
 				07FA6FC61DA5292600E35C36 /* IFCommandProtocol.h in Headers */,
 				07FA4E7C1DF6F23000EC2353 /* IFFormFieldBorder.h in Headers */,
@@ -655,7 +572,6 @@
 				07FA6FD61DA5292600E35C36 /* IFContentAuthority.h in Headers */,
 				07FA6FFF1DA5292600E35C36 /* IFFormViewController.h in Headers */,
 				07FA6FBB1DA5292600E35C36 /* IFCMSFileset.h in Headers */,
-				07FA70071DA5292600E35C36 /* PLDatabaseMigrationDelegate.h in Headers */,
 				07FA6FB71DA5292600E35C36 /* IFCMSContentAuthority.h in Headers */,
 				07FA702D1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.h in Headers */,
 				07FA6FCE1DA5292600E35C36 /* IFMvFileCommand.h in Headers */,
@@ -663,7 +579,6 @@
 				07FA6FF31DA5292600E35C36 /* IFFormHiddenField.h in Headers */,
 				07FA6FC51DA5292600E35C36 /* IFCommand.h in Headers */,
 				07FA6FE51DA5292600E35C36 /* IFMIMETypes.h in Headers */,
-				07FA700C1DA5292600E35C36 /* PLPreparedStatement.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -786,16 +701,13 @@
 				07FA6FD71DA5292600E35C36 /* IFContentAuthority.m in Sources */,
 				07FA701F1DA5292600E35C36 /* IFContentTableViewController.m in Sources */,
 				07FA6FB81DA5292600E35C36 /* IFCMSContentAuthority.m in Sources */,
-				07FA70041DA5292600E35C36 /* PlausibleDatabase.m in Sources */,
 				07FA70241DA5292600E35C36 /* IFHTTPClient.m in Sources */,
 				07FA70361DA5292600E35C36 /* IFWPPostsPathRoot.m in Sources */,
 				07FA6FCF1DA5292600E35C36 /* IFMvFileCommand.m in Sources */,
-				07FA70131DA5292600E35C36 /* PLSqliteMigrationVersionManager.m in Sources */,
 				07FA6FE81DA5292600E35C36 /* IFPlainContentTypeConverter.m in Sources */,
 				07FA6FF01DA5292600E35C36 /* IFDBORM.m in Sources */,
 				07FA4E7D1DF6F23000EC2353 /* IFFormFieldBorder.m in Sources */,
 				07FA70341DA5292600E35C36 /* IFWPPostDBAdapter.m in Sources */,
-				07FA700F1DA5292600E35C36 /* PLSqliteConnectionProvider.m in Sources */,
 				07FA6FEC1DA5292600E35C36 /* IFDBFilter.m in Sources */,
 				072EFC271DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m in Sources */,
 				07FA6FC91DA5292600E35C36 /* IFCommandScheduler.m in Sources */,
@@ -805,7 +717,6 @@
 				07FA6FD11DA5292600E35C36 /* IFRmFileCommand.m in Sources */,
 				07FA6FC21DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.m in Sources */,
 				07FA6FE01DA5292600E35C36 /* IFContentURLProtocol.m in Sources */,
-				07FA70151DA5292600E35C36 /* PLSqlitePreparedStatement.m in Sources */,
 				07FA6FD31DA5292600E35C36 /* IFUnzipCommand.m in Sources */,
 				07F199711E5F0C60004580C2 /* IFSqlite.m in Sources */,
 				07FA70001DA5292600E35C36 /* IFFormViewController.m in Sources */,
@@ -818,12 +729,10 @@
 				07FA6FF21DA5292600E35C36 /* IFFormField.m in Sources */,
 				07FA4E791DF6F1DA00EC2353 /* IFFormFieldPadding.m in Sources */,
 				07FA6FF61DA5292600E35C36 /* IFFormImageField.m in Sources */,
-				07FA70171DA5292600E35C36 /* PLSqliteResultSet.m in Sources */,
 				07FA70261DA5292600E35C36 /* IFWPAuthManager.m in Sources */,
 				07FA702E1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.m in Sources */,
 				07FA6FCB1DA5292600E35C36 /* IFDownloadZipCommand.m in Sources */,
 				07FA701D1DA5292600E35C36 /* SSKeychainQuery.m in Sources */,
-				07FA70111DA5292600E35C36 /* PLSqliteDatabase.m in Sources */,
 				07FA6FFC1DA5292600E35C36 /* IFFormTextField.m in Sources */,
 				077B08DE1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m in Sources */,
 				07FA6FE41DA5292600E35C36 /* IFDataWebviewFormatter.m in Sources */,
@@ -832,7 +741,6 @@
 				07FA6FDD1DA5292600E35C36 /* IFContentSchemeHandler.m in Sources */,
 				07FA702A1DA5292600E35C36 /* IFWPClientTemplateContext.m in Sources */,
 				07FA6FD91DA5292600E35C36 /* IFContentPath.m in Sources */,
-				07FA70091DA5292600E35C36 /* PLDatabaseMigrationManager.m in Sources */,
 				07FA6FD51DA5292600E35C36 /* IFAbstractContentAuthority.m in Sources */,
 				07FA6FBC1DA5292600E35C36 /* IFCMSFileset.m in Sources */,
 			);
