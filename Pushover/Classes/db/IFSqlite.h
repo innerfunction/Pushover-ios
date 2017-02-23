@@ -28,17 +28,13 @@
     NSString *_dbPath;
     /// The database handle.
     sqlite3 *_db;
-    /// An error message generated when opening the database.
-    NSString *_openError;
 }
 
 /// A flag indicating that the database is open and available.
 @property (nonatomic, assign) BOOL open;
 
 /// Connect to the database at the specified path.
-- (id)initWithDBPath:(NSString *)dbPath;
-/// Validate the database connection. Throws an exception if the connection isn't valid.
-- (void)validate;
+- (id)initWithDBPath:(NSString *)dbPath error:(NSError **)error;
 /// Prepare a SQL statement.
 - (IFSqlitePreparedStatement *)prepareStatement;
 /**

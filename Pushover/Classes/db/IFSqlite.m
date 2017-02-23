@@ -21,47 +21,45 @@
 #define IFSqliteBusyTimeout (30 * 1000)
 #define IFSqliteException   (@"IFSqliteException")
 #define IFSqliteError       (@"IFSqliteError")
+#define IFSqliteErrorCode   (0)
 
 @implementation IFSqliteDB
 
-- (id)initWithDBPath:(NSString *)dbPath {
+- (id)initWithDBPath:(NSString *)dbPath error:(NSError *__autoreleasing *)error {
     self = [super init];
     if (self) {
         _dbPath = dbPath;
         BOOL ok = YES;
+        NSString *errorMsg = nil;
         if (![[NSFileManager defaultManager] fileExistsAtPath:_dbPath]) {
-            _openError = [NSString stringWithFormat:@"Database file not found: %@", _dbPath];
+            errorMsg = [NSString stringWithFormat:@"Database file not found: %@", _dbPath];
             ok = NO;
         }
-        int error;
+        int err;
         if (ok) {
-            error = sqlite3_open([_dbPath fileSystemRepresentation], &_db);
-            if (error != SQLITE_OK) {
-                _openError = [NSString stringWithFormat:@"Error opening database: %s", sqlite3_errmsg(_db)];
+            err = sqlite3_open([_dbPath fileSystemRepresentation], &_db);
+            if (err != SQLITE_OK) {
+                errorMsg = [NSString stringWithFormat:@"Error opening database: %s", sqlite3_errmsg(_db)];
                 ok = NO;
             }
         }
         if (ok) {
-            error = sqlite3_busy_timeout(_db, IFSqliteBusyTimeout);
-            if (error != SQLITE_OK) {
-                _openError = [NSString stringWithFormat:@"Error connecting to database: %s", sqlite3_errmsg(_db)];
+            err = sqlite3_busy_timeout(_db, IFSqliteBusyTimeout);
+            if (err != SQLITE_OK) {
+                errorMsg = [NSString stringWithFormat:@"Error connecting to database: %s", sqlite3_errmsg(_db)];
                 ok = NO;
             }
         }
-        self.open = ok;
-    }
-    return self;
-}
-
-- (void)validate {
-    if (!_open) {
-        if (_openError) {
-            [NSException raise:IFSqliteException format:@"%@", _openError];
+        if (errorMsg) {
+            *error = [NSError errorWithDomain:IFSqliteError
+                                         code:IFSqliteErrorCode
+                                     userInfo:@{ NSLocalizedDescriptionKey: errorMsg }];
         }
         else {
-            [NSException raise:IFSqliteException format:@"Sqlite database is not open"];
+            self.open = ok;
         }
     }
+    return self;
 }
 
 - (IFSqlitePreparedStatement *)prepareStatement {
@@ -107,7 +105,7 @@
         int error = sqlite3_close(_db);
         if (error == SQLITE_BUSY) {
             [NSException raise:IFSqliteException
-                        format:@"Sqlite database at %@ has unclosed prepared statements", _dbPath];
+                        format:@"Sqlite database at %@ has unclosed statements", _dbPath];
         }
         if (error != SQLITE_OK) {
             NSLog(@"Error closing database at '%@': %s", _dbPath, sqlite3_errmsg(_db));
