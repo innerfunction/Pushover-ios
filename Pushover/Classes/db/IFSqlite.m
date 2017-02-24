@@ -31,10 +31,6 @@
         _dbPath = dbPath;
         BOOL ok = YES;
         NSString *errorMsg = nil;
-        if (![[NSFileManager defaultManager] fileExistsAtPath:_dbPath]) {
-            errorMsg = [NSString stringWithFormat:@"Database file not found: %@", _dbPath];
-            ok = NO;
-        }
         int err;
         if (ok) {
             err = sqlite3_open([_dbPath fileSystemRepresentation], &_db);
@@ -210,19 +206,15 @@
         int error = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &_statement, &trailing);
         if (error != SQLITE_OK) {
             NSDictionary *userInfo = @{
-                NSLocalizedDescriptionKey:  @"Sqlite statement compilation error",
-                @"SQL":                     _sql,
-                @"SQLiteError":             [NSString stringWithUTF8String: sqlite3_errmsg(_db)]
-
+                NSLocalizedDescriptionKey:  [NSString stringWithUTF8String: sqlite3_errmsg(_db)],
+                @"SQL":                     _sql
             };
             _compilationError = [NSError errorWithDomain:IFSqliteError code:error userInfo:userInfo];
         }
-        if (trailing != '\0') {
+        if (*trailing != '\0') {
             NSDictionary *userInfo = @{
-                NSLocalizedDescriptionKey:  @"Sqlite statement compilation error",
-                @"SQL":                     _sql,
-                @"SQLiteError":             @"Multiple statements provided"
-
+                NSLocalizedDescriptionKey:  @"Multiple SQL statements provided",
+                @"SQL":                     _sql
             };
             _compilationError = [NSError errorWithDomain:IFSqliteError code:error userInfo:userInfo];
         }
@@ -261,7 +253,7 @@
 - (BOOL)executeUpdate:(NSError **)error {
     BOOL ok = NO;
     IFSqliteResultSet *rs = [self executeQuery:error];
-    if (rs && !error) {
+    if (rs && !*error) {
         if ([rs next]) {
             ok = YES;
         }
@@ -286,33 +278,34 @@
 - (void)bindParameters {
     if (_statement != NULL && _parameters) {
         NSInteger count = MIN([_parameters count], _parameterCount);
-        for (int idx = 0; idx < count; idx++) {
+        for (NSInteger idx = 0; idx < count; idx++) {
             id value = _parameters[idx];
+            int paramIdx = (int)idx + 1;
             if (value == nil || value == [NSNull null]) {
-                sqlite3_bind_null(_statement, idx);
+                sqlite3_bind_null(_statement, paramIdx);
             }
             else if ([value isKindOfClass: [NSString class]]) {
-                sqlite3_bind_text(_statement, idx, [value UTF8String], -1, SQLITE_TRANSIENT);
+                sqlite3_bind_text(_statement, paramIdx, [value UTF8String], -1, SQLITE_TRANSIENT);
             }
             else if ([value isKindOfClass: [NSNumber class]]) {
                 const char *objcType = [value objCType];
                 int64_t number = [value longLongValue];
                 if (strcmp(objcType, @encode(float)) == 0 || strcmp(objcType, @encode(double)) == 0) {
-                    sqlite3_bind_double(_statement, idx, [value doubleValue]);
+                    sqlite3_bind_double(_statement, paramIdx, [value doubleValue]);
                 }
                 else if (number <= INT32_MAX) {
-                    sqlite3_bind_int(_statement, idx, (int)number);
+                    sqlite3_bind_int(_statement, paramIdx, (int)number);
                 }
                 else {
-                    sqlite3_bind_int64(_statement, idx, number);
+                    sqlite3_bind_int64(_statement, paramIdx, number);
                 }
             }
             else if ([value isKindOfClass: [NSDate class]]) {
-                sqlite3_bind_double(_statement, idx, [value timeIntervalSince1970]);
+                sqlite3_bind_double(_statement, paramIdx, [value timeIntervalSince1970]);
             }
             else {
                 // Bind null to non-convertable values.
-                sqlite3_bind_null(_statement, idx);
+                sqlite3_bind_null(_statement, paramIdx);
             }
         }
     }

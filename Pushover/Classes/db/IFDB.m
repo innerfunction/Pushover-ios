@@ -127,7 +127,7 @@ static IFLogger *Logger;
     IFSqliteDB *db = [_dbHelper getDatabase];
     [db beginTransaction:&error];
     if (error) {
-        [Logger error:@"beginTranslation failed %@", error];
+        [Logger error:@"Transaction open failed %@", error];
         ok = NO;
     }
     return ok;
@@ -139,7 +139,7 @@ static IFLogger *Logger;
     IFSqliteDB *db = [_dbHelper getDatabase];
     [db commitTransaction:&error];
     if (error) {
-        [Logger error:@"commitTransaction failed %@", error];
+        [Logger error:@"Transaction commit failed %@", error];
         ok = NO;
     }
     return ok;
@@ -151,7 +151,7 @@ static IFLogger *Logger;
     IFSqliteDB *db = [_dbHelper getDatabase];
     [db rollbackTransaction:&error];
     if (error) {
-        [Logger error:@"rollbackTransaction failed %@", error];
+        [Logger error:@"Transaction rollback failed %@", error];
         ok = NO;
     }
     return ok;
@@ -494,7 +494,7 @@ static IFLogger *Logger;
         NSDictionary *tableSchema = [_tables objectForKey:tableName];
         NSString *sql = [self getCreateTableSQLForTable:tableName schema:tableSchema];
         [db executeUpdate:sql parameters:nil error:error];
-        if (error) {
+        if (*error) {
             return;
         }
         [self addInitialDataForTable:tableName schema:tableSchema];
@@ -537,7 +537,7 @@ static IFLogger *Logger;
         }
         for (NSString *sql in sqls) {
             [database executeUpdate:sql parameters:nil error:error];
-            if (error) {
+            if (*error) {
                 return;
             }
         }
@@ -556,7 +556,7 @@ static IFLogger *Logger;
         }
         NSString *sql = [NSString stringWithFormat:@"select count() from %@", tableName];
         IFSqliteResultSet *rs = [db executeQuery:sql error:error];
-        if (error) {
+        if (*error) {
             return;
         }
         if ([rs next]) {

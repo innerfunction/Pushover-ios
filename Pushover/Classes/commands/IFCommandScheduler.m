@@ -125,7 +125,7 @@ static void *execQueueKey = "IFCommandScheduler.execQueue";
         // Command database setup.
         _db = [[IFDB alloc] init];
         _db.name = @"com.innerfunction.semo.command-scheduler";
-        _db.version = @0;
+        _db.version = @1;
         _db.tables = @{
             @"queue": @{
                 @"columns": @{
