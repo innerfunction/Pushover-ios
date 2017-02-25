@@ -1,0 +1,898 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		072EFC261DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 072EFC241DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h */; };
+		072EFC271DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 072EFC251DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m */; };
+		073DB3EF1DB8D29F002504FB /* IFCMSSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */; };
+		073DB3F01DB8D29F002504FB /* IFCMSSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */; };
+		077B08DD1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */; };
+		077B08DE1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */; };
+		07F199701E5F0C60004580C2 /* IFSqlite.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F1996E1E5F0C60004580C2 /* IFSqlite.h */; };
+		07F199711E5F0C60004580C2 /* IFSqlite.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F1996F1E5F0C60004580C2 /* IFSqlite.m */; };
+		07FA4E781DF6F1DA00EC2353 /* IFFormFieldPadding.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA4E761DF6F1DA00EC2353 /* IFFormFieldPadding.h */; };
+		07FA4E791DF6F1DA00EC2353 /* IFFormFieldPadding.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA4E771DF6F1DA00EC2353 /* IFFormFieldPadding.m */; };
+		07FA4E7C1DF6F23000EC2353 /* IFFormFieldBorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA4E7A1DF6F23000EC2353 /* IFFormFieldBorder.h */; };
+		07FA4E7D1DF6F23000EC2353 /* IFFormFieldBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA4E7B1DF6F23000EC2353 /* IFFormFieldBorder.m */; };
+		07FA6FB51DA5292600E35C36 /* IFCMSCommandProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F281DA5292600E35C36 /* IFCMSCommandProtocol.h */; };
+		07FA6FB61DA5292600E35C36 /* IFCMSCommandProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F291DA5292600E35C36 /* IFCMSCommandProtocol.m */; };
+		07FA6FB71DA5292600E35C36 /* IFCMSContentAuthority.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F2A1DA5292600E35C36 /* IFCMSContentAuthority.h */; };
+		07FA6FB81DA5292600E35C36 /* IFCMSContentAuthority.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F2B1DA5292600E35C36 /* IFCMSContentAuthority.m */; };
+		07FA6FB91DA5292600E35C36 /* IFCMSFileDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F2C1DA5292600E35C36 /* IFCMSFileDB.h */; };
+		07FA6FBA1DA5292600E35C36 /* IFCMSFileDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F2D1DA5292600E35C36 /* IFCMSFileDB.m */; };
+		07FA6FBB1DA5292600E35C36 /* IFCMSFileset.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F2E1DA5292600E35C36 /* IFCMSFileset.h */; };
+		07FA6FBC1DA5292600E35C36 /* IFCMSFileset.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F2F1DA5292600E35C36 /* IFCMSFileset.m */; };
+		07FA6FBD1DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F301DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.h */; };
+		07FA6FBE1DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F311DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.m */; };
+		07FA6FBF1DA5292600E35C36 /* IFCMSPostsPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F321DA5292600E35C36 /* IFCMSPostsPathRoot.h */; };
+		07FA6FC01DA5292600E35C36 /* IFCMSPostsPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F331DA5292600E35C36 /* IFCMSPostsPathRoot.m */; };
+		07FA6FC11DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F341DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.h */; };
+		07FA6FC21DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F351DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.m */; };
+		07FA6FC31DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F361DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.h */; };
+		07FA6FC41DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F371DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.m */; };
+		07FA6FC51DA5292600E35C36 /* IFCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F391DA5292600E35C36 /* IFCommand.h */; };
+		07FA6FC61DA5292600E35C36 /* IFCommandProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F3A1DA5292600E35C36 /* IFCommandProtocol.h */; };
+		07FA6FC71DA5292600E35C36 /* IFCommandProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F3B1DA5292600E35C36 /* IFCommandProtocol.m */; };
+		07FA6FC81DA5292600E35C36 /* IFCommandScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F3C1DA5292600E35C36 /* IFCommandScheduler.h */; };
+		07FA6FC91DA5292600E35C36 /* IFCommandScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F3D1DA5292600E35C36 /* IFCommandScheduler.m */; };
+		07FA6FCA1DA5292600E35C36 /* IFDownloadZipCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F3E1DA5292600E35C36 /* IFDownloadZipCommand.h */; };
+		07FA6FCB1DA5292600E35C36 /* IFDownloadZipCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F3F1DA5292600E35C36 /* IFDownloadZipCommand.m */; };
+		07FA6FCC1DA5292600E35C36 /* IFGetURLCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F401DA5292600E35C36 /* IFGetURLCommand.h */; };
+		07FA6FCD1DA5292600E35C36 /* IFGetURLCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F411DA5292600E35C36 /* IFGetURLCommand.m */; };
+		07FA6FCE1DA5292600E35C36 /* IFMvFileCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F421DA5292600E35C36 /* IFMvFileCommand.h */; };
+		07FA6FCF1DA5292600E35C36 /* IFMvFileCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F431DA5292600E35C36 /* IFMvFileCommand.m */; };
+		07FA6FD01DA5292600E35C36 /* IFRmFileCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F441DA5292600E35C36 /* IFRmFileCommand.h */; };
+		07FA6FD11DA5292600E35C36 /* IFRmFileCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F451DA5292600E35C36 /* IFRmFileCommand.m */; };
+		07FA6FD21DA5292600E35C36 /* IFUnzipCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F461DA5292600E35C36 /* IFUnzipCommand.h */; };
+		07FA6FD31DA5292600E35C36 /* IFUnzipCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F471DA5292600E35C36 /* IFUnzipCommand.m */; };
+		07FA6FD41DA5292600E35C36 /* IFAbstractContentAuthority.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F491DA5292600E35C36 /* IFAbstractContentAuthority.h */; };
+		07FA6FD51DA5292600E35C36 /* IFAbstractContentAuthority.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F4A1DA5292600E35C36 /* IFAbstractContentAuthority.m */; };
+		07FA6FD61DA5292600E35C36 /* IFContentAuthority.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F4B1DA5292600E35C36 /* IFContentAuthority.h */; };
+		07FA6FD71DA5292600E35C36 /* IFContentAuthority.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F4C1DA5292600E35C36 /* IFContentAuthority.m */; };
+		07FA6FD81DA5292600E35C36 /* IFContentPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F4D1DA5292600E35C36 /* IFContentPath.h */; };
+		07FA6FD91DA5292600E35C36 /* IFContentPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F4E1DA5292600E35C36 /* IFContentPath.m */; };
+		07FA6FDA1DA5292600E35C36 /* IFContentProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F4F1DA5292600E35C36 /* IFContentProvider.h */; };
+		07FA6FDB1DA5292600E35C36 /* IFContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F501DA5292600E35C36 /* IFContentProvider.m */; };
+		07FA6FDC1DA5292600E35C36 /* IFContentSchemeHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F511DA5292600E35C36 /* IFContentSchemeHandler.h */; };
+		07FA6FDD1DA5292600E35C36 /* IFContentSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F521DA5292600E35C36 /* IFContentSchemeHandler.m */; };
+		07FA6FDE1DA5292600E35C36 /* IFContentTypeConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F531DA5292600E35C36 /* IFContentTypeConverter.h */; };
+		07FA6FDF1DA5292600E35C36 /* IFContentURLProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F541DA5292600E35C36 /* IFContentURLProtocol.h */; };
+		07FA6FE01DA5292600E35C36 /* IFContentURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F551DA5292600E35C36 /* IFContentURLProtocol.m */; };
+		07FA6FE11DA5292600E35C36 /* IFDataTableFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F561DA5292600E35C36 /* IFDataTableFormatter.h */; };
+		07FA6FE21DA5292600E35C36 /* IFDataTableFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F571DA5292600E35C36 /* IFDataTableFormatter.m */; };
+		07FA6FE31DA5292600E35C36 /* IFDataWebviewFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F581DA5292600E35C36 /* IFDataWebviewFormatter.h */; };
+		07FA6FE41DA5292600E35C36 /* IFDataWebviewFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F591DA5292600E35C36 /* IFDataWebviewFormatter.m */; };
+		07FA6FE51DA5292600E35C36 /* IFMIMETypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F5A1DA5292600E35C36 /* IFMIMETypes.h */; };
+		07FA6FE61DA5292600E35C36 /* IFMIMETypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F5B1DA5292600E35C36 /* IFMIMETypes.m */; };
+		07FA6FE71DA5292600E35C36 /* IFPlainContentTypeConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F5C1DA5292600E35C36 /* IFPlainContentTypeConverter.h */; };
+		07FA6FE81DA5292600E35C36 /* IFPlainContentTypeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F5D1DA5292600E35C36 /* IFPlainContentTypeConverter.m */; };
+		07FA6FE91DA5292600E35C36 /* IFDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F5F1DA5292600E35C36 /* IFDB.h */; };
+		07FA6FEA1DA5292600E35C36 /* IFDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F601DA5292600E35C36 /* IFDB.m */; };
+		07FA6FEB1DA5292600E35C36 /* IFDBFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F611DA5292600E35C36 /* IFDBFilter.h */; };
+		07FA6FEC1DA5292600E35C36 /* IFDBFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F621DA5292600E35C36 /* IFDBFilter.m */; };
+		07FA6FED1DA5292600E35C36 /* IFDBHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F631DA5292600E35C36 /* IFDBHelper.h */; };
+		07FA6FEE1DA5292600E35C36 /* IFDBHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F641DA5292600E35C36 /* IFDBHelper.m */; };
+		07FA6FEF1DA5292600E35C36 /* IFDBORM.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F651DA5292600E35C36 /* IFDBORM.h */; };
+		07FA6FF01DA5292600E35C36 /* IFDBORM.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F661DA5292600E35C36 /* IFDBORM.m */; };
+		07FA6FF11DA5292600E35C36 /* IFFormField.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F681DA5292600E35C36 /* IFFormField.h */; };
+		07FA6FF21DA5292600E35C36 /* IFFormField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F691DA5292600E35C36 /* IFFormField.m */; };
+		07FA6FF31DA5292600E35C36 /* IFFormHiddenField.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F6A1DA5292600E35C36 /* IFFormHiddenField.h */; };
+		07FA6FF41DA5292600E35C36 /* IFFormHiddenField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F6B1DA5292600E35C36 /* IFFormHiddenField.m */; };
+		07FA6FF51DA5292600E35C36 /* IFFormImageField.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F6C1DA5292600E35C36 /* IFFormImageField.h */; };
+		07FA6FF61DA5292600E35C36 /* IFFormImageField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F6D1DA5292600E35C36 /* IFFormImageField.m */; };
+		07FA6FF71DA5292600E35C36 /* IFFormOptionField.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F6E1DA5292600E35C36 /* IFFormOptionField.h */; };
+		07FA6FF81DA5292600E35C36 /* IFFormOptionField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F6F1DA5292600E35C36 /* IFFormOptionField.m */; };
+		07FA6FF91DA5292600E35C36 /* IFFormSelectField.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F701DA5292600E35C36 /* IFFormSelectField.h */; };
+		07FA6FFA1DA5292600E35C36 /* IFFormSelectField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F711DA5292600E35C36 /* IFFormSelectField.m */; };
+		07FA6FFB1DA5292600E35C36 /* IFFormTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F721DA5292600E35C36 /* IFFormTextField.h */; };
+		07FA6FFC1DA5292600E35C36 /* IFFormTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F731DA5292600E35C36 /* IFFormTextField.m */; };
+		07FA6FFD1DA5292600E35C36 /* IFFormView.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F741DA5292600E35C36 /* IFFormView.h */; };
+		07FA6FFE1DA5292600E35C36 /* IFFormView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F751DA5292600E35C36 /* IFFormView.m */; };
+		07FA6FFF1DA5292600E35C36 /* IFFormViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F761DA5292600E35C36 /* IFFormViewController.h */; };
+		07FA70001DA5292600E35C36 /* IFFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F771DA5292600E35C36 /* IFFormViewController.m */; };
+		07FA70011DA5292600E35C36 /* IFSubmitField.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F781DA5292600E35C36 /* IFSubmitField.h */; };
+		07FA70021DA5292600E35C36 /* IFSubmitField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F791DA5292600E35C36 /* IFSubmitField.m */; };
+		07FA70191DA5292600E35C36 /* Smokestack.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F911DA5292600E35C36 /* Smokestack.h */; };
+		07FA701A1DA5292600E35C36 /* SSKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F931DA5292600E35C36 /* SSKeychain.h */; };
+		07FA701B1DA5292600E35C36 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F941DA5292600E35C36 /* SSKeychain.m */; };
+		07FA701C1DA5292600E35C36 /* SSKeychainQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F951DA5292600E35C36 /* SSKeychainQuery.h */; };
+		07FA701D1DA5292600E35C36 /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F961DA5292600E35C36 /* SSKeychainQuery.m */; };
+		07FA701E1DA5292600E35C36 /* IFContentTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F981DA5292600E35C36 /* IFContentTableViewController.h */; };
+		07FA701F1DA5292600E35C36 /* IFContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F991DA5292600E35C36 /* IFContentTableViewController.m */; };
+		07FA70201DA5292600E35C36 /* IFDataFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F9B1DA5292600E35C36 /* IFDataFormatter.h */; };
+		07FA70211DA5292600E35C36 /* IFHTMLString.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F9C1DA5292600E35C36 /* IFHTMLString.h */; };
+		07FA70221DA5292600E35C36 /* IFHTMLString.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F9D1DA5292600E35C36 /* IFHTMLString.m */; };
+		07FA70231DA5292600E35C36 /* IFHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F9E1DA5292600E35C36 /* IFHTTPClient.h */; };
+		07FA70241DA5292600E35C36 /* IFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F9F1DA5292600E35C36 /* IFHTTPClient.m */; };
+		07FA70251DA5292600E35C36 /* IFWPAuthManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FA11DA5292600E35C36 /* IFWPAuthManager.h */; };
+		07FA70261DA5292600E35C36 /* IFWPAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FA21DA5292600E35C36 /* IFWPAuthManager.m */; };
+		07FA70271DA5292600E35C36 /* IFWPChildPostRendering.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FA31DA5292600E35C36 /* IFWPChildPostRendering.h */; };
+		07FA70281DA5292600E35C36 /* IFWPChildPostRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FA41DA5292600E35C36 /* IFWPChildPostRendering.m */; };
+		07FA70291DA5292600E35C36 /* IFWPClientTemplateContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FA51DA5292600E35C36 /* IFWPClientTemplateContext.h */; };
+		07FA702A1DA5292600E35C36 /* IFWPClientTemplateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FA61DA5292600E35C36 /* IFWPClientTemplateContext.m */; };
+		07FA702B1DA5292600E35C36 /* IFWPContentAuthority.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FA71DA5292600E35C36 /* IFWPContentAuthority.h */; };
+		07FA702C1DA5292600E35C36 /* IFWPContentAuthority.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FA81DA5292600E35C36 /* IFWPContentAuthority.m */; };
+		07FA702D1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FA91DA5292600E35C36 /* IFWPContentAuthorityFormFactory.h */; };
+		07FA702E1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FAA1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.m */; };
+		07FA702F1DA5292600E35C36 /* IFWPContentCommandProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FAB1DA5292600E35C36 /* IFWPContentCommandProtocol.h */; };
+		07FA70301DA5292600E35C36 /* IFWPContentCommandProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FAC1DA5292600E35C36 /* IFWPContentCommandProtocol.m */; };
+		07FA70311DA5292600E35C36 /* IFWPLicenceBehaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FAD1DA5292600E35C36 /* IFWPLicenceBehaviour.h */; };
+		07FA70321DA5292600E35C36 /* IFWPLicenceBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FAE1DA5292600E35C36 /* IFWPLicenceBehaviour.m */; };
+		07FA70331DA5292600E35C36 /* IFWPPostDBAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FAF1DA5292600E35C36 /* IFWPPostDBAdapter.h */; };
+		07FA70341DA5292600E35C36 /* IFWPPostDBAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FB01DA5292600E35C36 /* IFWPPostDBAdapter.m */; };
+		07FA70351DA5292600E35C36 /* IFWPPostsPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FB11DA5292600E35C36 /* IFWPPostsPathRoot.h */; };
+		07FA70361DA5292600E35C36 /* IFWPPostsPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FB21DA5292600E35C36 /* IFWPPostsPathRoot.m */; };
+		07FA70371DA5292600E35C36 /* IFWPSearchPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FB31DA5292600E35C36 /* IFWPSearchPathRoot.h */; };
+		07FA70381DA5292600E35C36 /* IFWPSearchPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FB41DA5292600E35C36 /* IFWPSearchPathRoot.m */; };
+		184D817FC98DD2B9983F7E3C /* libPods-Smokestack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E62C7B947E8F970ADD1B041 /* libPods-Smokestack.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		072EFC241DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSLoginFormViewController.h; sourceTree = "<group>"; };
+		072EFC251DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSLoginFormViewController.m; sourceTree = "<group>"; };
+		073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSSettings.h; sourceTree = "<group>"; };
+		073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSSettings.m; sourceTree = "<group>"; };
+		077AEDDB1D7F1D2500C5A2D9 /* Smokestack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Smokestack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSAuthenticationManager.h; sourceTree = "<group>"; };
+		077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSAuthenticationManager.m; sourceTree = "<group>"; };
+		07F1996E1E5F0C60004580C2 /* IFSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFSqlite.h; sourceTree = "<group>"; };
+		07F1996F1E5F0C60004580C2 /* IFSqlite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFSqlite.m; sourceTree = "<group>"; };
+		07FA4E761DF6F1DA00EC2353 /* IFFormFieldPadding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormFieldPadding.h; sourceTree = "<group>"; };
+		07FA4E771DF6F1DA00EC2353 /* IFFormFieldPadding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormFieldPadding.m; sourceTree = "<group>"; };
+		07FA4E7A1DF6F23000EC2353 /* IFFormFieldBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormFieldBorder.h; sourceTree = "<group>"; };
+		07FA4E7B1DF6F23000EC2353 /* IFFormFieldBorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormFieldBorder.m; sourceTree = "<group>"; };
+		07FA6F281DA5292600E35C36 /* IFCMSCommandProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSCommandProtocol.h; sourceTree = "<group>"; };
+		07FA6F291DA5292600E35C36 /* IFCMSCommandProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSCommandProtocol.m; sourceTree = "<group>"; };
+		07FA6F2A1DA5292600E35C36 /* IFCMSContentAuthority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSContentAuthority.h; sourceTree = "<group>"; };
+		07FA6F2B1DA5292600E35C36 /* IFCMSContentAuthority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSContentAuthority.m; sourceTree = "<group>"; };
+		07FA6F2C1DA5292600E35C36 /* IFCMSFileDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSFileDB.h; sourceTree = "<group>"; };
+		07FA6F2D1DA5292600E35C36 /* IFCMSFileDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSFileDB.m; sourceTree = "<group>"; };
+		07FA6F2E1DA5292600E35C36 /* IFCMSFileset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSFileset.h; sourceTree = "<group>"; };
+		07FA6F2F1DA5292600E35C36 /* IFCMSFileset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSFileset.m; sourceTree = "<group>"; };
+		07FA6F301DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSFilesetCategoryPathRoot.h; sourceTree = "<group>"; };
+		07FA6F311DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSFilesetCategoryPathRoot.m; sourceTree = "<group>"; };
+		07FA6F321DA5292600E35C36 /* IFCMSPostsPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSPostsPathRoot.h; sourceTree = "<group>"; };
+		07FA6F331DA5292600E35C36 /* IFCMSPostsPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSPostsPathRoot.m; sourceTree = "<group>"; };
+		07FA6F341DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSTableViewContentTypeConverter.h; sourceTree = "<group>"; };
+		07FA6F351DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSTableViewContentTypeConverter.m; sourceTree = "<group>"; };
+		07FA6F361DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSWebViewContentTypeConverter.h; sourceTree = "<group>"; };
+		07FA6F371DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSWebViewContentTypeConverter.m; sourceTree = "<group>"; };
+		07FA6F391DA5292600E35C36 /* IFCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCommand.h; sourceTree = "<group>"; };
+		07FA6F3A1DA5292600E35C36 /* IFCommandProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCommandProtocol.h; sourceTree = "<group>"; };
+		07FA6F3B1DA5292600E35C36 /* IFCommandProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCommandProtocol.m; sourceTree = "<group>"; };
+		07FA6F3C1DA5292600E35C36 /* IFCommandScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCommandScheduler.h; sourceTree = "<group>"; };
+		07FA6F3D1DA5292600E35C36 /* IFCommandScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCommandScheduler.m; sourceTree = "<group>"; };
+		07FA6F3E1DA5292600E35C36 /* IFDownloadZipCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDownloadZipCommand.h; sourceTree = "<group>"; };
+		07FA6F3F1DA5292600E35C36 /* IFDownloadZipCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDownloadZipCommand.m; sourceTree = "<group>"; };
+		07FA6F401DA5292600E35C36 /* IFGetURLCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFGetURLCommand.h; sourceTree = "<group>"; };
+		07FA6F411DA5292600E35C36 /* IFGetURLCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFGetURLCommand.m; sourceTree = "<group>"; };
+		07FA6F421DA5292600E35C36 /* IFMvFileCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFMvFileCommand.h; sourceTree = "<group>"; };
+		07FA6F431DA5292600E35C36 /* IFMvFileCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFMvFileCommand.m; sourceTree = "<group>"; };
+		07FA6F441DA5292600E35C36 /* IFRmFileCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFRmFileCommand.h; sourceTree = "<group>"; };
+		07FA6F451DA5292600E35C36 /* IFRmFileCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFRmFileCommand.m; sourceTree = "<group>"; };
+		07FA6F461DA5292600E35C36 /* IFUnzipCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFUnzipCommand.h; sourceTree = "<group>"; };
+		07FA6F471DA5292600E35C36 /* IFUnzipCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFUnzipCommand.m; sourceTree = "<group>"; };
+		07FA6F491DA5292600E35C36 /* IFAbstractContentAuthority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFAbstractContentAuthority.h; sourceTree = "<group>"; };
+		07FA6F4A1DA5292600E35C36 /* IFAbstractContentAuthority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFAbstractContentAuthority.m; sourceTree = "<group>"; };
+		07FA6F4B1DA5292600E35C36 /* IFContentAuthority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentAuthority.h; sourceTree = "<group>"; };
+		07FA6F4C1DA5292600E35C36 /* IFContentAuthority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContentAuthority.m; sourceTree = "<group>"; };
+		07FA6F4D1DA5292600E35C36 /* IFContentPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentPath.h; sourceTree = "<group>"; };
+		07FA6F4E1DA5292600E35C36 /* IFContentPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContentPath.m; sourceTree = "<group>"; };
+		07FA6F4F1DA5292600E35C36 /* IFContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentProvider.h; sourceTree = "<group>"; };
+		07FA6F501DA5292600E35C36 /* IFContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContentProvider.m; sourceTree = "<group>"; };
+		07FA6F511DA5292600E35C36 /* IFContentSchemeHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentSchemeHandler.h; sourceTree = "<group>"; };
+		07FA6F521DA5292600E35C36 /* IFContentSchemeHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContentSchemeHandler.m; sourceTree = "<group>"; };
+		07FA6F531DA5292600E35C36 /* IFContentTypeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentTypeConverter.h; sourceTree = "<group>"; };
+		07FA6F541DA5292600E35C36 /* IFContentURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentURLProtocol.h; sourceTree = "<group>"; };
+		07FA6F551DA5292600E35C36 /* IFContentURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContentURLProtocol.m; sourceTree = "<group>"; };
+		07FA6F561DA5292600E35C36 /* IFDataTableFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDataTableFormatter.h; sourceTree = "<group>"; };
+		07FA6F571DA5292600E35C36 /* IFDataTableFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDataTableFormatter.m; sourceTree = "<group>"; };
+		07FA6F581DA5292600E35C36 /* IFDataWebviewFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDataWebviewFormatter.h; sourceTree = "<group>"; };
+		07FA6F591DA5292600E35C36 /* IFDataWebviewFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDataWebviewFormatter.m; sourceTree = "<group>"; };
+		07FA6F5A1DA5292600E35C36 /* IFMIMETypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFMIMETypes.h; sourceTree = "<group>"; };
+		07FA6F5B1DA5292600E35C36 /* IFMIMETypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFMIMETypes.m; sourceTree = "<group>"; };
+		07FA6F5C1DA5292600E35C36 /* IFPlainContentTypeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFPlainContentTypeConverter.h; sourceTree = "<group>"; };
+		07FA6F5D1DA5292600E35C36 /* IFPlainContentTypeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFPlainContentTypeConverter.m; sourceTree = "<group>"; };
+		07FA6F5F1DA5292600E35C36 /* IFDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDB.h; sourceTree = "<group>"; };
+		07FA6F601DA5292600E35C36 /* IFDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDB.m; sourceTree = "<group>"; };
+		07FA6F611DA5292600E35C36 /* IFDBFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDBFilter.h; sourceTree = "<group>"; };
+		07FA6F621DA5292600E35C36 /* IFDBFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDBFilter.m; sourceTree = "<group>"; };
+		07FA6F631DA5292600E35C36 /* IFDBHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDBHelper.h; sourceTree = "<group>"; };
+		07FA6F641DA5292600E35C36 /* IFDBHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDBHelper.m; sourceTree = "<group>"; };
+		07FA6F651DA5292600E35C36 /* IFDBORM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDBORM.h; sourceTree = "<group>"; };
+		07FA6F661DA5292600E35C36 /* IFDBORM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDBORM.m; sourceTree = "<group>"; };
+		07FA6F681DA5292600E35C36 /* IFFormField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormField.h; sourceTree = "<group>"; };
+		07FA6F691DA5292600E35C36 /* IFFormField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormField.m; sourceTree = "<group>"; };
+		07FA6F6A1DA5292600E35C36 /* IFFormHiddenField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormHiddenField.h; sourceTree = "<group>"; };
+		07FA6F6B1DA5292600E35C36 /* IFFormHiddenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormHiddenField.m; sourceTree = "<group>"; };
+		07FA6F6C1DA5292600E35C36 /* IFFormImageField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormImageField.h; sourceTree = "<group>"; };
+		07FA6F6D1DA5292600E35C36 /* IFFormImageField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormImageField.m; sourceTree = "<group>"; };
+		07FA6F6E1DA5292600E35C36 /* IFFormOptionField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormOptionField.h; sourceTree = "<group>"; };
+		07FA6F6F1DA5292600E35C36 /* IFFormOptionField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormOptionField.m; sourceTree = "<group>"; };
+		07FA6F701DA5292600E35C36 /* IFFormSelectField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormSelectField.h; sourceTree = "<group>"; };
+		07FA6F711DA5292600E35C36 /* IFFormSelectField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormSelectField.m; sourceTree = "<group>"; };
+		07FA6F721DA5292600E35C36 /* IFFormTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormTextField.h; sourceTree = "<group>"; };
+		07FA6F731DA5292600E35C36 /* IFFormTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormTextField.m; sourceTree = "<group>"; };
+		07FA6F741DA5292600E35C36 /* IFFormView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormView.h; sourceTree = "<group>"; };
+		07FA6F751DA5292600E35C36 /* IFFormView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormView.m; sourceTree = "<group>"; };
+		07FA6F761DA5292600E35C36 /* IFFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormViewController.h; sourceTree = "<group>"; };
+		07FA6F771DA5292600E35C36 /* IFFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFormViewController.m; sourceTree = "<group>"; };
+		07FA6F781DA5292600E35C36 /* IFSubmitField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFSubmitField.h; sourceTree = "<group>"; };
+		07FA6F791DA5292600E35C36 /* IFSubmitField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFSubmitField.m; sourceTree = "<group>"; };
+		07FA6F911DA5292600E35C36 /* Smokestack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Smokestack.h; sourceTree = "<group>"; };
+		07FA6F931DA5292600E35C36 /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
+		07FA6F941DA5292600E35C36 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
+		07FA6F951DA5292600E35C36 /* SSKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychainQuery.h; sourceTree = "<group>"; };
+		07FA6F961DA5292600E35C36 /* SSKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychainQuery.m; sourceTree = "<group>"; };
+		07FA6F981DA5292600E35C36 /* IFContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentTableViewController.h; sourceTree = "<group>"; };
+		07FA6F991DA5292600E35C36 /* IFContentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContentTableViewController.m; sourceTree = "<group>"; };
+		07FA6F9B1DA5292600E35C36 /* IFDataFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDataFormatter.h; sourceTree = "<group>"; };
+		07FA6F9C1DA5292600E35C36 /* IFHTMLString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFHTMLString.h; sourceTree = "<group>"; };
+		07FA6F9D1DA5292600E35C36 /* IFHTMLString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFHTMLString.m; sourceTree = "<group>"; };
+		07FA6F9E1DA5292600E35C36 /* IFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFHTTPClient.h; sourceTree = "<group>"; };
+		07FA6F9F1DA5292600E35C36 /* IFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFHTTPClient.m; sourceTree = "<group>"; };
+		07FA6FA11DA5292600E35C36 /* IFWPAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPAuthManager.h; sourceTree = "<group>"; };
+		07FA6FA21DA5292600E35C36 /* IFWPAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPAuthManager.m; sourceTree = "<group>"; };
+		07FA6FA31DA5292600E35C36 /* IFWPChildPostRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPChildPostRendering.h; sourceTree = "<group>"; };
+		07FA6FA41DA5292600E35C36 /* IFWPChildPostRendering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPChildPostRendering.m; sourceTree = "<group>"; };
+		07FA6FA51DA5292600E35C36 /* IFWPClientTemplateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPClientTemplateContext.h; sourceTree = "<group>"; };
+		07FA6FA61DA5292600E35C36 /* IFWPClientTemplateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPClientTemplateContext.m; sourceTree = "<group>"; };
+		07FA6FA71DA5292600E35C36 /* IFWPContentAuthority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPContentAuthority.h; sourceTree = "<group>"; };
+		07FA6FA81DA5292600E35C36 /* IFWPContentAuthority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPContentAuthority.m; sourceTree = "<group>"; };
+		07FA6FA91DA5292600E35C36 /* IFWPContentAuthorityFormFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPContentAuthorityFormFactory.h; sourceTree = "<group>"; };
+		07FA6FAA1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPContentAuthorityFormFactory.m; sourceTree = "<group>"; };
+		07FA6FAB1DA5292600E35C36 /* IFWPContentCommandProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPContentCommandProtocol.h; sourceTree = "<group>"; };
+		07FA6FAC1DA5292600E35C36 /* IFWPContentCommandProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPContentCommandProtocol.m; sourceTree = "<group>"; };
+		07FA6FAD1DA5292600E35C36 /* IFWPLicenceBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPLicenceBehaviour.h; sourceTree = "<group>"; };
+		07FA6FAE1DA5292600E35C36 /* IFWPLicenceBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPLicenceBehaviour.m; sourceTree = "<group>"; };
+		07FA6FAF1DA5292600E35C36 /* IFWPPostDBAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPPostDBAdapter.h; sourceTree = "<group>"; };
+		07FA6FB01DA5292600E35C36 /* IFWPPostDBAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPPostDBAdapter.m; sourceTree = "<group>"; };
+		07FA6FB11DA5292600E35C36 /* IFWPPostsPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPPostsPathRoot.h; sourceTree = "<group>"; };
+		07FA6FB21DA5292600E35C36 /* IFWPPostsPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPPostsPathRoot.m; sourceTree = "<group>"; };
+		07FA6FB31DA5292600E35C36 /* IFWPSearchPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPSearchPathRoot.h; sourceTree = "<group>"; };
+		07FA6FB41DA5292600E35C36 /* IFWPSearchPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPSearchPathRoot.m; sourceTree = "<group>"; };
+		0E62C7B947E8F970ADD1B041 /* libPods-Smokestack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Smokestack.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		475B5346EA2E33941F625B57 /* Pods-Smokestack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smokestack.release.xcconfig"; path = "Pods/Target Support Files/Pods-Smokestack/Pods-Smokestack.release.xcconfig"; sourceTree = "<group>"; };
+		BC4E0D48EABCE6574E64087E /* Pods-Smokestack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smokestack.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Smokestack/Pods-Smokestack.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		077AEDD71D7F1D2500C5A2D9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				184D817FC98DD2B9983F7E3C /* libPods-Smokestack.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		077AEDD11D7F1D2500C5A2D9 = {
+			isa = PBXGroup;
+			children = (
+				07FA6F261DA5292600E35C36 /* Classes */,
+				077AEDDC1D7F1D2500C5A2D9 /* Products */,
+				BF950DEF19981CBD97D320C1 /* Pods */,
+				C78E1701352614A41B6FB3D0 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		077AEDDC1D7F1D2500C5A2D9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				077AEDDB1D7F1D2500C5A2D9 /* Smokestack.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		07FA6F261DA5292600E35C36 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				07FA6F911DA5292600E35C36 /* Smokestack.h */,
+				07FA6F271DA5292600E35C36 /* cms */,
+				07FA6F381DA5292600E35C36 /* commands */,
+				07FA6F481DA5292600E35C36 /* content */,
+				07FA6F5E1DA5292600E35C36 /* db */,
+				07FA6F671DA5292600E35C36 /* forms */,
+				07FA6F971DA5292600E35C36 /* ui */,
+				07FA6F9A1DA5292600E35C36 /* utils */,
+				07FA6FA01DA5292600E35C36 /* wp */,
+				07FA6F921DA5292600E35C36 /* SSKeychain */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		07FA6F271DA5292600E35C36 /* cms */ = {
+			isa = PBXGroup;
+			children = (
+				07FA6F281DA5292600E35C36 /* IFCMSCommandProtocol.h */,
+				07FA6F291DA5292600E35C36 /* IFCMSCommandProtocol.m */,
+				077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */,
+				077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */,
+				07FA6F2A1DA5292600E35C36 /* IFCMSContentAuthority.h */,
+				07FA6F2B1DA5292600E35C36 /* IFCMSContentAuthority.m */,
+				07FA6F2C1DA5292600E35C36 /* IFCMSFileDB.h */,
+				07FA6F2D1DA5292600E35C36 /* IFCMSFileDB.m */,
+				07FA6F2E1DA5292600E35C36 /* IFCMSFileset.h */,
+				07FA6F2F1DA5292600E35C36 /* IFCMSFileset.m */,
+				07FA6F301DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.h */,
+				07FA6F311DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.m */,
+				072EFC241DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h */,
+				072EFC251DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m */,
+				07FA6F321DA5292600E35C36 /* IFCMSPostsPathRoot.h */,
+				07FA6F331DA5292600E35C36 /* IFCMSPostsPathRoot.m */,
+				073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */,
+				073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */,
+				07FA6F341DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.h */,
+				07FA6F351DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.m */,
+				07FA6F361DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.h */,
+				07FA6F371DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.m */,
+			);
+			path = cms;
+			sourceTree = "<group>";
+		};
+		07FA6F381DA5292600E35C36 /* commands */ = {
+			isa = PBXGroup;
+			children = (
+				07FA6F391DA5292600E35C36 /* IFCommand.h */,
+				07FA6F3A1DA5292600E35C36 /* IFCommandProtocol.h */,
+				07FA6F3B1DA5292600E35C36 /* IFCommandProtocol.m */,
+				07FA6F3C1DA5292600E35C36 /* IFCommandScheduler.h */,
+				07FA6F3D1DA5292600E35C36 /* IFCommandScheduler.m */,
+				07FA6F3E1DA5292600E35C36 /* IFDownloadZipCommand.h */,
+				07FA6F3F1DA5292600E35C36 /* IFDownloadZipCommand.m */,
+				07FA6F401DA5292600E35C36 /* IFGetURLCommand.h */,
+				07FA6F411DA5292600E35C36 /* IFGetURLCommand.m */,
+				07FA6F421DA5292600E35C36 /* IFMvFileCommand.h */,
+				07FA6F431DA5292600E35C36 /* IFMvFileCommand.m */,
+				07FA6F441DA5292600E35C36 /* IFRmFileCommand.h */,
+				07FA6F451DA5292600E35C36 /* IFRmFileCommand.m */,
+				07FA6F461DA5292600E35C36 /* IFUnzipCommand.h */,
+				07FA6F471DA5292600E35C36 /* IFUnzipCommand.m */,
+			);
+			path = commands;
+			sourceTree = "<group>";
+		};
+		07FA6F481DA5292600E35C36 /* content */ = {
+			isa = PBXGroup;
+			children = (
+				07FA6F491DA5292600E35C36 /* IFAbstractContentAuthority.h */,
+				07FA6F4A1DA5292600E35C36 /* IFAbstractContentAuthority.m */,
+				07FA6F4B1DA5292600E35C36 /* IFContentAuthority.h */,
+				07FA6F4C1DA5292600E35C36 /* IFContentAuthority.m */,
+				07FA6F4D1DA5292600E35C36 /* IFContentPath.h */,
+				07FA6F4E1DA5292600E35C36 /* IFContentPath.m */,
+				07FA6F4F1DA5292600E35C36 /* IFContentProvider.h */,
+				07FA6F501DA5292600E35C36 /* IFContentProvider.m */,
+				07FA6F511DA5292600E35C36 /* IFContentSchemeHandler.h */,
+				07FA6F521DA5292600E35C36 /* IFContentSchemeHandler.m */,
+				07FA6F531DA5292600E35C36 /* IFContentTypeConverter.h */,
+				07FA6F541DA5292600E35C36 /* IFContentURLProtocol.h */,
+				07FA6F551DA5292600E35C36 /* IFContentURLProtocol.m */,
+				07FA6F561DA5292600E35C36 /* IFDataTableFormatter.h */,
+				07FA6F571DA5292600E35C36 /* IFDataTableFormatter.m */,
+				07FA6F581DA5292600E35C36 /* IFDataWebviewFormatter.h */,
+				07FA6F591DA5292600E35C36 /* IFDataWebviewFormatter.m */,
+				07FA6F5A1DA5292600E35C36 /* IFMIMETypes.h */,
+				07FA6F5B1DA5292600E35C36 /* IFMIMETypes.m */,
+				07FA6F5C1DA5292600E35C36 /* IFPlainContentTypeConverter.h */,
+				07FA6F5D1DA5292600E35C36 /* IFPlainContentTypeConverter.m */,
+			);
+			path = content;
+			sourceTree = "<group>";
+		};
+		07FA6F5E1DA5292600E35C36 /* db */ = {
+			isa = PBXGroup;
+			children = (
+				07FA6F5F1DA5292600E35C36 /* IFDB.h */,
+				07FA6F601DA5292600E35C36 /* IFDB.m */,
+				07FA6F611DA5292600E35C36 /* IFDBFilter.h */,
+				07FA6F621DA5292600E35C36 /* IFDBFilter.m */,
+				07FA6F631DA5292600E35C36 /* IFDBHelper.h */,
+				07FA6F641DA5292600E35C36 /* IFDBHelper.m */,
+				07FA6F651DA5292600E35C36 /* IFDBORM.h */,
+				07FA6F661DA5292600E35C36 /* IFDBORM.m */,
+				07F1996E1E5F0C60004580C2 /* IFSqlite.h */,
+				07F1996F1E5F0C60004580C2 /* IFSqlite.m */,
+			);
+			path = db;
+			sourceTree = "<group>";
+		};
+		07FA6F671DA5292600E35C36 /* forms */ = {
+			isa = PBXGroup;
+			children = (
+				07FA6F681DA5292600E35C36 /* IFFormField.h */,
+				07FA6F691DA5292600E35C36 /* IFFormField.m */,
+				07FA4E7A1DF6F23000EC2353 /* IFFormFieldBorder.h */,
+				07FA4E7B1DF6F23000EC2353 /* IFFormFieldBorder.m */,
+				07FA4E761DF6F1DA00EC2353 /* IFFormFieldPadding.h */,
+				07FA4E771DF6F1DA00EC2353 /* IFFormFieldPadding.m */,
+				07FA6F6A1DA5292600E35C36 /* IFFormHiddenField.h */,
+				07FA6F6B1DA5292600E35C36 /* IFFormHiddenField.m */,
+				07FA6F6C1DA5292600E35C36 /* IFFormImageField.h */,
+				07FA6F6D1DA5292600E35C36 /* IFFormImageField.m */,
+				07FA6F6E1DA5292600E35C36 /* IFFormOptionField.h */,
+				07FA6F6F1DA5292600E35C36 /* IFFormOptionField.m */,
+				07FA6F701DA5292600E35C36 /* IFFormSelectField.h */,
+				07FA6F711DA5292600E35C36 /* IFFormSelectField.m */,
+				07FA6F721DA5292600E35C36 /* IFFormTextField.h */,
+				07FA6F731DA5292600E35C36 /* IFFormTextField.m */,
+				07FA6F741DA5292600E35C36 /* IFFormView.h */,
+				07FA6F751DA5292600E35C36 /* IFFormView.m */,
+				07FA6F761DA5292600E35C36 /* IFFormViewController.h */,
+				07FA6F771DA5292600E35C36 /* IFFormViewController.m */,
+				07FA6F781DA5292600E35C36 /* IFSubmitField.h */,
+				07FA6F791DA5292600E35C36 /* IFSubmitField.m */,
+			);
+			path = forms;
+			sourceTree = "<group>";
+		};
+		07FA6F921DA5292600E35C36 /* SSKeychain */ = {
+			isa = PBXGroup;
+			children = (
+				07FA6F931DA5292600E35C36 /* SSKeychain.h */,
+				07FA6F941DA5292600E35C36 /* SSKeychain.m */,
+				07FA6F951DA5292600E35C36 /* SSKeychainQuery.h */,
+				07FA6F961DA5292600E35C36 /* SSKeychainQuery.m */,
+			);
+			path = SSKeychain;
+			sourceTree = "<group>";
+		};
+		07FA6F971DA5292600E35C36 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				07FA6F981DA5292600E35C36 /* IFContentTableViewController.h */,
+				07FA6F991DA5292600E35C36 /* IFContentTableViewController.m */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		07FA6F9A1DA5292600E35C36 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				07FA6F9B1DA5292600E35C36 /* IFDataFormatter.h */,
+				07FA6F9C1DA5292600E35C36 /* IFHTMLString.h */,
+				07FA6F9D1DA5292600E35C36 /* IFHTMLString.m */,
+				07FA6F9E1DA5292600E35C36 /* IFHTTPClient.h */,
+				07FA6F9F1DA5292600E35C36 /* IFHTTPClient.m */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		07FA6FA01DA5292600E35C36 /* wp */ = {
+			isa = PBXGroup;
+			children = (
+				07FA6FA11DA5292600E35C36 /* IFWPAuthManager.h */,
+				07FA6FA21DA5292600E35C36 /* IFWPAuthManager.m */,
+				07FA6FA31DA5292600E35C36 /* IFWPChildPostRendering.h */,
+				07FA6FA41DA5292600E35C36 /* IFWPChildPostRendering.m */,
+				07FA6FA51DA5292600E35C36 /* IFWPClientTemplateContext.h */,
+				07FA6FA61DA5292600E35C36 /* IFWPClientTemplateContext.m */,
+				07FA6FA71DA5292600E35C36 /* IFWPContentAuthority.h */,
+				07FA6FA81DA5292600E35C36 /* IFWPContentAuthority.m */,
+				07FA6FA91DA5292600E35C36 /* IFWPContentAuthorityFormFactory.h */,
+				07FA6FAA1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.m */,
+				07FA6FAB1DA5292600E35C36 /* IFWPContentCommandProtocol.h */,
+				07FA6FAC1DA5292600E35C36 /* IFWPContentCommandProtocol.m */,
+				07FA6FAD1DA5292600E35C36 /* IFWPLicenceBehaviour.h */,
+				07FA6FAE1DA5292600E35C36 /* IFWPLicenceBehaviour.m */,
+				07FA6FAF1DA5292600E35C36 /* IFWPPostDBAdapter.h */,
+				07FA6FB01DA5292600E35C36 /* IFWPPostDBAdapter.m */,
+				07FA6FB11DA5292600E35C36 /* IFWPPostsPathRoot.h */,
+				07FA6FB21DA5292600E35C36 /* IFWPPostsPathRoot.m */,
+				07FA6FB31DA5292600E35C36 /* IFWPSearchPathRoot.h */,
+				07FA6FB41DA5292600E35C36 /* IFWPSearchPathRoot.m */,
+			);
+			path = wp;
+			sourceTree = "<group>";
+		};
+		BF950DEF19981CBD97D320C1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BC4E0D48EABCE6574E64087E /* Pods-Smokestack.debug.xcconfig */,
+				475B5346EA2E33941F625B57 /* Pods-Smokestack.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		C78E1701352614A41B6FB3D0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0E62C7B947E8F970ADD1B041 /* libPods-Smokestack.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		077AEDD81D7F1D2500C5A2D9 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07FA6FF71DA5292600E35C36 /* IFFormOptionField.h in Headers */,
+				07FA6FCC1DA5292600E35C36 /* IFGetURLCommand.h in Headers */,
+				07FA6FD81DA5292600E35C36 /* IFContentPath.h in Headers */,
+				07FA6FDA1DA5292600E35C36 /* IFContentProvider.h in Headers */,
+				07FA6FF91DA5292600E35C36 /* IFFormSelectField.h in Headers */,
+				07FA6FC31DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.h in Headers */,
+				07FA6FE31DA5292600E35C36 /* IFDataWebviewFormatter.h in Headers */,
+				07FA70311DA5292600E35C36 /* IFWPLicenceBehaviour.h in Headers */,
+				073DB3EF1DB8D29F002504FB /* IFCMSSettings.h in Headers */,
+				07FA70351DA5292600E35C36 /* IFWPPostsPathRoot.h in Headers */,
+				077B08DD1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h in Headers */,
+				07FA6FDE1DA5292600E35C36 /* IFContentTypeConverter.h in Headers */,
+				07FA70331DA5292600E35C36 /* IFWPPostDBAdapter.h in Headers */,
+				07FA6FDF1DA5292600E35C36 /* IFContentURLProtocol.h in Headers */,
+				07FA6FCA1DA5292600E35C36 /* IFDownloadZipCommand.h in Headers */,
+				07FA702F1DA5292600E35C36 /* IFWPContentCommandProtocol.h in Headers */,
+				07FA6FBF1DA5292600E35C36 /* IFCMSPostsPathRoot.h in Headers */,
+				07FA701C1DA5292600E35C36 /* SSKeychainQuery.h in Headers */,
+				07FA70191DA5292600E35C36 /* Smokestack.h in Headers */,
+				07FA6FEF1DA5292600E35C36 /* IFDBORM.h in Headers */,
+				07FA70011DA5292600E35C36 /* IFSubmitField.h in Headers */,
+				07FA701A1DA5292600E35C36 /* SSKeychain.h in Headers */,
+				07FA70251DA5292600E35C36 /* IFWPAuthManager.h in Headers */,
+				07FA6FFB1DA5292600E35C36 /* IFFormTextField.h in Headers */,
+				07FA70371DA5292600E35C36 /* IFWPSearchPathRoot.h in Headers */,
+				07FA6FF11DA5292600E35C36 /* IFFormField.h in Headers */,
+				07FA6FE91DA5292600E35C36 /* IFDB.h in Headers */,
+				07FA70211DA5292600E35C36 /* IFHTMLString.h in Headers */,
+				07FA6FB91DA5292600E35C36 /* IFCMSFileDB.h in Headers */,
+				07FA70271DA5292600E35C36 /* IFWPChildPostRendering.h in Headers */,
+				07FA70201DA5292600E35C36 /* IFDataFormatter.h in Headers */,
+				07FA701E1DA5292600E35C36 /* IFContentTableViewController.h in Headers */,
+				072EFC261DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h in Headers */,
+				07FA6FE71DA5292600E35C36 /* IFPlainContentTypeConverter.h in Headers */,
+				07FA6FE11DA5292600E35C36 /* IFDataTableFormatter.h in Headers */,
+				07FA4E781DF6F1DA00EC2353 /* IFFormFieldPadding.h in Headers */,
+				07FA702B1DA5292600E35C36 /* IFWPContentAuthority.h in Headers */,
+				07FA6FDC1DA5292600E35C36 /* IFContentSchemeHandler.h in Headers */,
+				07FA6FB51DA5292600E35C36 /* IFCMSCommandProtocol.h in Headers */,
+				07FA6FC81DA5292600E35C36 /* IFCommandScheduler.h in Headers */,
+				07FA70291DA5292600E35C36 /* IFWPClientTemplateContext.h in Headers */,
+				07F199701E5F0C60004580C2 /* IFSqlite.h in Headers */,
+				07FA70231DA5292600E35C36 /* IFHTTPClient.h in Headers */,
+				07FA6FC11DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.h in Headers */,
+				07FA6FEB1DA5292600E35C36 /* IFDBFilter.h in Headers */,
+				07FA6FD01DA5292600E35C36 /* IFRmFileCommand.h in Headers */,
+				07FA6FC61DA5292600E35C36 /* IFCommandProtocol.h in Headers */,
+				07FA4E7C1DF6F23000EC2353 /* IFFormFieldBorder.h in Headers */,
+				07FA6FF51DA5292600E35C36 /* IFFormImageField.h in Headers */,
+				07FA6FD41DA5292600E35C36 /* IFAbstractContentAuthority.h in Headers */,
+				07FA6FD21DA5292600E35C36 /* IFUnzipCommand.h in Headers */,
+				07FA6FFD1DA5292600E35C36 /* IFFormView.h in Headers */,
+				07FA6FBD1DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.h in Headers */,
+				07FA6FD61DA5292600E35C36 /* IFContentAuthority.h in Headers */,
+				07FA6FFF1DA5292600E35C36 /* IFFormViewController.h in Headers */,
+				07FA6FBB1DA5292600E35C36 /* IFCMSFileset.h in Headers */,
+				07FA6FB71DA5292600E35C36 /* IFCMSContentAuthority.h in Headers */,
+				07FA702D1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.h in Headers */,
+				07FA6FCE1DA5292600E35C36 /* IFMvFileCommand.h in Headers */,
+				07FA6FED1DA5292600E35C36 /* IFDBHelper.h in Headers */,
+				07FA6FF31DA5292600E35C36 /* IFFormHiddenField.h in Headers */,
+				07FA6FC51DA5292600E35C36 /* IFCommand.h in Headers */,
+				07FA6FE51DA5292600E35C36 /* IFMIMETypes.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		077AEDDA1D7F1D2500C5A2D9 /* Smokestack */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 077AEDE31D7F1D2500C5A2D9 /* Build configuration list for PBXNativeTarget "Smokestack" */;
+			buildPhases = (
+				F7D05814B0F8504390500663 /* [CP] Check Pods Manifest.lock */,
+				077AEDD61D7F1D2500C5A2D9 /* Sources */,
+				077AEDD71D7F1D2500C5A2D9 /* Frameworks */,
+				077AEDD81D7F1D2500C5A2D9 /* Headers */,
+				077AEDD91D7F1D2500C5A2D9 /* Resources */,
+				958E809440278645C05DB743 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Smokestack;
+			productName = Smokestack;
+			productReference = 077AEDDB1D7F1D2500C5A2D9 /* Smokestack.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		077AEDD21D7F1D2500C5A2D9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = InnerFunction;
+				TargetAttributes = {
+					077AEDDA1D7F1D2500C5A2D9 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+				};
+			};
+			buildConfigurationList = 077AEDD51D7F1D2500C5A2D9 /* Build configuration list for PBXProject "Smokestack" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 077AEDD11D7F1D2500C5A2D9;
+			productRefGroup = 077AEDDC1D7F1D2500C5A2D9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				077AEDDA1D7F1D2500C5A2D9 /* Smokestack */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		077AEDD91D7F1D2500C5A2D9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		958E809440278645C05DB743 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Smokestack/Pods-Smokestack-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F7D05814B0F8504390500663 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		077AEDD61D7F1D2500C5A2D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07FA6FEE1DA5292600E35C36 /* IFDBHelper.m in Sources */,
+				07FA6FFE1DA5292600E35C36 /* IFFormView.m in Sources */,
+				07FA6FEA1DA5292600E35C36 /* IFDB.m in Sources */,
+				07FA6FE21DA5292600E35C36 /* IFDataTableFormatter.m in Sources */,
+				07FA6FFA1DA5292600E35C36 /* IFFormSelectField.m in Sources */,
+				07FA6FBA1DA5292600E35C36 /* IFCMSFileDB.m in Sources */,
+				07FA6FC41DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.m in Sources */,
+				07FA6FC01DA5292600E35C36 /* IFCMSPostsPathRoot.m in Sources */,
+				073DB3F01DB8D29F002504FB /* IFCMSSettings.m in Sources */,
+				07FA70381DA5292600E35C36 /* IFWPSearchPathRoot.m in Sources */,
+				07FA70321DA5292600E35C36 /* IFWPLicenceBehaviour.m in Sources */,
+				07FA6FE61DA5292600E35C36 /* IFMIMETypes.m in Sources */,
+				07FA70301DA5292600E35C36 /* IFWPContentCommandProtocol.m in Sources */,
+				07FA70281DA5292600E35C36 /* IFWPChildPostRendering.m in Sources */,
+				07FA6FD71DA5292600E35C36 /* IFContentAuthority.m in Sources */,
+				07FA701F1DA5292600E35C36 /* IFContentTableViewController.m in Sources */,
+				07FA6FB81DA5292600E35C36 /* IFCMSContentAuthority.m in Sources */,
+				07FA70241DA5292600E35C36 /* IFHTTPClient.m in Sources */,
+				07FA70361DA5292600E35C36 /* IFWPPostsPathRoot.m in Sources */,
+				07FA6FCF1DA5292600E35C36 /* IFMvFileCommand.m in Sources */,
+				07FA6FE81DA5292600E35C36 /* IFPlainContentTypeConverter.m in Sources */,
+				07FA6FF01DA5292600E35C36 /* IFDBORM.m in Sources */,
+				07FA4E7D1DF6F23000EC2353 /* IFFormFieldBorder.m in Sources */,
+				07FA70341DA5292600E35C36 /* IFWPPostDBAdapter.m in Sources */,
+				07FA6FEC1DA5292600E35C36 /* IFDBFilter.m in Sources */,
+				072EFC271DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m in Sources */,
+				07FA6FC91DA5292600E35C36 /* IFCommandScheduler.m in Sources */,
+				07FA6FDB1DA5292600E35C36 /* IFContentProvider.m in Sources */,
+				07FA6FBE1DA5292600E35C36 /* IFCMSFilesetCategoryPathRoot.m in Sources */,
+				07FA701B1DA5292600E35C36 /* SSKeychain.m in Sources */,
+				07FA6FD11DA5292600E35C36 /* IFRmFileCommand.m in Sources */,
+				07FA6FC21DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.m in Sources */,
+				07FA6FE01DA5292600E35C36 /* IFContentURLProtocol.m in Sources */,
+				07FA6FD31DA5292600E35C36 /* IFUnzipCommand.m in Sources */,
+				07F199711E5F0C60004580C2 /* IFSqlite.m in Sources */,
+				07FA70001DA5292600E35C36 /* IFFormViewController.m in Sources */,
+				07FA702C1DA5292600E35C36 /* IFWPContentAuthority.m in Sources */,
+				07FA70021DA5292600E35C36 /* IFSubmitField.m in Sources */,
+				07FA70221DA5292600E35C36 /* IFHTMLString.m in Sources */,
+				07FA6FC71DA5292600E35C36 /* IFCommandProtocol.m in Sources */,
+				07FA6FF81DA5292600E35C36 /* IFFormOptionField.m in Sources */,
+				07FA6FF41DA5292600E35C36 /* IFFormHiddenField.m in Sources */,
+				07FA6FF21DA5292600E35C36 /* IFFormField.m in Sources */,
+				07FA4E791DF6F1DA00EC2353 /* IFFormFieldPadding.m in Sources */,
+				07FA6FF61DA5292600E35C36 /* IFFormImageField.m in Sources */,
+				07FA70261DA5292600E35C36 /* IFWPAuthManager.m in Sources */,
+				07FA702E1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.m in Sources */,
+				07FA6FCB1DA5292600E35C36 /* IFDownloadZipCommand.m in Sources */,
+				07FA701D1DA5292600E35C36 /* SSKeychainQuery.m in Sources */,
+				07FA6FFC1DA5292600E35C36 /* IFFormTextField.m in Sources */,
+				077B08DE1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m in Sources */,
+				07FA6FE41DA5292600E35C36 /* IFDataWebviewFormatter.m in Sources */,
+				07FA6FCD1DA5292600E35C36 /* IFGetURLCommand.m in Sources */,
+				07FA6FB61DA5292600E35C36 /* IFCMSCommandProtocol.m in Sources */,
+				07FA6FDD1DA5292600E35C36 /* IFContentSchemeHandler.m in Sources */,
+				07FA702A1DA5292600E35C36 /* IFWPClientTemplateContext.m in Sources */,
+				07FA6FD91DA5292600E35C36 /* IFContentPath.m in Sources */,
+				07FA6FD51DA5292600E35C36 /* IFAbstractContentAuthority.m in Sources */,
+				07FA6FBC1DA5292600E35C36 /* IFCMSFileset.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		077AEDE11D7F1D2500C5A2D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		077AEDE21D7F1D2500C5A2D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		077AEDE41D7F1D2500C5A2D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC4E0D48EABCE6574E64087E /* Pods-Smokestack.debug.xcconfig */;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Smokestack/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.innerfunction.Smokestack;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		077AEDE51D7F1D2500C5A2D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 475B5346EA2E33941F625B57 /* Pods-Smokestack.release.xcconfig */;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Smokestack/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.innerfunction.Smokestack;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		077AEDD51D7F1D2500C5A2D9 /* Build configuration list for PBXProject "Smokestack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				077AEDE11D7F1D2500C5A2D9 /* Debug */,
+				077AEDE21D7F1D2500C5A2D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		077AEDE31D7F1D2500C5A2D9 /* Build configuration list for PBXNativeTarget "Smokestack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				077AEDE41D7F1D2500C5A2D9 /* Debug */,
+				077AEDE51D7F1D2500C5A2D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 077AEDD21D7F1D2500C5A2D9 /* Project object */;
+}
