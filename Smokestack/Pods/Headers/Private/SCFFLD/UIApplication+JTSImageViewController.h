@@ -1,1 +1,0 @@
-../../../SCFFLD/SCFFLD/Externals/JTSImageViewController/UIApplication+JTSImageViewController.h
