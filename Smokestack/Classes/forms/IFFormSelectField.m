@@ -198,7 +198,7 @@
 
 - (void)releaseFieldFocus {
     if (_itemsList) {
-        [self.form.viewController dismissViewControllerAnimated:_itemsListContainer completion:^{
+        [self.form.viewController dismissViewControllerAnimated:YES completion:^{
             _itemsList = nil;
         }];
     }

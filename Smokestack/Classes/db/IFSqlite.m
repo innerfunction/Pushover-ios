@@ -147,7 +147,7 @@
                                         length:sqlite3_column_bytes16(_statement, _columnIdx) / 2];
         break;
     case SQLITE_INTEGER:
-        value = [NSNumber numberWithLong:sqlite3_column_int64(_statement, _columnIdx)];
+        value = [NSNumber numberWithLongLong:sqlite3_column_int64(_statement, _columnIdx)];
         break;
     case SQLITE_FLOAT:
         value = [NSNumber numberWithDouble:sqlite3_column_double(_statement, _columnIdx)];
