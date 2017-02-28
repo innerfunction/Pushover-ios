@@ -325,4 +325,13 @@
 
 - (void)afterIOCConfiguration:(IFConfiguration *)configuration {}
 
+#pragma mark - IFIOCTypeInspectable
+
+- (Class)memberClassForCollection:(NSString *)propertyName {
+    if ([@"fields" isEqualToString:propertyName]) {
+        return [IFFormField class];
+    }
+    return nil;
+}
+
 @end

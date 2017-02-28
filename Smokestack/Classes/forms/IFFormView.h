@@ -18,6 +18,7 @@
 
 #import <UIKit/UIKit.h>
 #import "IFIOCContainerAware.h"
+#import "IFIOCTypeInspectable.h"
 #import "IFFormField.h"
 #import "IFHTTPClient.h"
 
@@ -33,7 +34,7 @@ typedef void (^IFFormViewErrorEvent)(IFFormView *, NSError *);
 
 @end
 
-@interface IFFormView : UITableView <UITableViewDataSource, UITableViewDelegate, IFIOCContainerAware> {
+@interface IFFormView : UITableView <UITableViewDataSource, UITableViewDelegate, IFIOCContainerAware, IFIOCTypeInspectable> {
     NSInteger _focusedFieldIdx;
     UIEdgeInsets _defaultInsets;
     NSDictionary *_defaultValues;
