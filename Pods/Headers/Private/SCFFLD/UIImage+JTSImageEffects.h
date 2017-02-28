@@ -1,0 +1,1 @@
+../../../SCFFLD/SCFFLD/Externals/JTSImageViewController/UIImage+JTSImageEffects.h
