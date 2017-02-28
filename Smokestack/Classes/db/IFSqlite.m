@@ -130,6 +130,11 @@
     return (result == SQLITE_ROW);
 }
 
+- (BOOL)done {
+    int result = sqlite3_step(_statement);
+    return (result == SQLITE_DONE);
+}
+
 - (NSString *)columnName:(NSInteger)columnIndex {
     if (columnIndex < _columnCount) {
         return [NSString stringWithUTF8String:sqlite3_column_name(_statement, (int)columnIndex)];
@@ -254,7 +259,7 @@
     BOOL ok = NO;
     IFSqliteResultSet *rs = [self executeQuery:error];
     if (rs && !*error) {
-        if ([rs next]) {
+        if ([rs done]) {
             ok = YES;
         }
         [rs close];

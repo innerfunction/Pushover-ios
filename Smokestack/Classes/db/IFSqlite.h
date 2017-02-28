@@ -77,6 +77,8 @@
 - (id)initWithParent:(IFSqlitePreparedStatement *)parent statement:(sqlite3_stmt *)statement;
 /// Step to the next result set row.
 - (BOOL)next;
+/// Step the result set; use when executing updates.
+- (BOOL)done;
 /// Get a column name.
 - (NSString *)columnName:(NSInteger)columnIndex;
 /// Get a column value.

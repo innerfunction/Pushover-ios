@@ -425,10 +425,10 @@ static IFLogger *Logger;
     if ([identifiers count]) {
         IFSqliteDB *db = [_dbHelper getDatabase];
         [self willChangeValueForKey:table];
-        NSArray *params = [NSArray arrayWithItem:@"?" repeated:[identifiers count]];
-        NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ IN (%@)", table, idColumn, [params componentsJoinedByString:@","]];
+        NSString *placeholders = [[NSArray arrayWithItem:@"?" repeated:[identifiers count]] componentsJoinedByString:@","];
+        NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ IN (%@)", table, idColumn, placeholders];
         NSError *error = nil;
-        [db executeUpdate:sql parameters:params error:&error];
+        [db executeUpdate:sql parameters:identifiers error:&error];
         if (error) {
             [Logger error:@"Error deleting records: %@", [error localizedDescription]];
             result = NO;
