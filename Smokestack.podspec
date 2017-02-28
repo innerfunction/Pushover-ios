@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name            = "Smokestack"
-  s.version         = "0.8.0"
+  s.version         = "0.8.1"
   s.summary         = "Smokestack CMS - SDK for iOS"
   s.description     = <<-DESC
     An iOS client SDK for the Smokestack mobile CMS.
@@ -14,8 +14,8 @@ Pod::Spec.new do |s|
   s.platform        = :ios
   s.ios.deployment_target = '8.0'
 
-  s.source          = { :git => "git@github.com:innerfunction/Smokestack-ios.git", :tag => "0.8.0" }
-  s.source_files    = "Smokestack/Classes/Smokestack.h", "Smokestack/Classes/{cms,commands,content,db,forms,ui,utils}/*.{h,m}", "Smokestack/Classes/SSKeychain/*.{h,m}"
+  s.source          = { :git => "https://github.com/innerfunction/Smokestack-ios.git", :tag => "0.8.1" }
+  s.source_files    = "Classes/Smokestack.h", "Classes/{cms,commands,content,db,forms,ui,utils}/*.{h,m}", "Classes/SSKeychain/*.{h,m}"
   s.requires_arc    = true
 
   s.frameworks      = "UIKit", "Foundation"
