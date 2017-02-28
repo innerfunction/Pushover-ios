@@ -21,7 +21,7 @@
 
 @class IFWPContentAuthority;
 
-@interface IFWPAuthManager : NSObject <IFHTTPClientAuthenticationDelegate> {
+@interface IFWPAuthManager : NSObject /*<IFHTTPClientAuthenticationDelegate>*/ {
     NSUserDefaults *_userDefaults;
 }
 

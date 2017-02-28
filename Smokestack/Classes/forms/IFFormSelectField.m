@@ -55,8 +55,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *item = [self.tableData rowDataForIndexPath:indexPath];
-    _parentField.selectedItem = item;
+    IFConfiguration *item = [self.tableData rowDataForIndexPath:indexPath];
+    _parentField.selectedItem = item.configData;
     [_parentField releaseFieldFocus];
 }
 

@@ -13,6 +13,7 @@
 		073DB3F01DB8D29F002504FB /* IFCMSSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */; };
 		077B08DD1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */; };
 		077B08DE1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */; };
+		07E27D2D1E65A76400404AB2 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E27D2C1E65A76400404AB2 /* libsqlite3.tbd */; };
 		07F199701E5F0C60004580C2 /* IFSqlite.h in Headers */ = {isa = PBXBuildFile; fileRef = 07F1996E1E5F0C60004580C2 /* IFSqlite.h */; };
 		07F199711E5F0C60004580C2 /* IFSqlite.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F1996F1E5F0C60004580C2 /* IFSqlite.m */; };
 		07FA4E781DF6F1DA00EC2353 /* IFFormFieldPadding.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA4E761DF6F1DA00EC2353 /* IFFormFieldPadding.h */; };
@@ -109,26 +110,6 @@
 		07FA70221DA5292600E35C36 /* IFHTMLString.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F9D1DA5292600E35C36 /* IFHTMLString.m */; };
 		07FA70231DA5292600E35C36 /* IFHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6F9E1DA5292600E35C36 /* IFHTTPClient.h */; };
 		07FA70241DA5292600E35C36 /* IFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6F9F1DA5292600E35C36 /* IFHTTPClient.m */; };
-		07FA70251DA5292600E35C36 /* IFWPAuthManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FA11DA5292600E35C36 /* IFWPAuthManager.h */; };
-		07FA70261DA5292600E35C36 /* IFWPAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FA21DA5292600E35C36 /* IFWPAuthManager.m */; };
-		07FA70271DA5292600E35C36 /* IFWPChildPostRendering.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FA31DA5292600E35C36 /* IFWPChildPostRendering.h */; };
-		07FA70281DA5292600E35C36 /* IFWPChildPostRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FA41DA5292600E35C36 /* IFWPChildPostRendering.m */; };
-		07FA70291DA5292600E35C36 /* IFWPClientTemplateContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FA51DA5292600E35C36 /* IFWPClientTemplateContext.h */; };
-		07FA702A1DA5292600E35C36 /* IFWPClientTemplateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FA61DA5292600E35C36 /* IFWPClientTemplateContext.m */; };
-		07FA702B1DA5292600E35C36 /* IFWPContentAuthority.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FA71DA5292600E35C36 /* IFWPContentAuthority.h */; };
-		07FA702C1DA5292600E35C36 /* IFWPContentAuthority.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FA81DA5292600E35C36 /* IFWPContentAuthority.m */; };
-		07FA702D1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FA91DA5292600E35C36 /* IFWPContentAuthorityFormFactory.h */; };
-		07FA702E1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FAA1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.m */; };
-		07FA702F1DA5292600E35C36 /* IFWPContentCommandProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FAB1DA5292600E35C36 /* IFWPContentCommandProtocol.h */; };
-		07FA70301DA5292600E35C36 /* IFWPContentCommandProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FAC1DA5292600E35C36 /* IFWPContentCommandProtocol.m */; };
-		07FA70311DA5292600E35C36 /* IFWPLicenceBehaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FAD1DA5292600E35C36 /* IFWPLicenceBehaviour.h */; };
-		07FA70321DA5292600E35C36 /* IFWPLicenceBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FAE1DA5292600E35C36 /* IFWPLicenceBehaviour.m */; };
-		07FA70331DA5292600E35C36 /* IFWPPostDBAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FAF1DA5292600E35C36 /* IFWPPostDBAdapter.h */; };
-		07FA70341DA5292600E35C36 /* IFWPPostDBAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FB01DA5292600E35C36 /* IFWPPostDBAdapter.m */; };
-		07FA70351DA5292600E35C36 /* IFWPPostsPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FB11DA5292600E35C36 /* IFWPPostsPathRoot.h */; };
-		07FA70361DA5292600E35C36 /* IFWPPostsPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FB21DA5292600E35C36 /* IFWPPostsPathRoot.m */; };
-		07FA70371DA5292600E35C36 /* IFWPSearchPathRoot.h in Headers */ = {isa = PBXBuildFile; fileRef = 07FA6FB31DA5292600E35C36 /* IFWPSearchPathRoot.h */; };
-		07FA70381DA5292600E35C36 /* IFWPSearchPathRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA6FB41DA5292600E35C36 /* IFWPSearchPathRoot.m */; };
 		184D817FC98DD2B9983F7E3C /* libPods-Smokestack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E62C7B947E8F970ADD1B041 /* libPods-Smokestack.a */; };
 /* End PBXBuildFile section */
 
@@ -140,6 +121,7 @@
 		077AEDDB1D7F1D2500C5A2D9 /* Smokestack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Smokestack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSAuthenticationManager.h; sourceTree = "<group>"; };
 		077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSAuthenticationManager.m; sourceTree = "<group>"; };
+		07E27D2C1E65A76400404AB2 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		07F1996E1E5F0C60004580C2 /* IFSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFSqlite.h; sourceTree = "<group>"; };
 		07F1996F1E5F0C60004580C2 /* IFSqlite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFSqlite.m; sourceTree = "<group>"; };
 		07FA4E761DF6F1DA00EC2353 /* IFFormFieldPadding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFormFieldPadding.h; sourceTree = "<group>"; };
@@ -236,26 +218,6 @@
 		07FA6F9D1DA5292600E35C36 /* IFHTMLString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFHTMLString.m; sourceTree = "<group>"; };
 		07FA6F9E1DA5292600E35C36 /* IFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFHTTPClient.h; sourceTree = "<group>"; };
 		07FA6F9F1DA5292600E35C36 /* IFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFHTTPClient.m; sourceTree = "<group>"; };
-		07FA6FA11DA5292600E35C36 /* IFWPAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPAuthManager.h; sourceTree = "<group>"; };
-		07FA6FA21DA5292600E35C36 /* IFWPAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPAuthManager.m; sourceTree = "<group>"; };
-		07FA6FA31DA5292600E35C36 /* IFWPChildPostRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPChildPostRendering.h; sourceTree = "<group>"; };
-		07FA6FA41DA5292600E35C36 /* IFWPChildPostRendering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPChildPostRendering.m; sourceTree = "<group>"; };
-		07FA6FA51DA5292600E35C36 /* IFWPClientTemplateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPClientTemplateContext.h; sourceTree = "<group>"; };
-		07FA6FA61DA5292600E35C36 /* IFWPClientTemplateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPClientTemplateContext.m; sourceTree = "<group>"; };
-		07FA6FA71DA5292600E35C36 /* IFWPContentAuthority.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPContentAuthority.h; sourceTree = "<group>"; };
-		07FA6FA81DA5292600E35C36 /* IFWPContentAuthority.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPContentAuthority.m; sourceTree = "<group>"; };
-		07FA6FA91DA5292600E35C36 /* IFWPContentAuthorityFormFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPContentAuthorityFormFactory.h; sourceTree = "<group>"; };
-		07FA6FAA1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPContentAuthorityFormFactory.m; sourceTree = "<group>"; };
-		07FA6FAB1DA5292600E35C36 /* IFWPContentCommandProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPContentCommandProtocol.h; sourceTree = "<group>"; };
-		07FA6FAC1DA5292600E35C36 /* IFWPContentCommandProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPContentCommandProtocol.m; sourceTree = "<group>"; };
-		07FA6FAD1DA5292600E35C36 /* IFWPLicenceBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPLicenceBehaviour.h; sourceTree = "<group>"; };
-		07FA6FAE1DA5292600E35C36 /* IFWPLicenceBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPLicenceBehaviour.m; sourceTree = "<group>"; };
-		07FA6FAF1DA5292600E35C36 /* IFWPPostDBAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPPostDBAdapter.h; sourceTree = "<group>"; };
-		07FA6FB01DA5292600E35C36 /* IFWPPostDBAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPPostDBAdapter.m; sourceTree = "<group>"; };
-		07FA6FB11DA5292600E35C36 /* IFWPPostsPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPPostsPathRoot.h; sourceTree = "<group>"; };
-		07FA6FB21DA5292600E35C36 /* IFWPPostsPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPPostsPathRoot.m; sourceTree = "<group>"; };
-		07FA6FB31DA5292600E35C36 /* IFWPSearchPathRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFWPSearchPathRoot.h; sourceTree = "<group>"; };
-		07FA6FB41DA5292600E35C36 /* IFWPSearchPathRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFWPSearchPathRoot.m; sourceTree = "<group>"; };
 		0E62C7B947E8F970ADD1B041 /* libPods-Smokestack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Smokestack.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		475B5346EA2E33941F625B57 /* Pods-Smokestack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smokestack.release.xcconfig"; path = "Pods/Target Support Files/Pods-Smokestack/Pods-Smokestack.release.xcconfig"; sourceTree = "<group>"; };
 		BC4E0D48EABCE6574E64087E /* Pods-Smokestack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smokestack.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Smokestack/Pods-Smokestack.debug.xcconfig"; sourceTree = "<group>"; };
@@ -266,6 +228,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07E27D2D1E65A76400404AB2 /* libsqlite3.tbd in Frameworks */,
 				184D817FC98DD2B9983F7E3C /* libPods-Smokestack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,7 +265,6 @@
 				07FA6F671DA5292600E35C36 /* forms */,
 				07FA6F971DA5292600E35C36 /* ui */,
 				07FA6F9A1DA5292600E35C36 /* utils */,
-				07FA6FA01DA5292600E35C36 /* wp */,
 				07FA6F921DA5292600E35C36 /* SSKeychain */,
 			);
 			path = Classes;
@@ -465,33 +427,6 @@
 			path = utils;
 			sourceTree = "<group>";
 		};
-		07FA6FA01DA5292600E35C36 /* wp */ = {
-			isa = PBXGroup;
-			children = (
-				07FA6FA11DA5292600E35C36 /* IFWPAuthManager.h */,
-				07FA6FA21DA5292600E35C36 /* IFWPAuthManager.m */,
-				07FA6FA31DA5292600E35C36 /* IFWPChildPostRendering.h */,
-				07FA6FA41DA5292600E35C36 /* IFWPChildPostRendering.m */,
-				07FA6FA51DA5292600E35C36 /* IFWPClientTemplateContext.h */,
-				07FA6FA61DA5292600E35C36 /* IFWPClientTemplateContext.m */,
-				07FA6FA71DA5292600E35C36 /* IFWPContentAuthority.h */,
-				07FA6FA81DA5292600E35C36 /* IFWPContentAuthority.m */,
-				07FA6FA91DA5292600E35C36 /* IFWPContentAuthorityFormFactory.h */,
-				07FA6FAA1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.m */,
-				07FA6FAB1DA5292600E35C36 /* IFWPContentCommandProtocol.h */,
-				07FA6FAC1DA5292600E35C36 /* IFWPContentCommandProtocol.m */,
-				07FA6FAD1DA5292600E35C36 /* IFWPLicenceBehaviour.h */,
-				07FA6FAE1DA5292600E35C36 /* IFWPLicenceBehaviour.m */,
-				07FA6FAF1DA5292600E35C36 /* IFWPPostDBAdapter.h */,
-				07FA6FB01DA5292600E35C36 /* IFWPPostDBAdapter.m */,
-				07FA6FB11DA5292600E35C36 /* IFWPPostsPathRoot.h */,
-				07FA6FB21DA5292600E35C36 /* IFWPPostsPathRoot.m */,
-				07FA6FB31DA5292600E35C36 /* IFWPSearchPathRoot.h */,
-				07FA6FB41DA5292600E35C36 /* IFWPSearchPathRoot.m */,
-			);
-			path = wp;
-			sourceTree = "<group>";
-		};
 		BF950DEF19981CBD97D320C1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,6 +439,7 @@
 		C78E1701352614A41B6FB3D0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				07E27D2C1E65A76400404AB2 /* libsqlite3.tbd */,
 				0E62C7B947E8F970ADD1B041 /* libPods-Smokestack.a */,
 			);
 			name = Frameworks;
@@ -523,40 +459,31 @@
 				07FA6FF91DA5292600E35C36 /* IFFormSelectField.h in Headers */,
 				07FA6FC31DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.h in Headers */,
 				07FA6FE31DA5292600E35C36 /* IFDataWebviewFormatter.h in Headers */,
-				07FA70311DA5292600E35C36 /* IFWPLicenceBehaviour.h in Headers */,
 				073DB3EF1DB8D29F002504FB /* IFCMSSettings.h in Headers */,
-				07FA70351DA5292600E35C36 /* IFWPPostsPathRoot.h in Headers */,
 				077B08DD1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h in Headers */,
 				07FA6FDE1DA5292600E35C36 /* IFContentTypeConverter.h in Headers */,
-				07FA70331DA5292600E35C36 /* IFWPPostDBAdapter.h in Headers */,
 				07FA6FDF1DA5292600E35C36 /* IFContentURLProtocol.h in Headers */,
 				07FA6FCA1DA5292600E35C36 /* IFDownloadZipCommand.h in Headers */,
-				07FA702F1DA5292600E35C36 /* IFWPContentCommandProtocol.h in Headers */,
 				07FA6FBF1DA5292600E35C36 /* IFCMSPostsPathRoot.h in Headers */,
 				07FA701C1DA5292600E35C36 /* SSKeychainQuery.h in Headers */,
 				07FA70191DA5292600E35C36 /* Smokestack.h in Headers */,
 				07FA6FEF1DA5292600E35C36 /* IFDBORM.h in Headers */,
 				07FA70011DA5292600E35C36 /* IFSubmitField.h in Headers */,
 				07FA701A1DA5292600E35C36 /* SSKeychain.h in Headers */,
-				07FA70251DA5292600E35C36 /* IFWPAuthManager.h in Headers */,
 				07FA6FFB1DA5292600E35C36 /* IFFormTextField.h in Headers */,
-				07FA70371DA5292600E35C36 /* IFWPSearchPathRoot.h in Headers */,
 				07FA6FF11DA5292600E35C36 /* IFFormField.h in Headers */,
 				07FA6FE91DA5292600E35C36 /* IFDB.h in Headers */,
 				07FA70211DA5292600E35C36 /* IFHTMLString.h in Headers */,
 				07FA6FB91DA5292600E35C36 /* IFCMSFileDB.h in Headers */,
-				07FA70271DA5292600E35C36 /* IFWPChildPostRendering.h in Headers */,
 				07FA70201DA5292600E35C36 /* IFDataFormatter.h in Headers */,
 				07FA701E1DA5292600E35C36 /* IFContentTableViewController.h in Headers */,
 				072EFC261DE866DE00FEDAD7 /* IFCMSLoginFormViewController.h in Headers */,
 				07FA6FE71DA5292600E35C36 /* IFPlainContentTypeConverter.h in Headers */,
 				07FA6FE11DA5292600E35C36 /* IFDataTableFormatter.h in Headers */,
 				07FA4E781DF6F1DA00EC2353 /* IFFormFieldPadding.h in Headers */,
-				07FA702B1DA5292600E35C36 /* IFWPContentAuthority.h in Headers */,
 				07FA6FDC1DA5292600E35C36 /* IFContentSchemeHandler.h in Headers */,
 				07FA6FB51DA5292600E35C36 /* IFCMSCommandProtocol.h in Headers */,
 				07FA6FC81DA5292600E35C36 /* IFCommandScheduler.h in Headers */,
-				07FA70291DA5292600E35C36 /* IFWPClientTemplateContext.h in Headers */,
 				07F199701E5F0C60004580C2 /* IFSqlite.h in Headers */,
 				07FA70231DA5292600E35C36 /* IFHTTPClient.h in Headers */,
 				07FA6FC11DA5292600E35C36 /* IFCMSTableViewContentTypeConverter.h in Headers */,
@@ -573,7 +500,6 @@
 				07FA6FFF1DA5292600E35C36 /* IFFormViewController.h in Headers */,
 				07FA6FBB1DA5292600E35C36 /* IFCMSFileset.h in Headers */,
 				07FA6FB71DA5292600E35C36 /* IFCMSContentAuthority.h in Headers */,
-				07FA702D1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.h in Headers */,
 				07FA6FCE1DA5292600E35C36 /* IFMvFileCommand.h in Headers */,
 				07FA6FED1DA5292600E35C36 /* IFDBHelper.h in Headers */,
 				07FA6FF31DA5292600E35C36 /* IFFormHiddenField.h in Headers */,
@@ -693,21 +619,15 @@
 				07FA6FC41DA5292600E35C36 /* IFCMSWebViewContentTypeConverter.m in Sources */,
 				07FA6FC01DA5292600E35C36 /* IFCMSPostsPathRoot.m in Sources */,
 				073DB3F01DB8D29F002504FB /* IFCMSSettings.m in Sources */,
-				07FA70381DA5292600E35C36 /* IFWPSearchPathRoot.m in Sources */,
-				07FA70321DA5292600E35C36 /* IFWPLicenceBehaviour.m in Sources */,
 				07FA6FE61DA5292600E35C36 /* IFMIMETypes.m in Sources */,
-				07FA70301DA5292600E35C36 /* IFWPContentCommandProtocol.m in Sources */,
-				07FA70281DA5292600E35C36 /* IFWPChildPostRendering.m in Sources */,
 				07FA6FD71DA5292600E35C36 /* IFContentAuthority.m in Sources */,
 				07FA701F1DA5292600E35C36 /* IFContentTableViewController.m in Sources */,
 				07FA6FB81DA5292600E35C36 /* IFCMSContentAuthority.m in Sources */,
 				07FA70241DA5292600E35C36 /* IFHTTPClient.m in Sources */,
-				07FA70361DA5292600E35C36 /* IFWPPostsPathRoot.m in Sources */,
 				07FA6FCF1DA5292600E35C36 /* IFMvFileCommand.m in Sources */,
 				07FA6FE81DA5292600E35C36 /* IFPlainContentTypeConverter.m in Sources */,
 				07FA6FF01DA5292600E35C36 /* IFDBORM.m in Sources */,
 				07FA4E7D1DF6F23000EC2353 /* IFFormFieldBorder.m in Sources */,
-				07FA70341DA5292600E35C36 /* IFWPPostDBAdapter.m in Sources */,
 				07FA6FEC1DA5292600E35C36 /* IFDBFilter.m in Sources */,
 				072EFC271DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m in Sources */,
 				07FA6FC91DA5292600E35C36 /* IFCommandScheduler.m in Sources */,
@@ -720,7 +640,6 @@
 				07FA6FD31DA5292600E35C36 /* IFUnzipCommand.m in Sources */,
 				07F199711E5F0C60004580C2 /* IFSqlite.m in Sources */,
 				07FA70001DA5292600E35C36 /* IFFormViewController.m in Sources */,
-				07FA702C1DA5292600E35C36 /* IFWPContentAuthority.m in Sources */,
 				07FA70021DA5292600E35C36 /* IFSubmitField.m in Sources */,
 				07FA70221DA5292600E35C36 /* IFHTMLString.m in Sources */,
 				07FA6FC71DA5292600E35C36 /* IFCommandProtocol.m in Sources */,
@@ -729,8 +648,6 @@
 				07FA6FF21DA5292600E35C36 /* IFFormField.m in Sources */,
 				07FA4E791DF6F1DA00EC2353 /* IFFormFieldPadding.m in Sources */,
 				07FA6FF61DA5292600E35C36 /* IFFormImageField.m in Sources */,
-				07FA70261DA5292600E35C36 /* IFWPAuthManager.m in Sources */,
-				07FA702E1DA5292600E35C36 /* IFWPContentAuthorityFormFactory.m in Sources */,
 				07FA6FCB1DA5292600E35C36 /* IFDownloadZipCommand.m in Sources */,
 				07FA701D1DA5292600E35C36 /* SSKeychainQuery.m in Sources */,
 				07FA6FFC1DA5292600E35C36 /* IFFormTextField.m in Sources */,
@@ -739,7 +656,6 @@
 				07FA6FCD1DA5292600E35C36 /* IFGetURLCommand.m in Sources */,
 				07FA6FB61DA5292600E35C36 /* IFCMSCommandProtocol.m in Sources */,
 				07FA6FDD1DA5292600E35C36 /* IFContentSchemeHandler.m in Sources */,
-				07FA702A1DA5292600E35C36 /* IFWPClientTemplateContext.m in Sources */,
 				07FA6FD91DA5292600E35C36 /* IFContentPath.m in Sources */,
 				07FA6FD51DA5292600E35C36 /* IFAbstractContentAuthority.m in Sources */,
 				07FA6FBC1DA5292600E35C36 /* IFCMSFileset.m in Sources */,
@@ -845,7 +761,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Smokestack/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.innerfunction.Smokestack;
@@ -862,7 +778,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Smokestack/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.innerfunction.Smokestack;
