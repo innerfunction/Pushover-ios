@@ -178,7 +178,8 @@
                 // The URI property is treated as a template into which the form's values can be inserted.
                 NSDictionary *values = [self inputValues];
                 NSString *message = [IFStringTemplate render:_submitURI context:values uriEncode:YES];
-                [IFAppContainer postMessage:message sender:self];
+                IFAppContainer *appContainer = [IFAppContainer findAppContainer:self.iocContainer];
+                [appContainer postMessage:message sender:self];
                 [self submitting:NO];
             });
         }

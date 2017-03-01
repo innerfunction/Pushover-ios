@@ -88,7 +88,8 @@
 
 - (void)selectField {
     if (_selectAction) {
-        [IFAppContainer postMessage:_selectAction sender:self];
+        IFAppContainer *appContainer = [IFAppContainer findAppContainer:_form.iocContainer];
+        [appContainer postMessage:_selectAction sender:self];
     }
 }
 

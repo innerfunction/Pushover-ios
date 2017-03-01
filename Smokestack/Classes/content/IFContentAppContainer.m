@@ -18,6 +18,7 @@
 
 #import "IFContentAppContainer.h"
 #import "IFContentSchemeHandler.h"
+#import "IFCoreTypes.h"
 #import "NSDictionary+IF.h"
 
 @implementation IFContentAppContainer
@@ -27,14 +28,36 @@
     if (self) {
         // Add a content: scheme handler.
         [_appURIHandler addHandler:[IFContentSchemeHandler new] forScheme:@"content"];
-        // Modify standard configuration with content provider settings.
-        self.standardConfiguration = [self.standardConfiguration extendWith:@{
-            @"contentProvider": @{
-                @"authorities":  @"@dirmap:/SCFFLD/cauths"
-            }
-        }];
     }
     return self;
 }
 
+#pragma mark - Static overrides
+
+static IFContentAppContainer *IFContentAppContainer_instance;
+
++ (IFAppContainer *)getAppContainer {
+    if (IFContentAppContainer_instance == nil) {
+        IFContentAppContainer_instance = [IFContentAppContainer new];
+        [IFContentAppContainer_instance addTypes:[IFCoreTypes types]];
+        [IFContentAppContainer_instance loadConfiguration:@{
+            @"types":       @"@app:/SCFFLD/types.json",
+            @"schemes":     @"@dirmap:/SCFFLD/schemes",
+            @"patterns":    @"@dirmap:/SCFFLD/patterns",
+            @"nameds":      @"@dirmap:/SCFFLD/nameds",
+            @"contentProvider": @{
+                @"authorities":  @"@dirmap:/SCFFLD/cas"
+            }
+        }];
+        [IFContentAppContainer_instance startService];
+    }
+    return IFContentAppContainer_instance;
+}
+
++ (UIWindow *)window {
+    UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    IFAppContainer *container = [IFContentAppContainer getAppContainer];
+    container.window = window;
+    return window;
+}
 @end
