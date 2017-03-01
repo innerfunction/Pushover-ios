@@ -11,6 +11,8 @@
 		072EFC271DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 072EFC251DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m */; };
 		073DB3EF1DB8D29F002504FB /* IFCMSSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */; };
 		073DB3F01DB8D29F002504FB /* IFCMSSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */; };
+		0756E61A1E67212100BB68F1 /* IFContentAppContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0756E6181E67212100BB68F1 /* IFContentAppContainer.h */; };
+		0756E61B1E67212100BB68F1 /* IFContentAppContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0756E6191E67212100BB68F1 /* IFContentAppContainer.m */; };
 		077B08DD1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */; };
 		077B08DE1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */; };
 		07E27D2D1E65A76400404AB2 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E27D2C1E65A76400404AB2 /* libsqlite3.tbd */; };
@@ -118,6 +120,8 @@
 		072EFC251DE866DE00FEDAD7 /* IFCMSLoginFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSLoginFormViewController.m; sourceTree = "<group>"; };
 		073DB3ED1DB8D29F002504FB /* IFCMSSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSSettings.h; sourceTree = "<group>"; };
 		073DB3EE1DB8D29F002504FB /* IFCMSSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSSettings.m; sourceTree = "<group>"; };
+		0756E6181E67212100BB68F1 /* IFContentAppContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContentAppContainer.h; sourceTree = "<group>"; };
+		0756E6191E67212100BB68F1 /* IFContentAppContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContentAppContainer.m; sourceTree = "<group>"; };
 		077AEDDB1D7F1D2500C5A2D9 /* Smokestack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Smokestack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		077B08DB1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCMSAuthenticationManager.h; sourceTree = "<group>"; };
 		077B08DC1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCMSAuthenticationManager.m; sourceTree = "<group>"; };
@@ -326,6 +330,8 @@
 			children = (
 				07FA6F491DA5292600E35C36 /* IFAbstractContentAuthority.h */,
 				07FA6F4A1DA5292600E35C36 /* IFAbstractContentAuthority.m */,
+				0756E6181E67212100BB68F1 /* IFContentAppContainer.h */,
+				0756E6191E67212100BB68F1 /* IFContentAppContainer.m */,
 				07FA6F4B1DA5292600E35C36 /* IFContentAuthority.h */,
 				07FA6F4C1DA5292600E35C36 /* IFContentAuthority.m */,
 				07FA6F4D1DA5292600E35C36 /* IFContentPath.h */,
@@ -469,6 +475,7 @@
 				07FA70191DA5292600E35C36 /* Smokestack.h in Headers */,
 				07FA6FEF1DA5292600E35C36 /* IFDBORM.h in Headers */,
 				07FA70011DA5292600E35C36 /* IFSubmitField.h in Headers */,
+				0756E61A1E67212100BB68F1 /* IFContentAppContainer.h in Headers */,
 				07FA701A1DA5292600E35C36 /* SSKeychain.h in Headers */,
 				07FA6FFB1DA5292600E35C36 /* IFFormTextField.h in Headers */,
 				07FA6FF11DA5292600E35C36 /* IFFormField.h in Headers */,
@@ -652,6 +659,7 @@
 				07FA701D1DA5292600E35C36 /* SSKeychainQuery.m in Sources */,
 				07FA6FFC1DA5292600E35C36 /* IFFormTextField.m in Sources */,
 				077B08DE1DEF91EF0092B4F2 /* IFCMSAuthenticationManager.m in Sources */,
+				0756E61B1E67212100BB68F1 /* IFContentAppContainer.m in Sources */,
 				07FA6FE41DA5292600E35C36 /* IFDataWebviewFormatter.m in Sources */,
 				07FA6FCD1DA5292600E35C36 /* IFGetURLCommand.m in Sources */,
 				07FA6FB61DA5292600E35C36 /* IFCMSCommandProtocol.m in Sources */,
