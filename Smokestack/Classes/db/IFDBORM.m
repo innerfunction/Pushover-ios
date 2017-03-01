@@ -247,9 +247,9 @@
 
 #pragma mark - IFIOCTypeInspectable
 
-- (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
+- (IFPropertyInfo *)memberPropertyInfoForCollection:(NSString *)propertyName {
     if ([@"mappings" isEqualToString:propertyName]) {
-        return [IFDBORMMapping class];
+        return [[IFPropertyInfo alloc] initAsWriteableWithClass:[IFDBORMMapping class]];
     }
     return nil;
 }

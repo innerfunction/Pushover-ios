@@ -107,10 +107,10 @@
 
 #pragma mark - IFIOCTypeInspectable
 
-- (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
+- (IFPropertyInfo *)memberPropertyInfoForCollection:(NSString *)propertyName {
     if ([@"authorities" isEqualToString:propertyName]) {
         // Use CMSContentAuthority as the default authority type.
-        return [IFCMSContentAuthority class];
+        return [[IFPropertyInfo alloc] initAsWriteableWithClass:[IFCMSContentAuthority class]];
     }
     return nil;
 }

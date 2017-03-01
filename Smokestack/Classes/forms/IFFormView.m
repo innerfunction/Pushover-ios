@@ -327,9 +327,9 @@
 
 #pragma mark - IFIOCTypeInspectable
 
-- (Class)memberClassForCollection:(NSString *)propertyName {
+- (IFPropertyInfo *)memberPropertyInfoForCollection:(NSString *)propertyName {
     if ([@"fields" isEqualToString:propertyName]) {
-        return [IFFormField class];
+        return [[IFPropertyInfo alloc] initAsWriteableWithClass:[IFFormField class]];
     }
     return nil;
 }

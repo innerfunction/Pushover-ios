@@ -20,6 +20,7 @@
 #import "IFContentAuthority.h"
 #import "IFIOCObjectAware.h"
 #import "IFIOCConfigurationAware.h"
+#import "IFIOCTypeInspectable.h"
 #import "IFContainer.h"
 #import "IFIOCProxyObject.h"
 #import "IFJSONData.h"
@@ -42,7 +43,7 @@
  * [writeResponse: forAuthority: path: parameters:] method, and subclasses should override this method
  * with an implementation which resolves content data as appropriate for the request.
  */
-@interface IFAbstractContentAuthority : IFContainer <IFContentAuthority> {
+@interface IFAbstractContentAuthority : IFContainer <IFContentAuthority, IFIOCTypeInspectable> {
     /// A set of live NSURL responses.
     NSMutableSet *_liveResponses;
 }

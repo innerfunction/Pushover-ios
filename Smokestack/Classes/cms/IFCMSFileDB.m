@@ -154,9 +154,9 @@
 
 #pragma mark - IFIOCTypeInspectable
 
-- (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
+- (IFPropertyInfo *)memberPropertyInfoForCollection:(NSString *)propertyName {
     if ([@"filesets" isEqualToString:propertyName]) {
-        return [IFCMSFileset class];
+        return [[IFPropertyInfo alloc] initAsWriteableWithClass:[IFCMSFileset class]];
     }
     return nil;
 }

@@ -235,14 +235,7 @@
 
 #pragma mark - IFIOCTypeInspectable
 
-- (BOOL)isDataCollection:(NSString *)propertyName {
-    if ([@"items" isEqualToString:propertyName]) {
-        return YES;
-    }
-    return NO;
-}
-
-- (Class)memberClassForCollection:(NSString *)propertyName {
+- (IFPropertyInfo *)memberPropertyInfoForCollection:(NSString *)propertyName {
     return nil;
 }
 
