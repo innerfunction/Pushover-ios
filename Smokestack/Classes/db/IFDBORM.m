@@ -247,11 +247,10 @@
 
 #pragma mark - IFIOCTypeInspectable
 
-- (IFPropertyInfo *)memberPropertyInfoForCollection:(NSString *)propertyName {
-    if ([@"mappings" isEqualToString:propertyName]) {
-        return [[IFPropertyInfo alloc] initAsWriteableWithClass:[IFDBORMMapping class]];
-    }
-    return nil;
+- (NSDictionary *)collectionMemberTypeInfo {
+    return @{
+        @"mappings": [IFDBORMMapping class]
+    };
 }
 
 #pragma mark - IFIOCObjectAware

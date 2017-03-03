@@ -154,11 +154,10 @@
 
 #pragma mark - IFIOCTypeInspectable
 
-- (IFPropertyInfo *)memberPropertyInfoForCollection:(NSString *)propertyName {
-    if ([@"filesets" isEqualToString:propertyName]) {
-        return [[IFPropertyInfo alloc] initAsWriteableWithClass:[IFCMSFileset class]];
-    }
-    return nil;
+- (NSDictionary *)collectionMemberTypeInfo {
+    return @{
+        @"filesets": [IFCMSFileset class]
+    };
 }
 
 @end

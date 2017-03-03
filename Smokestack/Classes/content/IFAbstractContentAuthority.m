@@ -97,11 +97,10 @@
 
 #pragma mark - IFIOCTypeInspectable
 
-- (IFPropertyInfo *)memberPropertyInfoForCollection:(NSString *)propertyName {
-    if ([@"pathRoots" isEqualToString:propertyName]) {
-        return [[IFPropertyInfo alloc] initAsWriteableWithProtocol:@protocol(IFContentAuthorityPathRoot)];
-    }
-    return nil;
+- (NSDictionary *)collectionMemberTypeInfo {
+    return @{
+        @"pathRoots": @protocol(IFContentAuthorityPathRoot)
+    };
 }
 
 #pragma mark - IFContentAuthority

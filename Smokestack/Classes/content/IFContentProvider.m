@@ -107,12 +107,10 @@
 
 #pragma mark - IFIOCTypeInspectable
 
-- (IFPropertyInfo *)memberPropertyInfoForCollection:(NSString *)propertyName {
-    if ([@"authorities" isEqualToString:propertyName]) {
-        // Use CMSContentAuthority as the default authority type.
-        return [[IFPropertyInfo alloc] initAsWriteableWithClass:[IFCMSContentAuthority class]];
-    }
-    return nil;
+- (NSDictionary *)collectionMemberTypeInfo {
+    return @{
+        @"authorities": [IFCMSContentAuthority class]
+    };
 }
 
 #pragma mark - IFService
