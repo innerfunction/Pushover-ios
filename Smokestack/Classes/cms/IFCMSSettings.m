@@ -88,7 +88,7 @@
 
 - (NSString *)urlForPath:(NSString *)path {
     NSString *port = _port == 0 ? @"" : [NSString stringWithFormat:@":%ld", (long)_port];
-    return [NSString stringWithFormat:@"http://%@%@/%@", _host, port, path];
+    return [NSString stringWithFormat:@"%@://%@%@/%@", _protocol, _host, port, path];
 }
 
 @end
