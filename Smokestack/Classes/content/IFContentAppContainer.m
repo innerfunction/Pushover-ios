@@ -39,7 +39,6 @@ static IFContentAppContainer *IFContentAppContainer_instance;
 + (IFAppContainer *)getAppContainer {
     if (IFContentAppContainer_instance == nil) {
         IFContentAppContainer_instance = [IFContentAppContainer new];
-        [IFContentAppContainer_instance addTypes:[IFCoreTypes types]];
         [IFContentAppContainer_instance loadConfiguration:@{
             @"types":       @"@app:/SCFFLD/types.json",
             @"schemes":     @"@dirmap:/SCFFLD/schemes",
